@@ -2,8 +2,26 @@
 ## Immediate comparison of, access to, and reservation of local self-storage.
 
 ### Requirements
-- All CakePHP dependencies, listed later in this file. 
+- All CakePHP dependencies, listed later in this file. See to it that these are installed first.
 - This project requires PHP >=7.0
+
+### Installation and Configuration 
+- Download and use composer as detailed by the CakePHP section of this file.
+- Restore (or update) the dependancies required by this project: `php composer.phar update`
+- You may need to set permissions as such over the `tmp/` and `logs/` directories if using a dedicated web server. 
+
+    ```
+    HTTPDUSER=`ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1`
+    setfacl -R -m u:${HTTPDUSER}:rwx tmp
+    setfacl -R -d -m u:${HTTPDUSER}:rwx tmp
+    setfacl -R -m u:${HTTPDUSER}:rwx logs
+    setfacl -R -d -m u:${HTTPDUSER}:rwx logs
+    ```
+- Give your user execution permission over the Cake CLI helper: `chmod +x bin/cake`
+    - If this causes issues, try running like so: `php bin/cake.php`
+- Copy the `app.default.php` file to a new `app.php` file and modify those parts required: eg. Security Salts, Datasources, Testing, etc.
+- Copy the `.env.default.php` file to a new `.env.php` file and modify those parts required.
+
 
 ---
 
