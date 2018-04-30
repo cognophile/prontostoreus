@@ -42,7 +42,12 @@ class AppController extends Controller
         parent::initialize();
 
         $this->loadComponent('RequestHandler');
-        $this->loadComponent('Flash');
+        $this->loadComponent('Paginator');
+
+        // Ensure we render only JSON responses
+        $this->RequestHandler->renderAs($this, 'json');
+        $this->set('_serialize', true);
+
 
         /*
          * Enable the following components for recommended CakePHP security settings.
@@ -50,5 +55,11 @@ class AppController extends Controller
          */
         //$this->loadComponent('Security');
         //$this->loadComponent('Csrf');
+    }
+
+    public function apiGateway()
+    {
+        $this->set('message', 'Prontostoreus API - Welcome!');
+        $this->set('success', true);
     }
 }
