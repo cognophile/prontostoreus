@@ -47,7 +47,10 @@ use Cake\Routing\Route\DashedRoute;
 Router::defaultRouteClass(DashedRoute::class);
 
 // Load default API entry-point route
-Router::connect('/', ['controller' => 'Gateway', 'action' => 'baseResponse']);
+Router::scope('/', function (RouteBuilder $routes) {
+    $routes->connect('/', ['controller' => 'Gateway', 'action' => 'baseResponse']);
+});
+
 
 /**
  * Load all plugin routes. See the Plugin documentation on
