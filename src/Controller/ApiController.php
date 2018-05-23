@@ -5,9 +5,9 @@ namespace Prontostoreus\Api\Controller;
 use Cake\Event\Event;
 use Cake\Filesystem\Folder;
 
-class GatewayController extends CycleController
+class ApiController extends CycleController
 {
-    public function baseResponse()
+    public function status()
     {
         $response = [
             'message' => $this->messageHandler->retrieve("General", "Welcome"),

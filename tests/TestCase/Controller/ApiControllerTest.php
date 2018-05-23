@@ -2,17 +2,17 @@
 
 namespace Prontostoreus\Api\Test\TestCase\Controller;
 
-use Prontostoreus\Api\Controller;
 use Cake\Core\App;
 use Cake\Core\Configure;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\IntegrationTestCase;
 use Cake\View\Exception\MissingTemplateException;
+use Prontostoreus\Api\Controller\ApiController;
 
-class GatewayControllerTest extends IntegrationTestCase
+class ApiControllerTest extends IntegrationTestCase
 {
-    public function testGetBaseGatewayRouteResponseIsSuccessful()
+    public function testGetApiStatusRouteResponseIsSuccessful()
     {
         $this->get('/');
         
@@ -20,7 +20,7 @@ class GatewayControllerTest extends IntegrationTestCase
         $this->assertResponseCode(200);
     }
     
-    public function testMultipleGetBaseGatewayRouteInSuccessionIsStable()
+    public function testMultipleGetApiStatusRouteInSuccessionIsStable()
     {
         $this->get('/');
         $this->assertResponseOk();
@@ -29,19 +29,19 @@ class GatewayControllerTest extends IntegrationTestCase
         $this->assertResponseOk();
     }
 
-    public function testGetBaseGatewayRouteResponseIsJsonFormat()
+    public function testGetApiStatusRouteResponseIsJsonFormat()
     {
         $this->get('/');
         $this->assertContentType('application/json');
     }
 
-    public function testGetBaseGatewayRouteResponseIsNotEmpty()
+    public function testGetApiStatusRouteResponseIsNotEmpty()
     {
         $this->get('/');
         $this->assertResponseNotEmpty();
     }
 
-    public function testGetBaseGatewayRouteResponse()
+    public function testGetApiStatusRouteResponseStructure()
     {
         $this->get('/');
 
@@ -52,7 +52,7 @@ class GatewayControllerTest extends IntegrationTestCase
         $this->assertArrayHasKey('success', $responseArray);
     }
     
-    public function testGetNonExistantRouteRaises4xxError()
+    public function testGetNonExistantSubRouteRaises4xxError()
     {
         $this->get('/fake');
 
