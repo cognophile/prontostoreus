@@ -13,10 +13,13 @@
 
     <!-- Add any additional test suites you want to run here -->
     <testsuites>
-        <testsuite name="app">
+        <testsuite name="Api">
             <directory>./tests/TestCase</directory>
         </testsuite>
-        <!-- Add plugin test suites here. -->
+
+        <testsuite name="Components">
+            <directory>./components/*/tests/TestCase</directory>
+        </testsuite>
     </testsuites>
 
     <!-- Setup a listener for fixtures -->
