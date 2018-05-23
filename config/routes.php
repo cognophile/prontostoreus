@@ -44,13 +44,12 @@ use Cake\Routing\Route\DashedRoute;
  * constructor in your `src/Application.php` file to change this behavior.
  *
  */
-Router::defaultRouteClass(DashedRoute::class);
+// Router::defaultRouteClass(DashedRoute::class);
 
 // Load default API entry-point route
 Router::scope('/', function (RouteBuilder $routes) {
-    $routes->connect('/', ['controller' => 'Gateway', 'action' => 'baseResponse']);
+    $routes->get('/', ['controller' => 'Api', 'action' => 'status']);
 });
-
 
 /**
  * Load all plugin routes. See the Plugin documentation on
