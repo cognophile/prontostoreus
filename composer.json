@@ -27,13 +27,15 @@
     "autoload": {
         "psr-4": {
             "Prontostoreus\\Api\\": "src/",
-            "Prontostoreus\\Api\\Controller\\": "src/Controller"
+            "Prontostoreus\\Api\\Controller\\": "src/Controller",
+            "LocationComponent\\": "./plugins/LocationComponent/src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "Prontostoreus\\Api\\Test\\": "tests/",
-            "Cake\\Test\\": "vendor/cakephp/cakephp/tests/"
+            "Cake\\Test\\": "vendor/cakephp/cakephp/tests/",
+            "LocationComponent\\Test\\": "./plugins/LocationComponent/tests/"
         }
     },
     "scripts": {
@@ -51,5 +53,10 @@
     "prefer-stable": true,
     "config": {
         "sort-packages": true
+    },
+    "extra": {
+        "plugin-paths": [
+            "components"
+        ]
     }
 }
