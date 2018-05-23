@@ -1,5 +1,5 @@
 {
-    "name": "protostoreus-api",
+    "name": "Prontostoreus/Api",
     "description": "The private RESTful API for the Prontostoreus application",
     "homepage": "https://cakephp.org",
     "type": "project",

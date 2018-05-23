@@ -1,6 +1,6 @@
 {
-    "name": "your-name-here/LocationComponent",
-    "description": "LocationComponent plugin for CakePHP",
+    "name": "Prontostoreus/LocationComponent",
+    "description": "Location: Component for the Prontostoreus API",
     "type": "cakephp-plugin",
     "license": "MIT",
     "require": {
