@@ -216,5 +216,20 @@ if (Configure::read('debug')) {
     Plugin::load('DebugKit', ['bootstrap' => true]);
 }
 
+
+/*
+* Prontostoreus: Custom Bootstrapping
+* Options and rules for the API, and any available Components.
+*/
 Configure::write('Folder.Resources', '/resources/');
 Configure::write('File.ResponseMessages', 'responseMessages.json');
+
+/* 
+ * See options and methods for Plugin loading, here: 
+ *  https://api.cakephp.org/3.3/class-Cake.Core.Plugin.html#_load
+*/
+Plugin::load('LocationComponent', [
+    'bootstrap' => true, 
+    'routes' => true, 
+    'autoload' => true
+]);
