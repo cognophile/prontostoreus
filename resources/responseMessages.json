@@ -2,5 +2,20 @@
     "General": {
         "Welcome": "Prontostoreus API - Welcome!",
         "Version": "0.1.0"
+    },
+    "Data": {
+        "Found": "The record was successfully located.",
+        "Added": "The record was successfully added.",
+        "Edited": "The record was successfully edited.",
+        "Removed": "The record was successfully removed.",
+        
+        "NotFound": "The requested data could not be located.",
+        "NotAdded": "The record could not be added.",
+        "NotEdited": "The record could not be edited.",
+        "NotRemoved": "The record could not be removed."
+    },
+    "Error": {
+        "UnsupportedRequestMethod": "The request method used is unsupported.",
+        "Unknown": "An unknown error occurred during the request."
     }
 }
