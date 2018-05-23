@@ -5,13 +5,13 @@ namespace Prontostoreus\Api\Utility;
 use Prontostoreus\Api\Utility\FileLoader;
 use Cake\Filesystem\Folder;
 
-class MessageResponder 
+class MessageHandler
 {
     private $loader;
     private $responseMessages = array();
 
     /**
-     * Create a MessageResponder
+     * Create an Api Response Message Requestor
      * @param Cake\Filesystem\Folder folderObject
      * @param string file
      */
@@ -21,17 +21,17 @@ class MessageResponder
             $this->loader = new FileLoader($folder, $file);
         }
         else {
-            throw new \InvalidArgumentException("Cannot create MessageResponder: Invalid folder or file.");
+            throw new \InvalidArgumentException("Cannot create ApiResponder: Invalid folder or file.");
         }
     }
 
     /**
-     * Fetch the message associated with a given key, under a given heading
+     * Get the message associated with a given key, under a given heading
      * @param string heading The heading under which the desired message resides
      * @param string key The reference key of the message
      * @return string Message associated with the key
      */
-    public function getMessage($heading, $key, $args = null)
+    public function retrieve($heading, $key, $args = null)
     {
         $this->fetchMessages();
 
