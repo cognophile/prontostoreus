@@ -38,3 +38,7 @@ nbproject/*
 .vscode
 # Sass preprocessor
 .sass-cache/
+
+# Project specific files #
+##########################
+spawn-db.sql
