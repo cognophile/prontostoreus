@@ -1,11 +1,11 @@
 # Protostoreus
 ## Immediate comparison of, access to, and reservation of local self-storage.
 
-### Requirements
+## Requirements
 - All CakePHP dependencies, listed later in this file. See to it that these are installed first.
 - This project requires PHP >=7.0
 
-### Installation and Configuration 
+## Installation and Configuration 
 - Download and use composer as detailed by the CakePHP section of this file.
 - Restore (or update) the dependancies required by this project: `php composer.phar update`
 - You may need to set permissions as such over the `tmp/` and `logs/` directories if using a dedicated web server. 
@@ -22,6 +22,38 @@
 - Copy the `app.default.php` file to a new `app.php` file and modify those parts required: eg. Security Salts, Datasources, Testing, etc.
 - Copy the `.env.default.php` file to a new `.env.php` file and modify those parts required.
 
+## Database configuration
+Having set up your MySQL server and its root user, edit the following example file to insert a password suitable for your chosen level of security, and execute it as the root MySQL user. 
+
+Run the following commands to create the prontostoreus user and create the database. 
+
+```
+cp database/spawn-db.sql.example database/spawn-db.sql
+vi spawn-db.sql 
+    insert a password into the file
+mysql -u root -p database/spawn-db.sql
+```
+
+Enter this newly created information into the `config/app.php` file. Under the `Datasources` key, ensure `MySql` is set as the driver type, and amend the following keys: 
+```
+'host' => 'localhost',
+...
+'username' => 'prontostoreus',
+'password' => 'your-password',
+'database' => 'prontostoreus',
+```
+
+Install the PHP MySql extension package: `sudo apt-get install php7.0-mysql`
+
+Then run all migrations to create the database schema on a per-component basis. These must be run in order of component: 
+1. Location
+2. Application
+3. Submission
+4. Confirmation
+
+- Check status: `bin/cake migrations -p status <name>Component`
+- Migrate up: `bin/cake migrations -p migrate <name>Component`
+- Rollback: `bin/cake migrations -p rollback <name>Component`
 
 ---
 
