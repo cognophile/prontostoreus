@@ -5,15 +5,15 @@
         "RouteAlive": "This is a live Route."
     },
     "Data": {
-        "Found": "The record was successfully located.",
-        "Added": "The record was successfully added.",
-        "Edited": "The record was successfully edited.",
-        "Removed": "The record was successfully removed.",
+        "Found": "The data was successfully located.",
+        "Added": "The data was successfully added.",
+        "Edited": "The data was successfully edited.",
+        "Removed": "The data was successfully removed.",
         
         "NotFound": "The requested data could not be located.",
-        "NotAdded": "The record could not be added.",
-        "NotEdited": "The record could not be edited.",
-        "NotRemoved": "The record could not be removed."
+        "NotAdded": "The data could not be added.",
+        "NotEdited": "The data could not be edited.",
+        "NotRemoved": "The data could not be removed."
     },
     "Error": {
         "UnsupportedRequestMethod": "The request method used is unsupported.",
