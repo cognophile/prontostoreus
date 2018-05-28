@@ -1,0 +1,7 @@
+START TRANSACTION;
+    CREATE USER 'prontostoreus'@'localhost' IDENTIFIED BY 'secret';
+    CREATE DATABASE prontostoreus;
+    GRANT ALL PRIVILEGES ON prontostoreus.* TO 'prontostoreus'@'localhost' WITH GRANT OPTION;
+COMMIT;
+
+
