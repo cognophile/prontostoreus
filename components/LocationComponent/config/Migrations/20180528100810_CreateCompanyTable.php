@@ -13,6 +13,8 @@ class CreateCompanyTable extends AbstractMigration
             'autoIncrement' => true,
         ])
               ->addPrimaryKey('id')
+              ->addColumn('address_id', 'integer')
+                ->addForeignKey('address_id', 'addresses', 'id', ['delete' => 'CASCADE', 'update' => 'NO_ACTION'])
               ->addColumn('name', 'string', ['null' => false, 'default' => 'null', 'limit' => 128])
               ->addColumn('description', 'string', ['null' => false, 'default' => 'null', 'limit' => 256])
               ->addColumn('email', 'string', ['null' => false, 'default' => 'null', 'limit' => 128])
