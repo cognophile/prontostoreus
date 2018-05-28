@@ -12,7 +12,8 @@ Router::plugin(
         $routes->get('/', ['controller' => 'Component', 'action' => 'status']);
         $routes->get('/companies', ['controller' => 'Component', 'action' => 'view']);
         $routes->get('/company/:id', ['controller' => 'Component', 'action' => 'view']);
-        $routes->get('/:query', ['controller' => 'Component', 'action' => 'locate']);
+        $routes->get('/:query', ['controller' => 'Component', 'action' => 'locate'])
+            ->setPass(['query', 'postcode']);
         // $routes->fallbacks(DashedRoute::class);
     }
 );

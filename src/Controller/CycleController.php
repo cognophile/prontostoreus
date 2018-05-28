@@ -68,7 +68,7 @@ class CycleController extends Controller
         */        
     }
 
-    protected function view() 
+    protected function view($id = null) 
     {
     }
 
