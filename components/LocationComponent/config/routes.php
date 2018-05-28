@@ -7,9 +7,12 @@ use Cake\Routing\Route\DashedRoute;
 Router::plugin(
     'LocationComponent',
     ['path' => '/locate'],
-    function (RouteBuilder $routes) {
-
+    function (RouteBuilder $routes) 
+    {
         $routes->get('/', ['controller' => 'Component', 'action' => 'status']);
+        $routes->get('/companies', ['controller' => 'Component', 'action' => 'view']);
+        $routes->get('/company/:id', ['controller' => 'Component', 'action' => 'view']);
+        $routes->get('/:query', ['controller' => 'Component', 'action' => 'locate']);
         // $routes->fallbacks(DashedRoute::class);
     }
 );
