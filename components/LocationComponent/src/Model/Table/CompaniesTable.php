@@ -93,4 +93,26 @@ class CompaniesTable extends Table
 
         return $rules;
     }
+
+    /**
+     * Search for companies according to postcode proximity 
+     * 
+     * @param \Cake\ORM\Query $query Query instance
+     * @param Array $options An array of request argument options
+     * @return Array Resultant data set
+     */
+    public function findByPostcode(Query $query, array $options)
+    {
+        $postcodeParts = explode("-", $options['postcode']);
+
+        $query = $this->find();
+        
+        $query->select(['Companies.name', 'Companies.description'])->matching('Addresses', function ($q) use ($postcodeParts) {
+            return $q->select(['Addresses.postcode'])                      
+                ->where(['Addresses.postcode LIKE' => $postcodeParts[0] . '%'])
+                ->order(['Addresses.postcode' => 'ASC']);
+        });
+
+        return $query->toArray();
+    }
 }
