@@ -12,8 +12,10 @@ class CreateAddressTable extends AbstractMigration
         $table->addColumn('id', 'integer', [
             'autoIncrement' => true,
         ])->addPrimaryKey('id')
+
           ->addColumn('company_id', 'integer')
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'NO_ACTION', 'update' => 'NO_ACTION'])
+
           ->addColumn('line_one', 'string', ['null' => false, 'default' => 'null', 'limit' => 128])
           ->addColumn('line_two', 'string', ['null' => false, 'default' => 'null', 'limit' => 128])
           ->addColumn('town', 'string', ['null' => false, 'default' => 'null', 'limit' => 128])
