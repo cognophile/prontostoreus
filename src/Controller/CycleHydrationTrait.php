@@ -53,9 +53,8 @@ trait CycleHydrationTrait
         $this->response->cors($this->request)
             ->allowOrigin(['http://localhost:8080/'])
             ->allowMethods(['*'])
-            ->allowHeaders(['Access-Control-Allow-Origin'])
             ->build();
 
-        $this->response->header('Access-Control-Allow-Origin','*');
+        $this->response = $this->response->withHeader('Access-Control-Allow-Origin','*');
     }
 }
