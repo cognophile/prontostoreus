@@ -3,13 +3,15 @@
 namespace LocationComponent\Controller;
 
 use Prontostoreus\Api\Controller\CycleController;
+use Cake\ORM\TableRegistry;
 
 class ComponentController extends CycleController
 {
     public function initialize()
     {
-        $this->loadModel('Companies');
         parent::initialize();
+        $this->loadModel('LocationComponent.Companies');
+        $this->loadModel('LocationComponent.Addresses');
     }
 
     public function status()
@@ -29,8 +31,9 @@ class ComponentController extends CycleController
 
     public function locate(string $postcode)
     {
-        $results = $this->Companies->searchByPostcode($postcode);
-
+        $results = $this->Companies->find('byPostcode', ['postcode' => $postcode]);
+        
+        // Should this return results instead?
         if (!empty($results)) {
             $message = $this->messageHandler->retrieve("Data", "Found");
             $this->respondSuccess($results, $message);
@@ -39,8 +42,5 @@ class ComponentController extends CycleController
             $message = $this->messageHandler->retrieve("Data", "NotFound");
             $this->respondError("No companies matching {$postcode} found.", $message);
         }
-
-        // $this->setPaginateOrder(['Location.postcode' => 'asc']);
-
     }
 }
