@@ -41,4 +41,5 @@ nbproject/*
 
 # Project specific files #
 ##########################
-spawn-db.sql
+database/*
+!database/*.sql.template
