@@ -1,0 +1,31 @@
+START TRANSACTION;
+
+INSERT INTO companies (name, description, email, telephone) 
+    VALUES ("Lorem ipsum A", "dolor sit amet, consectetur", "sed do", "01234567891");
+
+INSERT INTO addresses (company_id, line_one, line_two, town, county, postcode) 
+    VALUES (1, "Ut enim", "quis nostrud exercitation", "consequat", "commodo", "AB11-ABC");
+
+
+INSERT INTO companies (name, description, email, telephone) 
+    VALUES ("Lorem ipsum B", "dolor sit amet, consectetur", "sed do", "01234567892");
+
+INSERT INTO addresses (company_id, line_one, line_two, town, county, postcode) 
+    VALUES (2, "Ut enim", "quis nostrud exercitation", "consequat", "commodo", "AB11-CDE");
+
+
+INSERT INTO companies (name, description, email, telephone) 
+    VALUES ("Lorem ipsum C", "dolor sit amet, consectetur", "sed do", "01234567893");
+
+INSERT INTO addresses (company_id, line_one, line_two, town, county, postcode) 
+    VALUES (3, "Ut enim", "quis nostrud exercitation", "consequat", "commodo", "CD22-ASD");
+
+
+INSERT INTO companies (name, description, email, telephone) 
+    VALUES ("Lorem ipsum D", "dolor sit amet, consectetur", "sed do", "01234567894");
+
+INSERT INTO addresses (company_id, line_one, line_two, town, county, postcode) 
+    VALUES (4, "Ut enim", "quis nostrud exercitation", "consequat", "commodo", "AB12-JKL");
+
+COMMIT;
+
