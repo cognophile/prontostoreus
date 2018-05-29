@@ -9,7 +9,7 @@ use Cake\Validation\Validator;
 /**
  * Companies Model
  *
- * @property \LocationComponent\Model\Table\AddressesTable|\Cake\ORM\Association\BelongsTo $Addresses
+ * @property \LocationComponent\Model\Table\AddressesTable|\Cake\ORM\Association\HasMany $Addresses
  *
  * @method \LocationComponent\Model\Entity\Company get($primaryKey, $options = [])
  * @method \LocationComponent\Model\Entity\Company newEntity($data = null, array $options = [])
@@ -36,9 +36,8 @@ class CompaniesTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Addresses', [
-            'foreignKey' => 'address_id',
-            'joinType' => 'INNER',
+        $this->hasMany('Addresses', [
+            'foreignKey' => 'company_id',
             'className' => 'LocationComponent.Addresses'
         ]);
     }
@@ -91,25 +90,7 @@ class CompaniesTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['email']));
-        $rules->add($rules->existsIn(['address_id'], 'Addresses'));
 
         return $rules;
-    }
-
-    /**
-     * 
-     */
-    public function searchByPostcode(string $postcode)
-    {
-        $parts = explode("-", $postcode);
-        
-        $query = $this->find('all')->contain('Addresses', function ($q) {
-            return $q                       
-                ->select(['address_id', 'name', 'description'])
-                ->where(['Addresses.postcode LIKE' => $parts[0] . '%'])
-                ->order(['Addresses.postcode' => 'ASC']);
-        });
-
-        return $query->execute();
     }
 }

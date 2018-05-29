@@ -81,4 +81,14 @@ class CompaniesTableTest extends TestCase
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
+
+    /**
+     * Test findByPostcode method
+     *
+     * @return void
+     */
+    public function testFindByPostcode()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
 }

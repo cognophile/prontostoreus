@@ -9,7 +9,7 @@ use Cake\Validation\Validator;
 /**
  * Addresses Model
  *
- * @property \LocationComponent\Model\Table\CompaniesTable|\Cake\ORM\Association\HasMany $Companies
+ * @property \LocationComponent\Model\Table\CompaniesTable|\Cake\ORM\Association\BelongsTo $Companies
  *
  * @method \LocationComponent\Model\Entity\Address get($primaryKey, $options = [])
  * @method \LocationComponent\Model\Entity\Address newEntity($data = null, array $options = [])
@@ -36,8 +36,9 @@ class AddressesTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
-        $this->hasMany('Companies', [
-            'foreignKey' => 'address_id',
+        $this->belongsTo('Companies', [
+            'foreignKey' => 'company_id',
+            'joinType' => 'INNER',
             'className' => 'LocationComponent.Companies'
         ]);
     }
@@ -85,5 +86,19 @@ class AddressesTable extends Table
             ->notEmpty('postcode');
 
         return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->existsIn(['company_id'], 'Companies'));
+
+        return $rules;
     }
 }

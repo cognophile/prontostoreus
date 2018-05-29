@@ -7,13 +7,14 @@ use Cake\ORM\Entity;
  * Address Entity
  *
  * @property int $id
+ * @property int $company_id
  * @property string $line_one
  * @property string $line_two
  * @property string $town
  * @property string $county
  * @property string $postcode
  *
- * @property \LocationComponent\Model\Entity\Company[] $companies
+ * @property \LocationComponent\Model\Entity\Company $company
  */
 class Address extends Entity
 {
@@ -28,11 +29,12 @@ class Address extends Entity
      * @var array
      */
     protected $_accessible = [
+        'company_id' => true,
         'line_one' => true,
         'line_two' => true,
         'town' => true,
         'county' => true,
         'postcode' => true,
-        'companies' => true
+        'company' => true
     ];
 }
