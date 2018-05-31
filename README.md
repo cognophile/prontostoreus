@@ -31,13 +31,13 @@ Run the following commands to create the prontostoreus user and create the datab
 cp database/spawn-db.sql.example database/spawn-db.sql
 vi spawn-db.sql 
     insert a password into the file
-mysql -u root -p database/spawn-db.sql
+mysql -u root -p < database/spawn-db.sql
 ```
 
 Enter this newly created information into the `config/app.php` file. Under the `Datasources` key, ensure `MySql` is set as the driver type, and amend the following keys: 
 ```
 'host' => 'localhost',
-...
+  ...
 'username' => 'prontostoreus',
 'password' => 'your-password',
 'database' => 'prontostoreus',
