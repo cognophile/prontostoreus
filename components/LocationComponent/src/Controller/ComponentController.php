@@ -11,7 +11,6 @@ class ComponentController extends CycleController
     {
         parent::initialize();
         $this->loadModel('LocationComponent.Companies');
-        $this->loadModel('LocationComponent.Addresses');
     }
 
     public function status()
@@ -41,6 +40,6 @@ class ComponentController extends CycleController
         else {
             $message = $this->messageHandler->retrieve("Data", "NotFound");
             $this->respondError("No companies matching {$postcode} found.", $message);
-        }
+        }                                                  
     }
 }

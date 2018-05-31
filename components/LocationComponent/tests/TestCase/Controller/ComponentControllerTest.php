@@ -54,11 +54,10 @@ class ComponentControllerTest extends IntegrationTestCase
         $this->assertArrayHasKey('data', $responseArray);
     }
     
-    public function testGetNonExistantSubRouteRaises4xxError()
+    public function testGetCompaniesWhereInvalidUriGivenRaises5xxError()
     {
-        $this->get('/locate/fake');
+        $this->get('/locate/lorem');
 
-        $this->assertResponseError();
-        $this->assertResponseCode(404);
+        $this->assertResponseCode(500);
     }
 }
