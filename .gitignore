@@ -43,3 +43,4 @@ nbproject/*
 ##########################
 database/*
 !database/*.sql.template
+!composer.phar
