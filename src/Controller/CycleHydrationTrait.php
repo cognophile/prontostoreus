@@ -29,7 +29,7 @@ trait CycleHydrationTrait
         $response = [
             'message' => $message,
             'success' => true,
-            'error' => "",
+            'error' => $error,
             'data' => $data
         ];
     
@@ -50,6 +50,7 @@ trait CycleHydrationTrait
 
     private function setCorsHeaders() 
     {
+        // For development purposes only
         $this->response->cors($this->request)
             ->allowOrigin(['http://localhost:8080/'])
             ->allowMethods(['*'])
