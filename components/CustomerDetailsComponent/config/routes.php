@@ -5,8 +5,9 @@ use Cake\Routing\Route\DashedRoute;
 
 Router::plugin(
     'CustomerDetailsComponent',
-    ['path' => '/customer-details-component'],
+    ['path' => '/details'],
     function (RouteBuilder $routes) {
-        $routes->fallbacks(DashedRoute::class);
+        $routes->get('/', ['controller' => 'Component', 'action' => 'status']);
+        // $routes->fallbacks(DashedRoute::class);
     }
 );
