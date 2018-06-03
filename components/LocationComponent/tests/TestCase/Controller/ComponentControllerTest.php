@@ -1,6 +1,6 @@
 <?php
 
-namespace LocationLocationComponent\Test\TestCase\Controller;
+namespace LocationComponent\Test\TestCase\Controller;
 
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
