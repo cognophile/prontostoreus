@@ -73,6 +73,19 @@ Then run all migrations to create the database schema on a per-component basis. 
 - Migrate up: `bin/cake migrations -p migrate <name>Component`
 - Rollback: `bin/cake migrations -p rollback <name>Component`
 
+## Components
+Existing components are located in the `components` directory at the project root. 
+
+To add new components, follow these steps: 
+- Dump the autoload to re-establish path-namespace mappings: `{php} composer{.phar} dump-autoload`
+- `bin/cake bake plugin ExampleComponent`
+    - Ignore the incorrect path when prompted, and select 'yes'.
+    - When asked to overwrite `composer.json`, select 'yes'.
+- Components are created under the CakePHP default `plugin` directory. THerefore, simply move the created `ExampleComponent` directory into the `component` directory, and delete the auto-created `plugin` directory. 
+- Edit `composer.json` for the `autoload` and `autoload-dev` sections to ensure all component paths are specified as `./components/ExampleComponent`.
+- Reload the autoload configuration again: `{php} composer{.phar} dump-autoload`.
+- Run the built-in dev server (`bin/cake server`). If this throws an exception, it's because it can't locate the new component. Check all the above steps again. 
+
 ---
 
 ## CakePHP Application Skeleton

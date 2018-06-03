@@ -233,3 +233,9 @@ Plugin::load('LocationComponent', [
     'routes' => true, 
     'autoload' => true
 ]);
+
+Plugin::load('CustomerDetailsComponent', [
+    'bootstrap' => true, 
+    'routes' => true,
+    'autoload' => true
+]);
