@@ -84,9 +84,9 @@ Then run all migrations to create the database schema on a per-component basis. 
 4. Submission
 5. Confirmation
 
-- Check status: `bin/cake migrations -p status <name>Component`
-- Migrate up: `bin/cake migrations -p migrate <name>Component`
-- Rollback: `bin/cake migrations -p rollback <name>Component`
+- Check status: `bin/cake migrations status -p <name>Component`
+- Migrate up: `bin/cake migrations migrate -p <name>Component {-t <target-version>}`
+- Rollback: `bin/cake migrations rollback -p <name>Component {-t <target-version>}`
 
 ## Components
 Existing components are located in the `components` directory at the project root. 
