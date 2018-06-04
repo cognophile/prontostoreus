@@ -21,10 +21,12 @@ class CreateAddressTable extends AbstractMigration
                 ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'NO_ACTION', 'update' => 'NO_ACTION'])
     
               ->addColumn('line_one', 'string', ['null' => false, 'default' => 'null', 'limit' => 128])
-              ->addColumn('line_two', 'string', ['null' => false, 'default' => 'null', 'limit' => 128])
+              ->addColumn('line_two', 'string', ['null' => true, 'default' => 'null', 'limit' => 128])
               ->addColumn('town', 'string', ['null' => false, 'default' => 'null', 'limit' => 128])
               ->addColumn('county', 'string', ['null' => false, 'default' => 'null', 'limit' => 128])
-              ->addColumn('postcode', 'string', ['null' => false, 'default' => 'null', 'limit' => 8]);
+              ->addColumn('postcode', 'string', ['null' => false, 'default' => 'null', 'limit' => 8])
+              ->addColumn('created', 'datetime', ['null' => false, 'default' => 'CURRENT_TIMESTAMP'])
+              ->addColumn('deleted', 'boolean', ['null' => false, 'default' => 0]);
     
             $table->create();
         }

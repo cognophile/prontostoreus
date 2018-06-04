@@ -20,7 +20,9 @@ class CreateCompanyTable extends AbstractMigration
                 ->addColumn('name', 'string', ['null' => false, 'default' => 'null', 'limit' => 128])
                 ->addColumn('description', 'string', ['null' => false, 'default' => 'null', 'limit' => 256])
                 ->addColumn('email', 'string', ['null' => false, 'default' => 'null', 'limit' => 128])
-                ->addColumn('telephone', 'string', ['null' => false, 'default' => 'null', 'limit' => 12]);
+                ->addColumn('telephone', 'string', ['null' => false, 'default' => 'null', 'limit' => 12])
+                ->addColumn('created', 'datetime', ['null' => false, 'default' => 'CURRENT_TIMESTAMP'])
+                ->addColumn('deleted', 'boolean', ['null' => false, 'default' => 0]);
 
             $table->create();
         }
