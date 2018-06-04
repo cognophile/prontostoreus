@@ -52,6 +52,20 @@ vi spawn-db.sql
 mysql -u root -p < database/spawn-db.sql
 ```
 
+If you experience this error when running the script with `mysql > source database/spawn-db.sql` or `mysql -u root -p < database/spawn-db.sql`, then see [this Stack Overflow post](https://stackoverflow.com/a/6332971/5012644), or, issue the steps below the error block:
+```
+ERROR 1396 (HY000): Operation CREATE USER failed for 'test_prontostoreus'@'localhost'
+ERROR 1396 (HY000): Operation CREATE USER failed for 'prontostoreus'@'localhost'
+```
+
+Fix: 
+```
+DROP USER user@localhost;
+FLUSH PRIVILEGES;
+```
+
+### Application Database Configuration
+
 Enter this newly created information into the `config/app.php` file. Under the `Datasources` key, ensure `MySql` is set as the driver type, and amend the following keys: 
 ```
 'host' => 'localhost',
@@ -65,9 +79,10 @@ Install the PHP MySql extension package: `sudo apt-get install php7.0-mysql`, if
 
 Then run all migrations to create the database schema on a per-component basis. These must be run in order of component: 
 1. Location
-2. Application
-3. Submission
-4. Confirmation
+2. Customer Details
+3. Application
+4. Submission
+5. Confirmation
 
 - Check status: `bin/cake migrations -p status <name>Component`
 - Migrate up: `bin/cake migrations -p migrate <name>Component`
