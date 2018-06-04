@@ -7,22 +7,27 @@ class CreateAddressTable extends AbstractMigration
     
     public function up()
     {
-        $table = $this->table('addresses');
+        $exists = $this->hasTable('addresses');
 
-        $table->addColumn('id', 'integer', [
-            'autoIncrement' => true,
-        ])->addPrimaryKey('id')
+        if (!$exists)
+        {
+            $table = $this->table('addresses');
 
-          ->addColumn('company_id', 'integer')
-            ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'NO_ACTION', 'update' => 'NO_ACTION'])
-
-          ->addColumn('line_one', 'string', ['null' => false, 'default' => 'null', 'limit' => 128])
-          ->addColumn('line_two', 'string', ['null' => false, 'default' => 'null', 'limit' => 128])
-          ->addColumn('town', 'string', ['null' => false, 'default' => 'null', 'limit' => 128])
-          ->addColumn('county', 'string', ['null' => false, 'default' => 'null', 'limit' => 128])
-          ->addColumn('postcode', 'string', ['null' => false, 'default' => 'null', 'limit' => 8]);
-
-        $table->create();
+            $table->addColumn('id', 'integer', [
+                'autoIncrement' => true,
+            ])->addPrimaryKey('id')
+    
+              ->addColumn('company_id', 'integer')
+                ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'NO_ACTION', 'update' => 'NO_ACTION'])
+    
+              ->addColumn('line_one', 'string', ['null' => false, 'default' => 'null', 'limit' => 128])
+              ->addColumn('line_two', 'string', ['null' => false, 'default' => 'null', 'limit' => 128])
+              ->addColumn('town', 'string', ['null' => false, 'default' => 'null', 'limit' => 128])
+              ->addColumn('county', 'string', ['null' => false, 'default' => 'null', 'limit' => 128])
+              ->addColumn('postcode', 'string', ['null' => false, 'default' => 'null', 'limit' => 8]);
+    
+            $table->create();
+        }
     }
 
     public function down()

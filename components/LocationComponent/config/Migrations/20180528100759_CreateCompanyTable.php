@@ -7,18 +7,23 @@ class CreateCompanyTable extends AbstractMigration
     
     public function up()
     {
-        $table = $this->table('companies');
+        $exists = $this->hasTable('companies');
 
-        $table->addColumn('id', 'integer', [
-            'autoIncrement' => true,
-        ])
-              ->addPrimaryKey('id')
-              ->addColumn('name', 'string', ['null' => false, 'default' => 'null', 'limit' => 128])
-              ->addColumn('description', 'string', ['null' => false, 'default' => 'null', 'limit' => 256])
-              ->addColumn('email', 'string', ['null' => false, 'default' => 'null', 'limit' => 128])
-              ->addColumn('telephone', 'string', ['null' => false, 'default' => 'null', 'limit' => 12]);
+        if (!$exists)
+        {
+            $table = $this->table('companies');
 
-        $table->create();
+            $table->addColumn('id', 'integer', [
+                'autoIncrement' => true,
+            ])
+                ->addPrimaryKey('id')
+                ->addColumn('name', 'string', ['null' => false, 'default' => 'null', 'limit' => 128])
+                ->addColumn('description', 'string', ['null' => false, 'default' => 'null', 'limit' => 256])
+                ->addColumn('email', 'string', ['null' => false, 'default' => 'null', 'limit' => 128])
+                ->addColumn('telephone', 'string', ['null' => false, 'default' => 'null', 'limit' => 12]);
+
+            $table->create();
+        }
     }
 
     public function down()
