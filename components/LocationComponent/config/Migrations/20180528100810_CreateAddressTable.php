@@ -17,7 +17,7 @@ class CreateAddressTable extends AbstractMigration
                 'autoIncrement' => true,
             ])->addPrimaryKey('id')
     
-              ->addColumn('company_id', 'integer')
+              ->addColumn('company_id', 'integer', ['null' => true, 'default' => null])
                 ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'NO_ACTION', 'update' => 'NO_ACTION'])
     
               ->addColumn('line_one', 'string', ['null' => false, 'default' => 'null', 'limit' => 128])
