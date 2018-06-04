@@ -90,6 +90,8 @@ Then run all migrations to create the database schema on a per-component basis. 
 - Migrate up: `bin/cake migrations migrate -p <name>Component {-t <target-version>}`
 - Rollback: `bin/cake migrations rollback -p <name>Component {-t <target-version>}`
 
+To execute the migrations on the `test_prontostoreus` database, simply add `--connection test` to the end of the command string. If you named the test database entry under a different name in the `app.php`, then specify that in place of "test" in this command. 
+
 ## Components
 Existing components are located in the `components` directory at the project root. 
 
