@@ -50,7 +50,7 @@ class CreateOrAlterAddressesTable extends AbstractMigration
     public function down()
     {
         // ! If column exists, drop it. 
-        $exists = $this->table('addresses');
+        $exists = $this->hasTable('addresses');
 
         if ($exists)
         {
