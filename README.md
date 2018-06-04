@@ -50,6 +50,8 @@ cp database/spawn-db.sql.example database/spawn-db.sql
 vi spawn-db.sql 
     insert a password into the file
 mysql -u root -p < database/spawn-db.sql
+mysql -u root -p prontostoreus < database/seed-db.sql
+mysql -u root -p test_prontostoreus < database/seed-db.sql
 ```
 
 If you experience this error when running the script with `mysql > source database/spawn-db.sql` or `mysql -u root -p < database/spawn-db.sql`, then see [this Stack Overflow post](https://stackoverflow.com/a/6332971/5012644), or, issue the steps below the error block:
