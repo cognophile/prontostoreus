@@ -4,13 +4,15 @@ namespace CustomerDetailsComponent\Controller;
 
 use Prontostoreus\Api\Controller\CycleController;
 
-class ComponentController extends CycleController
+class CustomersController extends CycleController
 {
+    private $relations = ["Addresses"];
+
     public function initialize() 
     {
         parent::initialize();
-        $this->loadModel('CustomerDetailsComponents.Customers');
-        $this->loadModel('CustomerDetailsComponents.Addresses');
+        $this->loadModel('CustomerDetailsComponent.Customers');
+        $this->loadModel('CustomerDetailsComponent.Addresses');
     }
 
     public function status()
@@ -21,7 +23,8 @@ class ComponentController extends CycleController
 
     public function add() 
     {
-        parent::universalAdd($this->Customers);
+        $this->setRelated($this->relations);
+        return parent::universalAdd($this->Customers);
     }
 
     public function view() 

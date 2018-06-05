@@ -3,9 +3,8 @@
 namespace LocationComponent\Controller;
 
 use Prontostoreus\Api\Controller\CycleController;
-use Cake\ORM\TableRegistry;
 
-class ComponentController extends CycleController
+class CompaniesController extends CycleController
 {
     public function initialize()
     {

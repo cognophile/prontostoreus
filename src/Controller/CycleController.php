@@ -14,6 +14,7 @@ class CycleController extends Controller
     use CycleHydrationTrait;
 
     protected $messageHandler;
+    protected $relatedEntities = [];
 
     /**
      * Initialization hook method for common initialization code like loading components.
@@ -43,16 +44,18 @@ class CycleController extends Controller
     /**
      * Add a record of the given Entity type
      * 
-     * @param mixed $entity
+     * @param mixed $entity The entity to store
+     * @param boolean $hasRelated Flag to determine whether we look for and store related records
      * @return void
      */
-    protected function universalAdd($entity) 
+    protected function universalAdd($entity, $hasRelated = false) 
     {
+        // TODO: GET THIS WORKING FOR ASSOCIATED DATA - EG. ADDRESSES. 
         if ($this->request->is('post')) {
             $data = $this->request->getData();
 
             if (!empty($data)) {
-                $newEntity = $entity->newEntity($data);
+                $newEntity = $entity->newEntity($data, ['associated' => $this->relatedEntities]);
 
                 if ($entity->save($newEntity)) {
                     $newData = $entity->get($newEntity->id);
@@ -88,5 +91,10 @@ class CycleController extends Controller
 
     protected function universalRemove() 
     {
+    }
+
+    protected function setRelated($relations)
+    {
+        $this->relatedEntities = array_merge($this->relatedEntities, $relations);
     }
 }

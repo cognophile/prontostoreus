@@ -7,8 +7,8 @@ Router::plugin(
     'CustomerDetailsComponent',
     ['path' => '/details'],
     function (RouteBuilder $routes) {
-        $routes->get('/', ['controller' => 'Component', 'action' => 'status']);
-        $routes->post('/', ['controller' => 'Component', 'action' => 'add']);
+        $routes->get('/', ['controller' => 'Customers', 'action' => 'status']);
+        $routes->post('/', ['controller' => 'Customers', 'action' => 'add']);
         // $routes->fallbacks(DashedRoute::class);
     }
 );

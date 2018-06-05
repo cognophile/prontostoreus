@@ -9,10 +9,10 @@ Router::plugin(
     ['path' => '/locate'],
     function (RouteBuilder $routes) 
     {
-        $routes->get('/', ['controller' => 'Component', 'action' => 'status']);
-        $routes->get('/companies', ['controller' => 'Component', 'action' => 'view']);
-        $routes->get('/company/:id', ['controller' => 'Component', 'action' => 'view']);
-        $routes->get('/:query', ['controller' => 'Component', 'action' => 'locate'])
+        $routes->get('/', ['controller' => 'Companies', 'action' => 'status']);
+        $routes->get('/companies', ['controller' => 'Companies', 'action' => 'view']);
+        $routes->get('/company/:id', ['controller' => 'Companies', 'action' => 'view']);
+        $routes->get('/:query', ['controller' => 'Companies', 'action' => 'locate'])
             ->setPass(['query', 'postcode']);
         // $routes->fallbacks(DashedRoute::class);
     }
