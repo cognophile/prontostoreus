@@ -3,6 +3,7 @@
 namespace Prontostoreus\Api\Controller;
 
 use Cake\Controller\Controller;
+use Cake\Http\Exception;
 use Cake\Event\Event;
 use Cake\Core\Configure;
 use Cake\Filesystem\Folder;
@@ -45,38 +46,47 @@ class CycleController extends Controller
      * @param mixed $entity
      * @return void
      */
-    protected function add() 
+    protected function universalAdd($entity) 
     {
-        /* Here for future ref of response rendering wiring
-            $isAvailable = true;
+        if ($this->request->is('post')) {
+            $data = $this->request->getData();
 
-            if ($isAvailable) {
-                $data = ["id" => "1", "username" => "Bob", "email" => "example@domain.com"];
-                $message = (!empty($data)) ? $this->messageHandler->retrieve("Data", "Found") : 
-                    $this->messageHandler->retrieve("Data", "NotFound");
+            if (!empty($data)) {
+                $newEntity = $entity->newEntity($data);
 
-                $this->respondSuccess($data, $message);
+                if ($entity->save($newEntity)) {
+                    $newData = $entity->get($newEntity->id);
+                    $newId = $newData->id;
+                    $this->respondSuccess([$newId], $this->messageHandler->retrieve("Data", "Added"));
+                    $this->response = $this->response->withStatus(201);
+                } else {
+                    $this->respondError([$newEntity->errors()], $this->messageHandler->retrieve("Error", "UnsuccessfulAdd"));
+                    $this->response = $this->response->withStatus(400);
+                }
             }
             else {
-                $error = "UnrecognisedCredentials: (Mock) Message and Stack Trace Go Here.";
-                $message = (!empty($error)) ? $this->messageHandler->retrieve("Error", strtok($error, ":")) : 
-                    $this->messageHandler->retrieve("Data", "Unknown");
-
-
-                $this->respondError($error, $message);
+                try {
+                    throw new BadRequestException($this->messageHandler->retrieve("Error", "MissingPayload"));
+                }
+                catch (Exception $ex) {                   
+                    $this->respondError($ex->getTrace(), $ex->getMessage());
+                    $this->response = $this->response->withStatus(422);
+                }
             }
-        */        
+        } else {
+            throw new \MethodNotAllowedException("HTTP Method disabled for creation: Use POST");
+        }        
     }
 
-    protected function view($id = null) 
+    protected function universalView($id = null) 
     {
     }
 
-    protected function edit() 
+    protected function universalEdit() 
     {
     }
 
-    protected function remove() 
+    protected function universalRemove() 
     {
     }
 }
