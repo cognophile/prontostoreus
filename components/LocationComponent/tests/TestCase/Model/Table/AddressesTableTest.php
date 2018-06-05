@@ -36,8 +36,8 @@ class AddressesTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Addresses') ? [] : ['className' => AddressesTable::class];
-        $this->Addresses = TableRegistry::get('Addresses', $config);
+        $config = TableRegistry::getTableLocator()->exists('Addresses') ? [] : ['className' => AddressesTable::class];
+        $this->Addresses = TableRegistry::getTableLocator()->get('Addresses', $config);
     }
 
     /**
@@ -68,6 +68,16 @@ class AddressesTableTest extends TestCase
      * @return void
      */
     public function testValidationDefault()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test buildRules method
+     *
+     * @return void
+     */
+    public function testBuildRules()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

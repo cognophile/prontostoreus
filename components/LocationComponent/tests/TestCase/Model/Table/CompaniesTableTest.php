@@ -36,8 +36,8 @@ class CompaniesTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Companies') ? [] : ['className' => CompaniesTable::class];
-        $this->Companies = TableRegistry::get('Companies', $config);
+        $config = TableRegistry::getTableLocator()->exists('Companies') ? [] : ['className' => CompaniesTable::class];
+        $this->Companies = TableRegistry::getTableLocator()->get('Companies', $config);
     }
 
     /**

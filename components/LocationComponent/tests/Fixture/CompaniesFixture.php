@@ -22,6 +22,8 @@ class CompaniesFixture extends TestFixture
         'description' => ['type' => 'string', 'length' => 256, 'null' => false, 'default' => 'null', 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'email' => ['type' => 'string', 'length' => 128, 'null' => false, 'default' => 'null', 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'telephone' => ['type' => 'string', 'length' => 12, 'null' => false, 'default' => 'null', 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
+        'created' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => 'CURRENT_TIMESTAMP', 'comment' => '', 'precision' => null],
+        'deleted' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
         ],
@@ -45,7 +47,9 @@ class CompaniesFixture extends TestFixture
                 'name' => 'Lorem ipsum dolor sit amet',
                 'description' => 'Lorem ipsum dolor sit amet',
                 'email' => 'Lorem ipsum dolor sit amet',
-                'telephone' => 'Lorem ipsu'
+                'telephone' => 'Lorem ipsu',
+                'created' => '2018-06-05 18:01:23',
+                'deleted' => 1
             ],
         ];
         parent::init();

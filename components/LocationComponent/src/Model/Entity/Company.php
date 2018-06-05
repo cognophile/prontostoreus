@@ -11,6 +11,8 @@ use Cake\ORM\Entity;
  * @property string $description
  * @property string $email
  * @property string $telephone
+ * @property \Cake\I18n\FrozenTime $created
+ * @property bool $deleted
  *
  * @property \LocationComponent\Model\Entity\Address[] $addresses
  */
@@ -31,6 +33,8 @@ class Company extends Entity
         'description' => true,
         'email' => true,
         'telephone' => true,
+        'created' => true,
+        'deleted' => true,
         'addresses' => true
     ];
 }

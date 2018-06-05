@@ -10,14 +10,18 @@ use Cake\Validation\Validator;
  * Addresses Model
  *
  * @property \LocationComponent\Model\Table\CompaniesTable|\Cake\ORM\Association\BelongsTo $Companies
+ * @property |\Cake\ORM\Association\BelongsTo $Customers
  *
  * @method \LocationComponent\Model\Entity\Address get($primaryKey, $options = [])
  * @method \LocationComponent\Model\Entity\Address newEntity($data = null, array $options = [])
  * @method \LocationComponent\Model\Entity\Address[] newEntities(array $data, array $options = [])
  * @method \LocationComponent\Model\Entity\Address|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \LocationComponent\Model\Entity\Address|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \LocationComponent\Model\Entity\Address patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \LocationComponent\Model\Entity\Address[] patchEntities($entities, array $data, array $options = [])
  * @method \LocationComponent\Model\Entity\Address findOrCreate($search, callable $callback = null, $options = [])
+ *
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class AddressesTable extends Table
 {
@@ -36,10 +40,15 @@ class AddressesTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        $this->addBehavior('Timestamp');
+
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
-            'joinType' => 'INNER',
             'className' => 'LocationComponent.Companies'
+        ]);
+        $this->belongsTo('Customers', [
+            'foreignKey' => 'customer_id',
+            'className' => 'LocationComponent.Customers'
         ]);
     }
 
@@ -64,8 +73,7 @@ class AddressesTable extends Table
         $validator
             ->scalar('line_two')
             ->maxLength('line_two', 128)
-            ->requirePresence('line_two', 'create')
-            ->notEmpty('line_two');
+            ->allowEmpty('line_two');
 
         $validator
             ->scalar('town')
@@ -85,6 +93,11 @@ class AddressesTable extends Table
             ->requirePresence('postcode', 'create')
             ->notEmpty('postcode');
 
+        $validator
+            ->boolean('deleted')
+            ->requirePresence('deleted', 'create')
+            ->notEmpty('deleted');
+
         return $validator;
     }
 
@@ -98,6 +111,7 @@ class AddressesTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['company_id'], 'Companies'));
+        $rules->add($rules->existsIn(['customer_id'], 'Customers'));
 
         return $rules;
     }

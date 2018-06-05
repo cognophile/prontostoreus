@@ -13,6 +13,9 @@ use Cake\ORM\Entity;
  * @property string $town
  * @property string $county
  * @property string $postcode
+ * @property \Cake\I18n\FrozenTime $created
+ * @property bool $deleted
+ * @property int $customer_id
  *
  * @property \LocationComponent\Model\Entity\Company $company
  */
@@ -35,6 +38,9 @@ class Address extends Entity
         'town' => true,
         'county' => true,
         'postcode' => true,
+        'created' => true,
+        'deleted' => true,
+        'customer_id' => true,
         'company' => true
     ];
 }

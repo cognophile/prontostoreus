@@ -15,9 +15,12 @@ use Cake\Validation\Validator;
  * @method \LocationComponent\Model\Entity\Company newEntity($data = null, array $options = [])
  * @method \LocationComponent\Model\Entity\Company[] newEntities(array $data, array $options = [])
  * @method \LocationComponent\Model\Entity\Company|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \LocationComponent\Model\Entity\Company|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \LocationComponent\Model\Entity\Company patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \LocationComponent\Model\Entity\Company[] patchEntities($entities, array $data, array $options = [])
  * @method \LocationComponent\Model\Entity\Company findOrCreate($search, callable $callback = null, $options = [])
+ *
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class CompaniesTable extends Table
 {
@@ -35,6 +38,8 @@ class CompaniesTable extends Table
         $this->setTable('companies');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
+
+        $this->addBehavior('Timestamp');
 
         $this->hasMany('Addresses', [
             'foreignKey' => 'company_id',
@@ -76,6 +81,11 @@ class CompaniesTable extends Table
             ->maxLength('telephone', 12)
             ->requirePresence('telephone', 'create')
             ->notEmpty('telephone');
+
+        $validator
+            ->boolean('deleted')
+            ->requirePresence('deleted', 'create')
+            ->notEmpty('deleted');
 
         return $validator;
     }
