@@ -8,6 +8,7 @@ Router::plugin(
     ['path' => '/details'],
     function (RouteBuilder $routes) {
         $routes->get('/', ['controller' => 'Component', 'action' => 'status']);
+        $routes->post('/', ['controller' => 'Component', 'action' => 'add']);
         // $routes->fallbacks(DashedRoute::class);
     }
 );
