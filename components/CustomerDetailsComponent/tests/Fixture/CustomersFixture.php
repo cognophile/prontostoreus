@@ -49,10 +49,10 @@ class CustomersFixture extends TestFixture
                 'title' => 'Lo',
                 'firstname' => 'Lorem ipsum dolor sit amet',
                 'surname' => 'Lorem ipsum dolor sit amet',
-                'dob' => '2018-06-05 19:40:51',
+                'dob' => '2018-06-06 22:38:47',
                 'email' => 'Lorem ipsum dolor sit amet',
                 'telephone' => 'Lorem ipsu',
-                'created' => '2018-06-05 19:40:51',
+                'created' => '2018-06-06 22:38:47',
                 'deleted' => 1
             ],
         ];

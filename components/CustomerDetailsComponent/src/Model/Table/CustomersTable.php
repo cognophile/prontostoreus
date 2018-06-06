@@ -78,7 +78,7 @@ class CustomersTable extends Table
             ->notEmpty('surname');
 
         $validator
-            ->dateTime('dob')
+            ->date('dob')
             ->requirePresence('dob', 'create')
             ->notEmpty('dob');
 
@@ -95,8 +95,7 @@ class CustomersTable extends Table
 
         $validator
             ->boolean('deleted')
-            ->requirePresence('deleted', 'create')
-            ->notEmpty('deleted');
+            ->allowEmpty('deleted');
 
         return $validator;
     }
