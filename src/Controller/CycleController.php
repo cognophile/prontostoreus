@@ -14,7 +14,7 @@ class CycleController extends Controller
     use CycleHydrationTrait;
 
     protected $messageHandler;
-    protected $relatedEntities = [];
+    protected $associated = [];
 
     /**
      * Initialization hook method for common initialization code like loading components.
@@ -48,19 +48,17 @@ class CycleController extends Controller
      * @param boolean $hasRelated Flag to determine whether we look for and store related records
      * @return void
      */
-    protected function universalAdd($entity, $hasRelated = false) 
+    protected function universalAdd($entity) 
     {
-        // TODO: GET THIS WORKING FOR ASSOCIATED DATA - EG. ADDRESSES. 
         if ($this->request->is('post')) {
             $data = $this->request->getData();
 
             if (!empty($data)) {
-                $newEntity = $entity->newEntity($data, ['associated' => $this->relatedEntities]);
+                $newEntity = $entity->newEntity($data, ['associated' => $this->associated]);
 
                 if ($entity->save($newEntity)) {
-                    $newData = $entity->get($newEntity->id);
-                    $newId = $newData->id;
-                    $this->respondSuccess([$newId], $this->messageHandler->retrieve("Data", "Added"));
+                    $newData = $entity->get($newEntity->id, ['contain' => $this->associated]);
+                    $this->respondSuccess([$newData], $this->messageHandler->retrieve("Data", "Added"));
                     $this->response = $this->response->withStatus(201);
                 } else {
                     $this->respondError([$newEntity->errors()], $this->messageHandler->retrieve("Error", "UnsuccessfulAdd"));
@@ -93,8 +91,8 @@ class CycleController extends Controller
     {
     }
 
-    protected function setRelated($relations)
+    protected function setRelations($associations)
     {
-        $this->relatedEntities = array_merge($this->relatedEntities, $relations);
+        $this->relatedEntities = array_merge($this->associated, $associations);
     }
 }

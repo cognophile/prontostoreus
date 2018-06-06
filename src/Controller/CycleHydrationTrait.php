@@ -36,7 +36,7 @@ trait CycleHydrationTrait
         $this->set($response);
     }
 
-    public function respondError(string $error, string $message = "", array $data = [])
+    public function respondError(array $error, string $message = "", array $data = [])
     {
         $response = [
             'message' => $message,

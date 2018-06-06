@@ -6,7 +6,7 @@ use Prontostoreus\Api\Controller\CycleController;
 
 class CustomersController extends CycleController
 {
-    private $relations = ["Addresses"];
+    private $customersAssociations = ["Addresses" => ['validate' => false]];
 
     public function initialize() 
     {
@@ -23,7 +23,7 @@ class CustomersController extends CycleController
 
     public function add() 
     {
-        $this->setRelated($this->relations);
+        $this->setRelations($this->customersAssociations);
         return parent::universalAdd($this->Customers);
     }
 
