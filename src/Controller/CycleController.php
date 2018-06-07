@@ -58,10 +58,10 @@ class CycleController extends Controller
 
                 if ($entity->save($newEntity)) {
                     $newData = $entity->get($newEntity->id, ['contain' => $this->associated]);
-                    $this->respondSuccess([$newData], $this->messageHandler->retrieve("Data", "Added"));
+                    $this->respondSuccess($newData, $this->messageHandler->retrieve("Data", "Added"));
                     $this->response = $this->response->withStatus(201);
                 } else {
-                    $this->respondError([$newEntity->errors()], $this->messageHandler->retrieve("Error", "UnsuccessfulAdd"));
+                    $this->respondError($newEntity->errors(), $this->messageHandler->retrieve("Error", "UnsuccessfulAdd"));
                     $this->response = $this->response->withStatus(400);
                 }
             }

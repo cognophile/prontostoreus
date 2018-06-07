@@ -24,7 +24,7 @@ trait CycleHydrationTrait
         }
     }
 
-    public function respondSuccess(array $data, string $message = "", string $error = "")
+    public function respondSuccess($data, string $message = "", string $error = "")
     {
         $response = [
             'message' => $message,
@@ -36,7 +36,7 @@ trait CycleHydrationTrait
         $this->set($response);
     }
 
-    public function respondError(array $error, string $message = "", array $data = [])
+    public function respondError($error, string $message = "", array $data = [])
     {
         $response = [
             'message' => $message,
