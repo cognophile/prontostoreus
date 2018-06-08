@@ -2,16 +2,18 @@
 
 namespace CustomerDetailsComponent\Controller;
 
+use Cake\ORM\TableRegistry;
 use Prontostoreus\Api\Controller\CycleController;
 
 class CustomersController extends CycleController
 {
-    private $customersAssociations = ["Addresses" => ['validate' => false]];
+    private $customersAssociations = ['Addresses'];
 
     public function initialize() 
     {
         parent::initialize();
-        $this->loadModel('CustomerDetailsComponent.Customers');
+        
+        $this->setAssociations($this->customersAssociations);
         $this->loadModel('CustomerDetailsComponent.Addresses');
     }
 
@@ -23,13 +25,12 @@ class CustomersController extends CycleController
 
     public function add() 
     {
-        $this->setRelations($this->customersAssociations);
-        return parent::universalAdd($this->Customers);
+        return parent::universalAdd($this->Customers, true);
     }
 
-    public function view() 
+    public function view($id = null) 
     {
-        
+
     }
 
     public function edit() 
