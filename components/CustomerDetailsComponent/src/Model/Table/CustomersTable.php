@@ -43,7 +43,8 @@ class CustomersTable extends Table
 
         $this->hasMany('Addresses', [
             'foreignKey' => 'customer_id',
-            'className' => 'CustomerDetailsComponent.Addresses'
+            'className' => 'CustomerDetailsComponent.Addresses',
+            'saveStrategy' => 'append'
         ]);
     }
 
@@ -109,8 +110,8 @@ class CustomersTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['email']));
-
+        $rules->add($rules->isUnique(['email']));        
+        
         return $rules;
     }
 }
