@@ -216,13 +216,21 @@ if (Configure::read('debug')) {
     Plugin::load('DebugKit', ['bootstrap' => true]);
 }
 
-
 /*
 * Prontostoreus: Custom Bootstrapping
 * Options and rules for the API, and any available Components.
 */
 Configure::write('Folder.Resources', '/resources/');
 Configure::write('File.ResponseMessages', 'responseMessages.json');
+
+/**
+ * API URIs
+ */
+Configure::write('Api.Base', 'http://localhost:8765/');
+Configure::write('Api.Routes.Location', Configure::read('Api.Base') . 'locate/');
+Configure::write('Api.Routes.Customer', Configure::read('Api.Base') . 'details/');
+Configure::write('Api.Routes.Application', Configure::read('Api.Base') . 'apply/');
+
 
 /* 
  * See options and methods for Plugin loading, here: 
