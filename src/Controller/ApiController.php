@@ -12,6 +12,7 @@ class ApiController extends CycleController
         $response = [
             'message' => $this->messageHandler->retrieve("General", "Welcome"),
             'version' => $this->messageHandler->retrieve("General", "Version"),
+            'links' => Configure::read('Api.Routes.Location'),
             'success' => true
         ];
 
