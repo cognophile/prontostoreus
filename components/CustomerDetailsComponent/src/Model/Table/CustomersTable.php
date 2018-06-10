@@ -110,7 +110,11 @@ class CustomersTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['email']));        
+        /* 
+            Disable unique email validation so that customers can apply multiple times 
+            with the dame details
+        $rules->add($rules->isUnique(['email']));   
+        */     
         
         return $rules;
     }
