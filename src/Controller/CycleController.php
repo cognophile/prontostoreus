@@ -2,7 +2,7 @@
 
 namespace Prontostoreus\Api\Controller;
 
-use Cake\Controller\Controller;
+use Cake\Controller\Controller as CakeController;
 use Cake\Http\Exception;
 use Cake\Event\Event;
 use Cake\Core\Configure;
@@ -11,7 +11,7 @@ use Cake\Utility\Inflector;
 use Cake\ORM\TableRegistry;
 use Prontostoreus\Api\Utility\MessageHandler;
 
-class CycleController extends Controller
+class CycleController extends CakeController
 {
     use CycleHydrationTrait;
 
@@ -72,14 +72,7 @@ class CycleController extends Controller
                 $this->response = $this->response->withStatus(201);
             }
             else {
-                // ! Pull this out into a global handler which performs the else actions and logs
-                try {
-                    throw new BadRequestException($this->messageHandler->retrieve("Error", "MissingPayload"));
-                }
-                catch (Exception $ex) {                   
-                    $this->respondError($ex->getTrace(), $ex->getMessage());
-                    $this->response = $this->response->withStatus(422);
-                }
+                throw new BadRequestException($this->messageHandler->retrieve("Error", "MissingPayload"));
             }
         } else {
             throw new MethodNotAllowedException("HTTP Method disabled for creation: Use POST");
