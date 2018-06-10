@@ -9,7 +9,7 @@ trait CycleHydrationTrait
 {
     public function beforeRender(Event $event)
     {
-        // Ensure we render only JSON responses
+        // Render responses in JSON
         $this->RequestHandler->renderAs($this, 'json');
 
         $this->setCorsHeaders();        
@@ -24,24 +24,26 @@ trait CycleHydrationTrait
         }
     }
 
-    public function respondSuccess($data, string $message = "", string $error = "")
+    public function respondSuccess($data, string $message = "", array $links = [], string $error = "")
     {
         $response = [
             'message' => $message,
             'success' => true,
             'error' => $error,
+            'links' => $links,
             'data' => $data
         ];
     
         $this->set($response);
     }
 
-    public function respondError($error, string $message = "", array $data = [])
+    public function respondError($error, string $message = "", array $links = [], array $data = [])
     {
         $response = [
             'message' => $message,
             'success' => false,
             'error' => $error,
+            'links' => $links,
             'data' => $data
         ];
 
