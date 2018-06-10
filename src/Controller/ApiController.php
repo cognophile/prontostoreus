@@ -4,6 +4,7 @@ namespace Prontostoreus\Api\Controller;
 
 use Cake\Event\Event;
 use Cake\Filesystem\Folder;
+use Cake\Core\Configure;
 
 class ApiController extends CycleController
 {
