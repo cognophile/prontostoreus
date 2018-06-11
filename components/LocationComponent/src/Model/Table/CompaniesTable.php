@@ -24,7 +24,6 @@ use Cake\Validation\Validator;
  */
 class CompaniesTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -112,7 +111,7 @@ class CompaniesTable extends Table
      * @return Array Resultant data set
      */
     public function findByPostcode(Query $query, array $options)
-    {
+    {   
         $postcodeParts = explode("-", $options['postcode']);
 
         $query = $this->find();
@@ -120,7 +119,7 @@ class CompaniesTable extends Table
         $query->select(['Companies.id', 'Companies.name', 'Companies.description', 'Companies.telephone'])
             ->matching('Addresses', function ($q) use ($postcodeParts) {
                 return $q->select(['Addresses.postcode'])                      
-                    ->where(['Addresses.postcode LIKE' => $postcodeParts[0] . '%'])
+                    ->where(['Addresses.postcode LIKE' => $postcodeParts[0] . '%', 'Addresses.deleted' => 0])
                     ->order(['Addresses.postcode' => 'ASC']);
         });
 
