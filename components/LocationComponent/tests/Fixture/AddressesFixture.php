@@ -33,8 +33,7 @@ class AddressesFixture extends TestFixture
         ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
-            'addresses_ibfk_1' => ['type' => 'foreign', 'columns' => ['company_id'], 'references' => ['companies', 'id'], 'update' => 'noAction', 'delete' => 'noAction', 'length' => []],
-            'addresses_ibfk_2' => ['type' => 'foreign', 'columns' => ['customer_id'], 'references' => ['customers', 'id'], 'update' => 'noAction', 'delete' => 'noAction', 'length' => []],
+            'addresses_ibfk_1' => ['type' => 'foreign', 'columns' => ['company_id'], 'references' => ['companies', 'id'], 'update' => 'noAction', 'delete' => 'noAction', 'length' => []]
         ],
         '_options' => [
             'engine' => 'InnoDB',
@@ -58,10 +57,10 @@ class AddressesFixture extends TestFixture
                 'line_two' => 'Lorem ipsum dolor sit amet',
                 'town' => 'Lorem ipsum dolor sit amet',
                 'county' => 'Lorem ipsum dolor sit amet',
-                'postcode' => 'Lorem ',
+                'postcode' => 'AB12-1DE',
                 'created' => '2018-06-05 18:00:33',
-                'deleted' => 1,
-                'customer_id' => 1
+                'deleted' => 0,
+                'customer_id' => 0
             ],
         ];
         parent::init();

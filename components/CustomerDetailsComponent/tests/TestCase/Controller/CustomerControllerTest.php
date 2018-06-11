@@ -7,7 +7,7 @@ use Cake\Http\ServerRequest;
 use Cake\TestSuite\IntegrationTestCase;
 use CustomerDetailsComponent\Controller\ComponentController;
 
-class ComponentControllerTest extends IntegrationTestCase
+class CustomerControllerTest extends IntegrationTestCase
 {
     public $fixtures = [
 
@@ -52,12 +52,5 @@ class ComponentControllerTest extends IntegrationTestCase
         $this->assertArrayHasKey('success', $responseArray);
         $this->assertArrayHasKey('error', $responseArray);
         $this->assertArrayHasKey('data', $responseArray);
-    }
-    
-    public function testGetCWhereInvalidRouteGivenRaises5xxError()
-    {
-        $this->get('/details/lorem');
-
-        $this->assertResponseCode(500);
     }
 }

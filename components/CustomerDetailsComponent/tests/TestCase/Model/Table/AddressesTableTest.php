@@ -25,7 +25,6 @@ class AddressesTableTest extends TestCase
      */
     public $fixtures = [
         'plugin.customer_details_component.addresses',
-        'plugin.customer_details_component.companies',
         'plugin.customer_details_component.customers'
     ];
 
