@@ -20,18 +20,20 @@ class CompaniesController extends CycleController
 
     public function view($options = null)
     {   
-        // if options is empty
-            // send back all 
-
-        // if options is numeric
-            // send single back by id        
+     
     }   
 
     public function locate(string $postcode)
     {
+        // Not a foolproof criteria as UK postcodes vary greatly, but, covers the basic variations
+        if (!preg_match('/^[A-Z]{1,2}\d{1,2}(?:(-)\d[A-Z]{2})?$/', $postcode)) {
+            $this->respondError($this->messageHandler->retrieve('Error', 'InvalidArgument'), 
+                'The postcode must conform to the following format: AreaDistrict-SectorUnit');
+            return;
+        }
+        
         $results = $this->Companies->find('byPostcode', ['postcode' => $postcode]);
         
-        // Should this return results instead?
         if (!empty($results)) {
             $message = $this->messageHandler->retrieve("Data", "Found");
             $this->respondSuccess($results, $message);
