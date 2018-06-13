@@ -29,16 +29,18 @@
             "Prontostoreus\\Api\\": "src/",
             "Prontostoreus\\Api\\Controller\\": "src/Controller",
             "Prontostoreus\\Api\\Error\\": "src/Error",
-            "LocationComponent\\": "components/LocationComponent/src/",
-            "CustomerDetailsComponent\\": "components/CustomerDetailsComponent/src/"
+            "LocationComponent\\": "./components/LocationComponent/src/",
+            "CustomerComponent\\": "./components/CustomerComponent/src/",
+            "ApplicationComponent\\": "./components/ApplicationComponent/src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "Cake\\Test\\": "vendor/cakephp/cakephp/tests/",
             "Prontostoreus\\Api\\Test\\": "tests/",
-            "LocationComponent\\Test\\": "components/LocationComponent/tests/",
-            "CustomerDetailsComponent\\Test\\": "components/CustomerDetailsComponent/tests/"
+            "LocationComponent\\Test\\": "./components/LocationComponent/tests/",
+            "CustomerComponent\\Test\\": "./components/CustomerComponent/tests/",
+            "ApplicationComponent\\Test\\": "./components/ApplicationComponent/tests/"
         }
     },
     "scripts": {
