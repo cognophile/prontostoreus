@@ -20,7 +20,7 @@ class CustomersController extends CycleController
     public function status()
     {
         $message = $this->messageHandler->retrieve("General", "RouteAlive");
-        $this->respondSuccess([], "Customer details base: {$message}");
+        $this->respondSuccess([], "Customer base: {$message}");
     }
 
     public function add() 
