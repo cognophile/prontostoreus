@@ -228,7 +228,7 @@ Configure::write('File.ResponseMessages', 'responseMessages.json');
  */
 Configure::write('Api.Base', 'http://localhost:8765/');
 Configure::write('Api.Routes.Location', Configure::read('Api.Base') . 'locate/');
-Configure::write('Api.Routes.Customer', Configure::read('Api.Base') . 'details/');
+Configure::write('Api.Routes.Customer', Configure::read('Api.Base') . 'customer/');
 Configure::write('Api.Routes.Application', Configure::read('Api.Base') . 'apply/');
 
 
