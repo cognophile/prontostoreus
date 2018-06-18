@@ -48,7 +48,7 @@ use Cake\Routing\Route\DashedRoute;
 
 // Load default API entry-point route
 Router::scope('/', function (RouteBuilder $routes) {
-    $routes->get('/', ['controller' => 'Api', 'action' => 'status']);
+    $routes->get('/', ['controller' => 'Base', 'action' => 'status']);
 });
 
 /**

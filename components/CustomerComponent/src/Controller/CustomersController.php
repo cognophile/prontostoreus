@@ -3,17 +3,13 @@
 namespace CustomerComponent\Controller;
 
 use Cake\ORM\TableRegistry;
-use Prontostoreus\Api\Controller\CycleController;
+use Prontostoreus\Api\Controller\AbstractApiController;
 
-class CustomersController extends CycleController
+class CustomersController extends AbstractApiController
 {
-    private $customersAssociations = ['Addresses'];
-
     public function initialize() 
     {
-        parent::initialize();
-        
-        $this->setAssociations($this->customersAssociations);
+        parent::initialize();        
         $this->loadModel('CustomerComponent.Addresses');
     }
 

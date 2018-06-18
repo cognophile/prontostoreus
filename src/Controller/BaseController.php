@@ -6,7 +6,7 @@ use Cake\Event\Event;
 use Cake\Filesystem\Folder;
 use Cake\Core\Configure;
 
-class ApiController extends CycleController
+class BaseController extends AbstractApiController
 {
     public function status()
     {

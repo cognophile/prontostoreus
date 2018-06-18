@@ -2,9 +2,9 @@
 
 namespace LocationComponent\Controller;
 
-use Prontostoreus\Api\Controller\CycleController;
+use Prontostoreus\Api\Controller\AbstractApiController;
 
-class CompaniesController extends CycleController
+class CompaniesController extends AbstractApiController
 {
     public function initialize()
     {

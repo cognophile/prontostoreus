@@ -5,7 +5,7 @@ namespace Prontostoreus\Api\Controller;
 use Cake\Event\Event;
 use Cake\Filesystem\Folder;
 
-trait CycleHydrationTrait
+trait ApiHydrationTrait
 {
     public function beforeRender(Event $event)
     {

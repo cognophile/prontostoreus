@@ -28,6 +28,7 @@
         "psr-4": {
             "Prontostoreus\\Api\\": "src/",
             "Prontostoreus\\Api\\Controller\\": "src/Controller",
+            "Prontostoreus\\Api\\Model\\Table\\": "src/Model/Table",
             "Prontostoreus\\Api\\Error\\": "src/Error",
             "LocationComponent\\": "./components/LocationComponent/src/",
             "CustomerComponent\\": "./components/CustomerComponent/src/",

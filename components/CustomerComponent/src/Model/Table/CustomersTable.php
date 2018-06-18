@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Prontostoreus\Api\Model\Table\AbstractComponentTable;
 
 /**
  * Customers Model
@@ -22,7 +23,7 @@ use Cake\Validation\Validator;
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class CustomersTable extends Table
+class CustomersTable extends AbstractComponentTable
 {
     /**
      * Initialize method
@@ -45,6 +46,9 @@ class CustomersTable extends Table
             'className' => 'CustomerComponent.Addresses',
             'saveStrategy' => 'append'
         ]);
+
+        $this->setAssociations(['Addresses']);
+        $this->setContained(['Addresses']);
     }
 
     /**

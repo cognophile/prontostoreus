@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Prontostoreus\Api\Model\Table\AbstractComponentTable;
 
 /**
  * Addresses Model
@@ -23,9 +24,8 @@ use Cake\Validation\Validator;
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class AddressesTable extends Table
+class AddressesTable extends AbstractComponentTable
 {
-
     /**
      * Initialize method
      *
