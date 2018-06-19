@@ -23,8 +23,9 @@ class CreateApplicationsTable extends AbstractMigration
                     ->addForeignKey('customer_id', 'customers', 'id', ['delete' => 'NO_ACTION', 'update' => 'NO_ACTION'])
                 ->addColumn('company_id', 'integer', ['null' => true, 'default' => null])
                     ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'NO_ACTION', 'update' => 'NO_ACTION'])
-                ->addColumn('customer_delivery', 'boolean', ['null' => false, 'default' => 0])
+                ->addColumn('delivery', 'boolean', ['null' => false, 'default' => 0])
                 ->addColumn('total_cost', 'decimal', ['null' => false, 'precision' => 2, 'default' => 0.00, 'signed' => false])
+                ->addColumn('terms_and_conditions', 'boolean', ['null' => false, 'default' => 0])
                 ->addColumn('created', 'datetime', ['null' => false, 'default' => 'CURRENT_TIMESTAMP'])
                 ->addColumn('cancelled', 'boolean', ['null' => false, 'default' => 0]);
 
