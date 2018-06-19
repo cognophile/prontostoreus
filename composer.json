@@ -32,7 +32,8 @@
             "Prontostoreus\\Api\\Error\\": "src/Error",
             "LocationComponent\\": "./components/LocationComponent/src/",
             "CustomerComponent\\": "./components/CustomerComponent/src/",
-            "ApplicationComponent\\": "./components/ApplicationComponent/src/"
+            "ApplicationComponent\\": "./components/ApplicationComponent/src/",
+            "ConfirmationComponent\\": "./components/ConfirmationComponent/src/"
         }
     },
     "autoload-dev": {
@@ -41,7 +42,8 @@
             "Prontostoreus\\Api\\Test\\": "tests/",
             "LocationComponent\\Test\\": "./components/LocationComponent/tests/",
             "CustomerComponent\\Test\\": "./components/CustomerComponent/tests/",
-            "ApplicationComponent\\Test\\": "./components/ApplicationComponent/tests/"
+            "ApplicationComponent\\Test\\": "./components/ApplicationComponent/tests/",
+            "ConfirmationComponent\\Test\\": "./components/ConfirmationComponent/tests/"
         }
     },
     "scripts": {

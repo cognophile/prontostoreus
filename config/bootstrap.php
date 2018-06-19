@@ -239,3 +239,4 @@ Configure::write('Api.Routes.Application', Configure::read('Api.Base') . 'apply/
 Plugin::load('LocationComponent', ['bootstrap' => true, 'routes' => true, 'autoload' => true]);
 Plugin::load('CustomerComponent', ['bootstrap' => true, 'routes' => true, 'autoload' => true]);
 Plugin::load('ApplicationComponent', ['bootstrap' => true, 'routes' => true, 'autoload' => true]);
+Plugin::load('ConfirmationComponent', ['bootstrap' => true, 'routes' => true, 'autoload' => true]);
