@@ -86,10 +86,10 @@ Install the PHP MySql extension package: `sudo apt-get install php7.0-mysql`, if
 
 Then run all migrations to create the database schema on a per-component basis. These must be run in order of component: 
 1. Location
-2. Customer Details
+2. Customer
 3. Application
-4. Submission
-5. Confirmation
+4. Confirmation
+5. Invoice
 
 - Check status: `bin/cake migrations status -p <name>Component`
 - Migrate up: `bin/cake migrations migrate -p <name>Component {-t <target-version>}`
