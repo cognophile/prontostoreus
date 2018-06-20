@@ -92,8 +92,9 @@ class AbstractApiController extends CakeController
 
     }
 
-    protected function universalEdit() 
+    protected function universalEdit(\Cake\ORM\Table $entityModel, $id) 
     {
+        // Patch existing entity and record by Id
     }
 
     protected function universalRemove() 
