@@ -1,31 +1,86 @@
 START TRANSACTION;
 
+-- LOCATION COMPONENT
+-- If the customer_id field exists, MySQL will set its default value as we can do an explicit INSERT on selected fields. 
+-- 'deleted' defaults to 0 and such does not need explicitly naming in the field list.
 INSERT INTO companies (name, description, email, telephone) 
-    VALUES ("Lorem ipsum A", "dolor sit amet, consectetur", "sed do", "01234567891");
+    VALUES ("SuperSafeStore", "Safe, secure, convinient storage", "help@supersafestore.co.uk", "01234567891");
 
 INSERT INTO addresses (company_id, line_one, line_two, town, county, postcode) 
-    VALUES (1, "Ut enim", "quis nostrud exercitation", "consequat", "commodo", "AB11-ABC");
+    VALUES (1, "314 Reverend Road", "Cherry Hinton", "Cambridge", "Cambridgeshire", "CB15-FGH");
 
-
-INSERT INTO companies (name, description, email, telephone) 
-    VALUES ("Lorem ipsum B", "dolor sit amet, consectetur", "sed do", "01234567892");
-
-INSERT INTO addresses (company_id, line_one, line_two, town, county, postcode) 
-    VALUES (2, "Ut enim", "quis nostrud exercitation", "consequat", "commodo", "AB11-CDE");
 
 
 INSERT INTO companies (name, description, email, telephone) 
-    VALUES ("Lorem ipsum C", "dolor sit amet, consectetur", "sed do", "01234567893");
+    VALUES ("StorSafe", "Reassuring storage", "help@storsafe.co.uk", "01234567892");
 
-INSERT INTO addresses (company_id, line_one, line_two, town, county, postcode) 
-    VALUES (3, "Ut enim", "quis nostrud exercitation", "consequat", "commodo", "CD22-ASD");
+INSERT INTO addresses (company_id, line_one, town, county, postcode) 
+    VALUES (2, "4 East Road", "Cambridge", "Cambridgeshire", "CB12-W3D");
+
 
 
 INSERT INTO companies (name, description, email, telephone) 
-    VALUES ("Lorem ipsum D", "dolor sit amet, consectetur", "sed do", "01234567894");
+    VALUES ("Store4u", "Storage, tailored to you!", "help@store4u.co.uk", "01234567893");
 
 INSERT INTO addresses (company_id, line_one, line_two, town, county, postcode) 
-    VALUES (4, "Ut enim", "quis nostrud exercitation", "consequat", "commodo", "AB12-JKL");
+    VALUES (3, "45 Maxwell Street", "Trumpington", "Cambridge", "Cambridgeshire", "CB2-WOP");
+
+
+
+INSERT INTO companies (name, description, email, telephone) 
+    VALUES ("24/7 Box Storage", "24/7 by name, 24/7 by nature", "help@247boxstorage.co.uk", "01234567894");
+
+INSERT INTO addresses (company_id, line_one, line_two, town, county, postcode) 
+    VALUES (4, "Unit A", "Wilberforce Road", "Cambridge", "Cambridgeshire", "CB2-0TY");
+
+
+INSERT INTO companies (name, description, email, telephone) 
+    VALUES ("StorezAway", "Don't throw it away, just store it", "help@storezaway.co.uk", "01234567894");
+
+INSERT INTO addresses (company_id, line_one, town, county, postcode) 
+    VALUES (5, "12 Hope Street", "Oxford", "Oxfordshire", "OX10-4BY");
+
+
+-- CUSTOMER DETAILS COMPONENT
+INSERT INTO customers (title, firstname, surname, dob, email, telephone)
+    VALUES ("Mr", "Isaac", "Newton", "1643-06-04", "newton@royal-society.co.uk", "012435657981");
+
+INSERT INTO addresses (customer_id, line_one, town, county, postcode) 
+    VALUES (1, "23 Gravity Way", "Cambridge", "Cambridgeshire", "CB12-4BY");
+
+
+
+INSERT INTO customers (title, firstname, surname, dob, email, telephone)
+    VALUES ("Mr", "Stephen", "Hawking", "1942-01-08", "stephen@hawking.co.uk", "01123456789");
+
+INSERT INTO addresses (customer_id, line_one, line_two, town, county, postcode) 
+    VALUES (2, "13", "Radiation Road", "Cambridge", "Cambridgeshire", "CB18-3ET");
+
+
+
+INSERT INTO customers (title, firstname, surname, dob, email, telephone)
+    VALUES ("Mrs", "Margaret", "Hamilton", "1936-08-17", "margaret@apollo-11.com", "012333555666");
+
+INSERT INTO addresses (customer_id, line_one, line_two, town, county, postcode) 
+    VALUES (3, "15 Apollo Circle", "Florida Road", "Oxford", "Oxfordshire", "OX2-6FG");
+
+
+INSERT INTO customers (title, firstname, surname, dob, email, telephone)
+    VALUES ("Mr", "Richard", "Feynman", "1918-05-11", "richard@feynman.com", "01342764897");
+
+INSERT INTO addresses (customer_id, line_one, town, county, postcode) 
+    VALUES (4, "2 Slit Road",  "Oxford", "Oxfordshire", "OX2-2SE");
+
+
+INSERT INTO customers (title, firstname, surname, dob, email, telephone)
+    VALUES ("Ms", "Grace", "Hopper", "1906-12-09", "grace@naval.com", "01542673967");
+
+INSERT INTO addresses (customer_id, line_one, town, county, postcode) 
+    VALUES (5, "15 Cobol Street", "Cambridge", "Cambridgeshire", "CB19-UT0");
+
+
+-- Application Component
+INSERT INTO applications () VALUES ();
 
 COMMIT;
 
