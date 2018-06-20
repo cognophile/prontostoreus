@@ -97,6 +97,13 @@ Then run all migrations to create the database schema on a per-component basis. 
 
 To execute the migrations on the `test_prontostoreus` database, simply add `--connection test` to the end of the command string. If you named the test database entry under a different name in the `app.php`, then specify that in place of "test" in this command. 
 
+When creating new migrations for a component (`Plugin` in CakePHP), should you encounter the following error when it would appear the component name is valid and is being loaded in `config/bootstrap.php`, be sure to dump the composer auto-load registry with `php composer.phar dump-autoload`. This may resolve the issue, as in most personal experiences of this exception. 
+
+```
+$ bin/cake migrations status -p ExampleComponent
+Exception: Plugin ExampleComponent could not be found. in [/path/to/application/vendor/cakephp/cakephp/src/Core/Plugin.php, line 151]
+```
+
 ## Components
 Existing components are located in the `components` directory at the project root. 
 
