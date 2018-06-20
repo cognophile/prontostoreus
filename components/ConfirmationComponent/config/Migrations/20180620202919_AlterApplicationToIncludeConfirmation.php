@@ -10,10 +10,16 @@ class AlterApplicationToIncludeConfirmation extends AbstractMigration
         if ($tableExists) {
             $table = $this->table('applications');
 
-            $columnExists = $table->hasColumn('terms_and_conditions');
+            $termsExists = $table->hasColumn('terms_accepted');
+            $termsUpdatedExists = $table->hasColumn('terms_updated');
 
-            if (!$columnExists) {
-                $table->addColumn('terms_and_conditions', 'boolean', ['null' => false, 'default' => 0])
+            if (!$termsExists) {
+                $table->addColumn('terms_accepted', 'boolean', ['null' => false, 'default' => 0])
+                    ->update();
+            }
+
+            if (!$termsUpdatedExists) {
+                $table->addColumn('terms_updated', 'datetime', ['null' => true, 'default' => null])
                     ->update();
             }
         }
@@ -26,10 +32,16 @@ class AlterApplicationToIncludeConfirmation extends AbstractMigration
         if ($tableExists) {
             $table = $this->table('applications');
 
-            $columnExists = $table->hasColumn('terms_and_conditions');
+            $termsExists = $table->hasColumn('terms_accepted');
+            $termsUpdatedExists = $table->hasColumn('terms_updated');
 
-            if ($columnExists) {
-                $table->removeColumn('terms_and_conditions')
+            if ($termsExists) {
+                $table->removeColumn('terms_accepted')
+                    ->save();
+            }
+
+            if ($termsUpdatedExists) {
+                $table->removeColumn('terms_updated')
                     ->save();
             }
         }
