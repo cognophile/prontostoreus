@@ -26,7 +26,7 @@ class AbstractComponentTable extends CakeTable
 
     public function getAssociations($index = null)
     {
-        if (is_int($index)) {
+        if (is_int($index) && !empty($this->associated)) {
             return $this->associated[$index];
         }
 
@@ -35,7 +35,7 @@ class AbstractComponentTable extends CakeTable
 
     public function getContained($index = null)
     {
-        if (is_int($index)) {
+        if (is_int($index) && !empty($this->contained)) {
             return $this->contained[$index];
         }
 
