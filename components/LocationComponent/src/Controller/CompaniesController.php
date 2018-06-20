@@ -18,11 +18,6 @@ class CompaniesController extends AbstractApiController
         $this->respondSuccess([], "Location Base: {$message}");
     }
 
-    public function view($options = null)
-    {   
-     
-    }   
-
     public function locate(string $postcode)
     {
         // Not a foolproof criteria as UK postcodes vary greatly, but, covers the basic variations
