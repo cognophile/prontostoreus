@@ -11,6 +11,18 @@ use Prontostoreus\Api\Controller\AbstractApiController;
  */
 class ApplicationsController extends AbstractApiController
 {
+    public function initialize() 
+    {
+        parent::initialize();        
+        $this->loadModel('ApplicationComponent.Applications');
+    }
+
+    public function status()
+    {
+        $message = $this->messageHandler->retrieve("General", "RouteAlive");
+        $this->respondSuccess([], "Application base: {$message}");
+    }
+
 
     /**
      * Index method

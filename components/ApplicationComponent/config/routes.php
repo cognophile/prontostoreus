@@ -8,13 +8,15 @@ Router::plugin(
     ['path' => '/apply'],
     function (RouteBuilder $routes) {
         // TODO: Update all component routes to restful resources?
-        $routes->get('/company/:company_id', ['controller' => 'Application', 'action' => 'listFurnishings'])
+        $routes->get('/', ['controller' => 'Applications', 'action' => 'status']);
+
+        $routes->get('/company/:company_id', ['controller' => 'Applications', 'action' => 'listFurnishings'])
             ->setPass(['company_id', 'companyId']);
         
-        $routes->get('/company/:company_id/customer/:customer_id', ['controller' => 'Application', 'action' => 'view'])
+        $routes->get('/company/:company_id/customer/:customer_id', ['controller' => 'Applications', 'action' => 'view'])
             ->setPass(['company_id', 'companyId'], ['customer_id', 'customerId']);
         
-        $routes->post('/', ['controller' => 'Application', 'action' => 'add']);
+        $routes->post('/', ['controller' => 'Applications', 'action' => 'add']);
         // $routes->fallbacks(DashedRoute::class);
     }
 );
