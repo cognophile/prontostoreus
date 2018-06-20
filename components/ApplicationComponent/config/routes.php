@@ -9,7 +9,7 @@ Router::plugin(
     function (RouteBuilder $routes) {
         // TODO: Update all component routes to restful resources?
         $routes->get('/company/:company_id', ['controller' => 'Application', 'action' => 'listFurnishings'])
-            ->setPass(['company_id', 'companyrId']);
+            ->setPass(['company_id', 'companyId']);
         
         $routes->get('/company/:company_id/customer/:customer_id', ['controller' => 'Application', 'action' => 'view'])
             ->setPass(['company_id', 'companyId'], ['customer_id', 'customerId']);
