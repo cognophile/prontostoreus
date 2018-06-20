@@ -14,7 +14,7 @@ class AlterApplicationToIncludeConfirmation extends AbstractMigration
             $termsUpdatedExists = $table->hasColumn('terms_updated');
 
             if (!$termsExists) {
-                $table->addColumn('terms_accepted', 'boolean', ['null' => false, 'default' => 0])
+                $table->addColumn('terms_accepted', 'boolean', ['null' => false, 'default' => null])
                     ->update();
             }
 
