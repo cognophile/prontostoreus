@@ -7,6 +7,8 @@ Router::plugin(
     'ConfirmationComponent',
     ['path' => '/confirm'],
     function (RouteBuilder $routes) {
-        $routes->fallbacks(DashedRoute::class);
+        $routes->get('/', ['controller' => 'Confirmations', 'action' => 'status']);
+        $routes->post('/', ['controller' => 'Confirmations', 'action' => 'acceptTerms']);
+        // $routes->fallbacks(DashedRoute::class);
     }
 );
