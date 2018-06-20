@@ -5,15 +5,15 @@ namespace CustomerComponent\Test\TestCase\Controller;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\IntegrationTestCase;
-use CustomerComponent\Controller\ComponentController;
+use CustomerComponent\Controller\CustomersController;
 
-class CustomerControllerTest extends IntegrationTestCase
+class CustomersControllerTest extends IntegrationTestCase
 {
     public $fixtures = [
 
     ];
 
-    public function testGetCustomerComponentStatusRouteWhereResponseIsSuccessful()
+    public function testGetCustomersComponentStatusRouteWhereResponseIsSuccessful()
     {
         $this->get('/customer');
         
@@ -21,7 +21,7 @@ class CustomerControllerTest extends IntegrationTestCase
         $this->assertResponseCode(200);
     }
 
-    public function testMultipleGetCustomerComponentStatusRouteInSuccessionIsStable()
+    public function testMultipleGetCustomersComponentStatusRouteInSuccessionIsStable()
     {
         $this->get('/customer');
         $this->assertResponseOk();
@@ -30,19 +30,19 @@ class CustomerControllerTest extends IntegrationTestCase
         $this->assertResponseOk();
     }
 
-    public function testGetCustomerComponentStatusRouteResponseIsJsonFormat()
+    public function testGetCustomersComponentStatusRouteResponseIsJsonFormat()
     {
         $this->get('/customer');
         $this->assertContentType('application/json');
     }
 
-    public function testGetCustomerComponentStatusRouteResponseIsNotEmpty()
+    public function testGetCustomersComponentStatusRouteResponseIsNotEmpty()
     {
         $this->get('/customer');
         $this->assertResponseNotEmpty();
     }
 
-    public function testGetCustomerComponentStatusRouteResponseStructure()
+    public function testGetCustomersComponentStatusRouteResponseStructure()
     {
         $this->get('/customer');
 
