@@ -77,8 +77,20 @@ class ConfirmationsTable extends AbstractComponentRepository
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['application_id'], 'ApplicationsComponent.Applications'));
-
+        // $rules->add($rules->existsIn(['application_id'], 'ApplicationsComponent.Applications'));
         return $rules;
+    }
+
+    /**
+     * Search for confirmation records by the application id 
+     * 
+     * @param \Cake\ORM\Query $query Query instance
+     * @param Array $options An array of request argument options
+     * @return Array Resultant data set
+     */
+    public function findByApplicationId(Query $query, array $options)
+    {
+        $applicationId = $options['application_id'];
+        return $query->where(['application_id' => $applicationId])->toArray();
     }
 }
