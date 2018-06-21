@@ -9,7 +9,7 @@ class ConfirmationsController extends AbstractApiController
     public function initialize()
     {
         parent::initialize();
-        $this->loadModel('ConfirmationsComponent.Confirmations');
+        $this->loadModel('ConfirmationComponent.Confirmations');
     }
 
     public function status()
@@ -19,13 +19,25 @@ class ConfirmationsController extends AbstractApiController
     }
 
     public function acceptTerms() 
-    { 
-        // Should only be one confirmation record for each application - strict one-to-one
-        // Is put right, therefore? Create once, update forever more for that application.
+    {   
+        $data = $this->request->getData();
+
+        if (!empty($data)) {
+            $this->respondError("Empty payload", $this->messageHandler->retrieve("Error", "MissingPayload"));
+            $this->response = $this->response->withStatus(404);
+        }
         
-        // ! Search for existing record for this application Id first.
-        // ! If it exists, respond as such. (Update also?)
-        // ! Otherwise, call the parent method to create one. 
-        return parent::universalAdd($this->Confirmations, false);
+        $applicationId = $data['application_id']; 
+        
+        if ($applicationId) {
+            $results = $this->Confirmations->find('byApplicationId', ['application_id' => $applicationId]);
+
+            if (!empty($results)) {
+                return parent::universalEdit($this->Confirmations, $results[0]['id'], true);
+            }
+            else {
+                return parent::universalAdd($this->Confirmations, false);
+            }
+        }
     }
 }
