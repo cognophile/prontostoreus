@@ -42,14 +42,18 @@ abstract class AbstractComponentRepository extends CakeTable
         return $this->contained;
     }
 
-    public function setAssociations($associated)
+    public function setAssociations(array $associated)
     {
-        $this->associated = array_merge($this->associated, $associated);
+        if (is_array($contained)) {
+            $this->associated = array_merge($this->associated, $associated);
+        }
     }
 
-    public function setContained($contained)
+    public function setContained(array $contained)
     {
-        $this->contained = array_merge($this->contained, $contained);
+        if (is_array($contained)) {
+            $this->contained = array_merge($this->contained, $contained);
+        }
     }
 
     public function saveEntity(\Cake\ORM\Table $model, \Cake\Datasource\EntityInterface $newEntity)
