@@ -20,6 +20,7 @@
         "Unknown": "An unknown error occurred during the request.",
         "UnsuccessfulAdd": "An error occurred when storing the data.",
         "MissingPayload": "An error occurred when parsing the payload which appeared empty.",
-        "InvalidArgument": "The given URI argument was invalid."
+        "InvalidArgument": "The given URI argument was invalid.",
+        "InvalidType": "The supplied argument was invalid"
     }
 }
