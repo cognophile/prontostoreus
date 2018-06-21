@@ -5,7 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use Prontostoreus\Api\Model\Table\AbstractComponentTable;
+use Prontostoreus\Api\Model\Table\AbstractComponentRepository;
 
 /**
  * Confirmations Model
@@ -21,7 +21,7 @@ use Prontostoreus\Api\Model\Table\AbstractComponentTable;
  * @method \ConfirmationComponent\Model\Entity\Confirmation[] patchEntities($entities, array $data, array $options = [])
  * @method \ConfirmationComponent\Model\Entity\Confirmation findOrCreate($search, callable $callback = null, $options = [])
  */
-class ConfirmationsTable extends AbstractComponentTable
+class ConfirmationsTable extends AbstractComponentRepository
 {
 
     /**

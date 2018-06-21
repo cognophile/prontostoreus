@@ -10,7 +10,7 @@ use Cake\Filesystem\Folder;
 
 use Prontostoreus\Api\Utility\MessageHandler;
 
-class AbstractApiController extends CakeController
+abstract class AbstractApiController extends CakeController
 {
     use ApiHydrationTrait;
 
@@ -54,6 +54,7 @@ class AbstractApiController extends CakeController
      */
     protected function universalAdd(\Cake\ORM\Table $entityModel, bool $hasAssociations = false) 
     {
+        // ToDo: Update to move saving to a repository? 
         if ($this->request->is('post')) {
             $data = $this->request->getData();
 

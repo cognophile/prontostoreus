@@ -8,7 +8,7 @@ use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 use Cake\Utility\Inflector;
 
-class AbstractComponentTable extends CakeTable
+abstract class AbstractComponentRepository extends CakeTable
 {
     protected $associated = [];
     protected $contained = [];

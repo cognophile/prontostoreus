@@ -22,6 +22,10 @@ class ConfirmationsController extends AbstractApiController
     { 
         // Should only be one confirmation record for each application - strict one-to-one
         // Is put right, therefore? Create once, update forever more for that application.
+        
+        // ! Search for existing record for this application Id first.
+        // ! If it exists, respond as such. (Update also?)
+        // ! Otherwise, call the parent method to create one. 
         return parent::universalAdd($this->Confirmations, false);
     }
 }
