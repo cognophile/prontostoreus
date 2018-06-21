@@ -3,7 +3,9 @@
 namespace Prontostoreus\Api\Controller;
 
 use Cake\Controller\Controller as CakeController;
-use Cake\Http\Exception;
+use Cake\Http\Exception as HttpException;
+use Cake\Network\Exception as NetworkException;
+use Cake\Datasource\Exception as DataException;
 use Cake\Event\Event;
 use Cake\Core\Configure;
 use Cake\Filesystem\Folder;
@@ -54,12 +56,17 @@ abstract class AbstractApiController extends CakeController
      */
     protected function universalAdd(\Cake\ORM\Table $entityModel, bool $hasAssociations = false) 
     {
-        // ToDo: Update to move saving to a repository? 
-        if ($this->request->is('post')) {
+        if ($this->request->is('post')) {        
             $data = $this->request->getData();
 
             if (!empty($data)) {
-                $newEntity = $entityModel->newEntity($data, ['associated' => [$entityModel->getAssociations(0)]]);
+                $associated = $entityModel->getAssociations(0);
+                $newEntity = $entityModel->newEntity($data);
+
+                if (!empty($associated)) {
+                    $newEntity = $entityModel->newEntity($data, ['associated' => $associated]);
+                }
+
                 $entity = $entityModel->saveEntity($entityModel, $newEntity);
 
                 if ($entity->getErrors()) {
@@ -76,7 +83,12 @@ abstract class AbstractApiController extends CakeController
                     }
                 } 
 
-                $created = $entityModel->get($newEntity->id, ['contain' => [$entityModel->getContained(0)]]);
+                $contained = $entityModel->getContained(0);
+                $created = $entityModel->get($newEntity->id);
+                if (!empty($contained)) {
+                    $created = $entityModel->get($newEntity->id, ['contain' => $contained]);
+                }
+                
                 $this->respondSuccess($created, $this->messageHandler->retrieve("Data", "Added"));
                 $this->response = $this->response->withStatus(201);
             }
@@ -93,9 +105,56 @@ abstract class AbstractApiController extends CakeController
 
     }
 
-    protected function universalEdit(\Cake\ORM\Table $entityModel, $id) 
+    protected function universalEdit(\Cake\ORM\Table $entityModel, $recordId, $skipMethodCheck = false) 
     {
-        // Patch existing entity and record by Id
+
+        if ($this->request->is('put') || $skipMethodCheck) {
+            $data = $this->request->getData();
+
+            if (!empty($data) && !empty($recordId)) {
+                try {
+                    $contained = $entityModel->getContained(0);
+                    $recordModel = $entityModel->get($recordId);
+
+                    if (!empty($contained)) {
+                        $recordModel = $entityModel->get($recordId, ['contain' => $contained]);
+                    }
+
+                    $associated = $entityModel->getAssociations(0);
+                    $patchedEntity = $entityModel->patchEntity($recordModel, $data);
+
+                    if (!empty($associated)) {
+                        $patchedEntity = $entityModel->patchEntity($recordModel, $data, ['associated' => $associated]);
+                    }
+                       
+                    $updatedEntity = $entityModel->saveEntity($entityModel, $patchedEntity);
+
+                    if ($updatedEntity) {
+                        $updatedRecord = $entityModel->get($recordId);
+
+                        if ($contained) {
+                            $updatedRecord = $entityModel->get($recordId, ['contain' => $contained]);
+                        }
+
+                        $this->respondSuccess($updatedRecord, $this->messageHandler->retrieve("Data", "Edited"));
+                        $this->response = $this->response->withStatus(201);
+                    } else {
+                        $this->respondError($updatedEntity->getErrors(), $this->messageHandler->retrieve("Data", "NotEdited"));
+                        $this->response = $this->response->withStatus(400);
+                    }
+                } catch (RecordNotFoundException $ex) {
+                    $this->respondError($ex->getMessage(), $this->messageHandler->retrieve("Data", "NotFound"));
+                    $this->response = $this->response->withStatus(404);
+                }
+            }
+            else {
+                throw new BadRequestException($this->messageHandler->retrieve("Error", "MissingPayload"));
+            }
+        } else {
+            throw new MethodNotAllowedException("HTTP Method disabled for creation: Use PUT or PATCH");
+        } 
+
+
     }
 
     protected function universalRemove() 
