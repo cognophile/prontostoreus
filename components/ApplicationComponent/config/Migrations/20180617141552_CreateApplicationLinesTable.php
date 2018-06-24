@@ -25,7 +25,6 @@ class CreateApplicationLinesTable extends AbstractMigration
                 ->addColumn('furnishing_id', 'integer', ['null' => true, 'default' => null])
                     ->addForeignKey('furnishing_id', 'furnishings', 'id', ['delete' => 'NO_ACTION', 'update' => 'NO_ACTION'])
                 ->addColumn('quantity', 'integer', ['null' => false, 'default' => 0, 'signed' => false])
-                ->addColumn('item_cost', 'decimal', ['null' => false, 'default' => 0, 'precision' => 2, 'signed' => false])
                 ->addColumn('line_cost', 'decimal', ['null' => false, 'default' => 0, 'precision' => 2, 'signed' => false]);
 
             $table->create();
