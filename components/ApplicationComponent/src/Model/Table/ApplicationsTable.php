@@ -53,7 +53,7 @@ class ApplicationsTable extends Table
         ]);
         $this->hasMany('Confirmations', [
             'foreignKey' => 'application_id',
-            'className' => 'ApplicationComponent.Confirmations'
+            'className' => 'ConfirmationsComponent.Confirmations'
         ]);
     }
 

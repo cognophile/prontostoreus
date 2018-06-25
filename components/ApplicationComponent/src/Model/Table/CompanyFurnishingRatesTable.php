@@ -40,7 +40,7 @@ class CompanyFurnishingRatesTable extends Table
 
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
-            'className' => 'ApplicationComponent.Companies'
+            'className' => 'LocationComponent.Companies'
         ]);
         $this->belongsTo('Furnishings', [
             'foreignKey' => 'furnishing_id',
