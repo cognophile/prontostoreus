@@ -19,4 +19,34 @@ class ApplicationsController extends AbstractApiController
         $message = $this->messageHandler->retrieve("General", "RouteAlive");
         $this->respondSuccess([], "Application base: {$message}");
     }
+
+    public function fetchRoomList($roomId = null)
+    {
+        $this->loadModel('ApplicationComponent.Rooms');
+        return parent::universalView($this->Rooms, $roomId);
+    }
+
+    public function fetchFurnishingListByRoom($roomId)
+    {
+        $this->loadModel('ApplicationComponent.Furnishings');
+        $results = $this->Furnishings->find('byRoomId', ['roomId' => $roomId]);
+
+        $this->respondSuccess($results, $this->messageHandler->retrieve("Data", "Found"));
+        $this->response = $this->response->withStatus(200);
+    }
+
+    public function fetchFurnishingSize($furnishingId)
+    {
+
+    }
+
+    public function fetchFurnishingPrice($furnishingId) 
+    {
+        $this->Applications->getPriceById();
+    }
+
+    public function add() 
+    {
+
+    }
 }
