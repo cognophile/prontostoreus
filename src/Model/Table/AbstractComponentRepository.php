@@ -7,6 +7,7 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 use Cake\Utility\Inflector;
+use Cake\Datasource\Exception\RecordNotFoundException;
 
 abstract class AbstractComponentRepository extends CakeTable
 {
@@ -76,6 +77,32 @@ abstract class AbstractComponentRepository extends CakeTable
         
         $associated = $this->saveEntity($associatedEntity, $newAssociatedEntity);
         return $associated;
+    }
+
+    public function getOne($recordId) 
+    {
+        if (empty($recordId)) {
+            throw new InvalidArgumentException('Unable to retrieve record: A valid ID must be provided.');
+        }
+
+        try {
+            $result = $this->get($recordId);
+            return $result->toArray();
+        }
+        catch (RecordNotFoundException $ex) {
+            return $ex;
+        }
+    }
+
+    public function getAll()
+    {
+        try {
+            $results = $this->find('all');
+            return $results->toArray();
+        }
+        catch (RecordNotFoundException $ex) {
+            return $ex;
+        }
     }
 
     protected function getForeignKeyName(string $tableName) : string
