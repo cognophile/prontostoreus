@@ -20,6 +20,11 @@ class ApplicationsController extends AbstractApiController
         $this->respondSuccess([], "Application base: {$message}");
     }
 
+    public function add() 
+    {
+
+    }
+
     public function fetchRoomList($roomId = null)
     {
         $this->loadModel('ApplicationComponent.Rooms');
@@ -41,11 +46,6 @@ class ApplicationsController extends AbstractApiController
     }
 
     public function fetchFurnishingPrice($furnishingId) 
-    {
-        $this->Applications->getPriceById();
-    }
-
-    public function add() 
     {
 
     }
