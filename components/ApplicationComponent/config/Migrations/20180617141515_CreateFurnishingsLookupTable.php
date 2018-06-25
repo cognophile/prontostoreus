@@ -26,8 +26,8 @@ class CreateFurnishingsLookupTable extends AbstractMigration
 
             $livingRoom = 1;
             $kitchen = 2;
-            $office = 3;
-            $bedroom = 4;
+            $bedroom = 3;
+            $office = 4;
             $garage = 5;
             $cupboard = 6;
             $special = 7;
