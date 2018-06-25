@@ -10,8 +10,8 @@ Router::plugin(
     function (RouteBuilder $routes) 
     {
         $routes->get('/', ['controller' => 'Companies', 'action' => 'status']);
-        $routes->get('/:query', ['controller' => 'Companies', 'action' => 'locate'])
-            ->setPass(['query', 'postcode']);
+        $routes->get('/:postcode', ['controller' => 'Companies', 'action' => 'locate'])
+            ->setPass(['postcode']);
         // $routes->fallbacks(DashedRoute::class);
     }
 );
