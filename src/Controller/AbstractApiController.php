@@ -3,12 +3,13 @@
 namespace Prontostoreus\Api\Controller;
 
 use Cake\Controller\Controller as CakeController;
-use Cake\Http\Exception as HttpException;
-use Cake\Network\Exception as NetworkException;
-use Cake\Datasource\Exception as DataException;
 use Cake\Event\Event;
 use Cake\Core\Configure;
 use Cake\Filesystem\Folder;
+
+use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Exception\MethodNotAllowedException;
+use Cake\Datasource\Exception\RecordNotFoundException;
 
 use Prontostoreus\Api\Utility\MessageHandler;
 
@@ -100,14 +101,39 @@ abstract class AbstractApiController extends CakeController
         } 
     }
 
-    protected function universalView($id = null) 
+    protected function universalView(\Cake\ORM\Table $entityModel, $recordId = null) 
     {
+        if ($this->request->is('get')) {
+            if (empty($recordId)) {
+                $results = $entityModel->getAll();
 
+                if ($results instanceof RecordNotFoundException) {
+                    $this->respondError($results->getMessage(), $this->messageHandler->retrieve("Data", "NotFound"));
+                    $this->response = $this->response->withStatus(405);
+                }
+
+                $this->respondSuccess($results, $this->messageHandler->retrieve("Data", "Found"));
+                $this->response = $this->response->withStatus(200);
+            }
+            else {
+                $result = $entityModel->getOne($recordId);
+
+                if ($result instanceof RecordNotFoundException) {
+                    $this->respondError($result->getMessage(), $this->messageHandler->retrieve("Data", "NotFound"));
+                    $this->response = $this->response->withStatus(405);
+                }
+
+                $this->respondSuccess($result, $this->messageHandler->retrieve("Data", "Found"));
+                $this->response = $this->response->withStatus(200);
+            }
+        }
+        else {
+            throw new MethodNotAllowedException("HTTP Method disabled for creation: Use POST");
+        }
     }
 
     protected function universalEdit(\Cake\ORM\Table $entityModel, $recordId, $skipMethodCheck = false) 
     {
-
         if ($this->request->is('put') || $skipMethodCheck) {
             $data = $this->request->getData();
 
@@ -137,14 +163,14 @@ abstract class AbstractApiController extends CakeController
                         }
 
                         $this->respondSuccess($updatedRecord, $this->messageHandler->retrieve("Data", "Edited"));
-                        $this->response = $this->response->withStatus(201);
+                        $this->response = $this->response->withStatus(200);
                     } else {
                         $this->respondError($updatedEntity->getErrors(), $this->messageHandler->retrieve("Data", "NotEdited"));
                         $this->response = $this->response->withStatus(400);
                     }
                 } catch (RecordNotFoundException $ex) {
                     $this->respondError($ex->getMessage(), $this->messageHandler->retrieve("Data", "NotFound"));
-                    $this->response = $this->response->withStatus(404);
+                    $this->response = $this->response->withStatus(405);
                 }
             }
             else {
