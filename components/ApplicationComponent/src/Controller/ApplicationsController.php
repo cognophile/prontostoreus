@@ -40,9 +40,10 @@ class ApplicationsController extends AbstractApiController
         $this->response = $this->response->withStatus(200);
     }
 
-    public function fetchFurnishingSize($furnishingId)
+    public function fetchFurnishingSize($roomId, $furnishingId)
     {
-
+        $this->loadModel('ApplicationComponent.Furnishings');
+        return parent::universalView($this->Furnishings, $furnishingId);
     }
 
     public function fetchFurnishingPrice($furnishingId) 

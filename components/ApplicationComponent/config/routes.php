@@ -13,12 +13,14 @@ Router::plugin(
         // Rooms
         $routes->get('/room', ['controller' => 'Applications', 'action' => 'fetchRoomList']);
         $routes->get('/room/:room_id', ['controller' => 'Applications', 'action' => 'fetchRoomList'])
-            ->setPass(['room_id', 'roomId']);
+            ->setPass(['room_id']);
 
         // Furnishings
-
         $routes->get('/room/:room_id/furnishing', ['controller' => 'Applications', 'action' => 'fetchFurnishingListByRoom'])
-            ->setPass(['room_id', 'roomId']);
+            ->setPass(['room_id']);
+
+        $routes->get('/room/:room_id/furnishing/:furnishing_id', ['controller' => 'Applications', 'action' => 'fetchFurnishingSize'])
+            ->setPass(['room_id', 'furnishing_id']);
 
         // $routes->get('/company/:company_id', ['controller' => 'Applications', 'action' => 'listFurnishings'])
         //     ->setPass(['company_id', 'companyId']);
