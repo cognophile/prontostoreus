@@ -7,6 +7,7 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 use Cake\Utility\Inflector;
+
 use Cake\Datasource\Exception\RecordNotFoundException;
 
 abstract class AbstractComponentRepository extends CakeTable
@@ -45,7 +46,7 @@ abstract class AbstractComponentRepository extends CakeTable
 
     public function setAssociations(array $associated)
     {
-        if (is_array($contained)) {
+        if (is_array($associated)) {
             $this->associated = array_merge($this->associated, $associated);
         }
     }

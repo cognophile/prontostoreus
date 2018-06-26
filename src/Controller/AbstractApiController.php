@@ -86,6 +86,7 @@ abstract class AbstractApiController extends CakeController
 
                 $contained = $entityModel->getContained(0);
                 $created = $entityModel->get($newEntity->id);
+
                 if (!empty($contained)) {
                     $created = $entityModel->get($newEntity->id, ['contain' => $contained]);
                 }
