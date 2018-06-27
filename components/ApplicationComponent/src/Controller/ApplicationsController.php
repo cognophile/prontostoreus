@@ -24,30 +24,4 @@ class ApplicationsController extends AbstractApiController
     {
 
     }
-
-    public function fetchRoomList($roomId = null)
-    {
-        $this->loadModel('ApplicationComponent.Rooms');
-        return parent::universalView($this->Rooms, $roomId);
-    }
-
-    public function fetchFurnishingListByRoom($roomId)
-    {
-        $this->loadModel('ApplicationComponent.Furnishings');
-        $results = $this->Furnishings->find('byRoomId', ['roomId' => $roomId]);
-
-        $this->respondSuccess($results, $this->messageHandler->retrieve("Data", "Found"));
-        $this->response = $this->response->withStatus(200);
-    }
-
-    public function fetchFurnishingSize($roomId, $furnishingId)
-    {
-        $this->loadModel('ApplicationComponent.Furnishings');
-        return parent::universalView($this->Furnishings, $furnishingId);
-    }
-
-    public function fetchFurnishingPrice($furnishingId) 
-    {
-
-    }
 }

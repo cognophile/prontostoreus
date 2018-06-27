@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Prontostoreus\Api\Model\Table\AbstractComponentRepository;
 
 /**
  * Applications Model
@@ -24,7 +25,7 @@ use Cake\Validation\Validator;
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class ApplicationsTable extends Table
+class ApplicationsTable extends AbstractComponentRepository
 {
 
     /**

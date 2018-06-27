@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Prontostoreus\Api\Model\Table\AbstractComponentRepository;
 
 /**
  * CompanyFurnishingRates Model
@@ -21,7 +22,7 @@ use Cake\Validation\Validator;
  * @method \ApplicationComponent\Model\Entity\CompanyFurnishingRate[] patchEntities($entities, array $data, array $options = [])
  * @method \ApplicationComponent\Model\Entity\CompanyFurnishingRate findOrCreate($search, callable $callback = null, $options = [])
  */
-class CompanyFurnishingRatesTable extends Table
+class CompanyFurnishingRatesTable extends AbstractComponentRepository
 {
 
     /**
@@ -85,5 +86,13 @@ class CompanyFurnishingRatesTable extends Table
         $rules->add($rules->existsIn(['furnishing_id'], 'Furnishings'));
 
         return $rules;
+    }
+
+    public function findCompanyItemPrice(Query $query, array $options)
+    {
+        return $query->select(['company_id', 'furnishing_id', 'cost'])
+            ->where(['company_id' => $options['companyId']])
+            ->where(['furnishing_id' => $options['furnishingId']])
+            ->first()->toArray();
     }
 }

@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Prontostoreus\Api\Model\Table\AbstractComponentRepository;
 
 /**
  * ApplicationLines Model
@@ -21,7 +22,7 @@ use Cake\Validation\Validator;
  * @method \ApplicationComponent\Model\Entity\ApplicationLine[] patchEntities($entities, array $data, array $options = [])
  * @method \ApplicationComponent\Model\Entity\ApplicationLine findOrCreate($search, callable $callback = null, $options = [])
  */
-class ApplicationLinesTable extends Table
+class ApplicationLinesTable extends AbstractComponentRepository
 {
 
     /**

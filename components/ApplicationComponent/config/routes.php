@@ -11,16 +11,19 @@ Router::plugin(
         $routes->get('/', ['controller' => 'Applications', 'action' => 'status']);
 
         // Rooms
-        $routes->get('/room', ['controller' => 'Applications', 'action' => 'fetchRoomList']);
-        $routes->get('/room/:room_id', ['controller' => 'Applications', 'action' => 'fetchRoomList'])
+        $routes->get('/room', ['controller' => 'Rooms', 'action' => 'fetchRoomList']);
+        $routes->get('/room/:room_id', ['controller' => 'Rooms', 'action' => 'fetchRoomList'])
             ->setPass(['room_id']);
 
         // Furnishings
-        $routes->get('/room/:room_id/furnishing', ['controller' => 'Applications', 'action' => 'fetchFurnishingListByRoom'])
+        $routes->get('/room/:room_id/furnishing', ['controller' => 'Furnishings', 'action' => 'fetchFurnishingListByRoom'])
             ->setPass(['room_id']);
 
-        $routes->get('/room/:room_id/furnishing/:furnishing_id', ['controller' => 'Applications', 'action' => 'fetchFurnishingSize'])
+        $routes->get('/room/:room_id/furnishing/:furnishing_id/', ['controller' => 'Furnishings', 'action' => 'fetchFurnishingSize'])
             ->setPass(['room_id', 'furnishing_id']);
+
+        $routes->get('/company/:company_id/furnishing/:furnishing_id/', ['controller' => 'CompanyFurnishingRates', 'action' => 'fetchPriceByItem'])
+            ->setPass(['company_id', 'furnishing_id']);
 
         // $routes->get('/company/:company_id', ['controller' => 'Applications', 'action' => 'listFurnishings'])
         //     ->setPass(['company_id', 'companyId']);
