@@ -25,9 +25,10 @@ class ApplicationsTableTest extends TestCase
      */
     public $fixtures = [
         'plugin.application_component.applications',
-        'plugin.application_component.customers',
-        'plugin.application_component.companies',
-        'plugin.application_component.confirmations'
+        'plugin.application_component.application_lines',
+        'plugin.customer_component.customers',
+        'plugin.location_component.companies',
+        'plugin.confirmation_component.confirmations'
     ];
 
     /**
