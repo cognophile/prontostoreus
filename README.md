@@ -104,6 +104,13 @@ $ bin/cake migrations status -p ExampleComponent
 Exception: Plugin ExampleComponent could not be found. in [/path/to/application/vendor/cakephp/cakephp/src/Core/Plugin.php, line 151]
 ```
 
+If you need to rollback on the migrations (eg. for development environments), the following will be required in the `down()` function:
+```
+$this->execute("SET FOREIGN_KEY_CHECKS=0");
+// ... do something
+$this->execute("SET FOREIGN_KEY_CHECKS=1");
+```
+
 ## Components
 Existing components are located in the `components` directory at the project root. 
 
