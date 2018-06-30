@@ -1,6 +1,7 @@
 <?php
 namespace ApplicationComponent\Controller;
 
+use Cake\Log\Log;
 use Prontostoreus\Api\Controller\AbstractApiController;
 
 /**
@@ -22,6 +23,11 @@ class ApplicationsController extends AbstractApiController
 
     public function add() 
     {
+        return $this->universalAdd($this->Applications);
+    }
 
+    public function edit($applicationId) 
+    {
+        return $this->universalEdit($this->Applications, $applicationId);
     }
 }
