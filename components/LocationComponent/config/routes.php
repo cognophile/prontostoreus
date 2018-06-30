@@ -6,7 +6,7 @@ use Cake\Routing\Route\DashedRoute;
 
 Router::plugin(
     'LocationComponent',
-    ['path' => '/locate'],
+    ['path' => '/locations'],
     function (RouteBuilder $routes) 
     {
         $routes->get('/', ['controller' => 'Companies', 'action' => 'status']);

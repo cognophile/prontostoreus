@@ -5,7 +5,7 @@ use Cake\Routing\Route\DashedRoute;
 
 Router::plugin(
     'ConfirmationComponent',
-    ['path' => '/confirm'],
+    ['path' => '/confirmations'],
     function (RouteBuilder $routes) {
         $routes->get('/', ['controller' => 'Confirmations', 'action' => 'status']);
         $routes->post('/', ['controller' => 'Confirmations', 'action' => 'acceptTerms']);
