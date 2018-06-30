@@ -67,7 +67,7 @@ class ApplicationLinesTable extends AbstractComponentRepository
             ->notEmpty('quantity');
 
         $validator
-            ->decimal('line_cost')
+            ->scalar('line_cost')
             ->requirePresence('line_cost', 'create')
             ->notEmpty('line_cost');
 
