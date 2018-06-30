@@ -33,10 +33,10 @@ class ConfirmationsController extends AbstractApiController
             $results = $this->Confirmations->find('byApplicationId', ['application_id' => $applicationId]);
 
             if (!empty($results)) {
-                return parent::universalEdit($this->Confirmations, $results[0]['id'], true);
+                return $this->universalEdit($this->Confirmations, $results[0]['id'], false);
             }
             else {
-                return parent::universalAdd($this->Confirmations, false);
+                return $this->universalAdd($this->Confirmations, false);
             }
         }
     }
