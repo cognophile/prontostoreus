@@ -21,21 +21,6 @@ class CustomersController extends AbstractApiController
 
     public function add() 
     {
-        return parent::universalAdd($this->Customers, true);
-    }
-
-    public function view($id = null) 
-    {
-
-    }
-
-    public function edit() 
-    {
-        
-    }
-
-    public function remove() 
-    {
-        
+        return $this->universalAdd($this->Customers, true);
     }
 }
