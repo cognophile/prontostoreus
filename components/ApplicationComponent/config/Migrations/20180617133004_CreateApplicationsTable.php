@@ -1,5 +1,6 @@
 <?php
 use Migrations\AbstractMigration;
+use Phinx\Util\Literal;
 
 class CreateApplicationsTable extends AbstractMigration
 {
@@ -24,9 +25,9 @@ class CreateApplicationsTable extends AbstractMigration
                 ->addColumn('company_id', 'integer', ['null' => true, 'default' => null])
                     ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'NO_ACTION', 'update' => 'NO_ACTION'])
                 ->addColumn('delivery', 'boolean', ['null' => false, 'default' => 0])
-                ->addColumn('start_date', 'datetime', ['null' => false, 'default' => 'CURRENT_TIMESTAMP'])
-                ->addColumn('end_date', 'datetime', ['null' => false, 'default' => 'CURRENT_TIMESTAMP'])
-                ->addColumn('total_cost', 'decimal', ['null' => false, 'precision' => 2, 'default' => 0.00, 'signed' => false])
+                ->addColumn('start_date', 'date', ['null' => true, 'default' => null])
+                ->addColumn('end_date', 'date', ['null' => true, 'default' => null])
+                ->addColumn('total_cost', 'string', ['null' => false, 'default' => '0.00'])
                 ->addColumn('created', 'datetime', ['null' => false, 'default' => 'CURRENT_TIMESTAMP'])
                 ->addColumn('cancelled', 'boolean', ['null' => false, 'default' => 0]);
 

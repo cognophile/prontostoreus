@@ -16,7 +16,7 @@ class CreateOrAlterAddressesTable extends AbstractMigration
                 'autoIncrement' => true,
             ])->addPrimaryKey('id')
     
-              // ! Delete has no action as we want to preserve these links, should a customer ever need to view past storage applications as a future requirement. 
+              // * FK Delete has no action as we want to preserve these links, should a customer ever need to view past storage applications as a future requirement. 
               ->addColumn('company_id', 'integer', ['null' => true, 'default' => null])
                 ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'NO_ACTION', 'update' => 'NO_ACTION'])
 
@@ -49,7 +49,7 @@ class CreateOrAlterAddressesTable extends AbstractMigration
 
     public function down()
     {
-        // ! If column exists, drop it. 
+        // * If column exists, drop it. 
         $exists = $this->hasTable('addresses');
 
         if ($exists)
