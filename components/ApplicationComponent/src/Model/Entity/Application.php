@@ -10,15 +10,16 @@ use Cake\ORM\Entity;
  * @property int $customer_id
  * @property int $company_id
  * @property bool $delivery
- * @property \Cake\I18n\FrozenTime $start_date
- * @property \Cake\I18n\FrozenTime $end_date
- * @property float $total_cost
+ * @property \Cake\I18n\FrozenDate $start_date
+ * @property \Cake\I18n\FrozenDate $end_date
+ * @property string $total_cost
  * @property \Cake\I18n\FrozenTime $created
  * @property bool $cancelled
  *
- * @property \ApplicationComponent\Model\Entity\Customer $customer
- * @property \ApplicationComponent\Model\Entity\Company $company
- * @property \ApplicationComponent\Model\Entity\Confirmation[] $confirmations
+ * @property \ApplicationComponent\Model\Entity\ApplicationLine[] $application_lines
+ * @property \CustomersComponent\Model\Entity\Customer $customer
+ * @property \LocationComponent\Model\Entity\Company $company
+ * @property \ConfirmationsComponent\Model\Entity\Confirmation[] $confirmations
  */
 class Application extends Entity
 {
@@ -41,6 +42,7 @@ class Application extends Entity
         'total_cost' => true,
         'created' => true,
         'cancelled' => true,
+        'application_lines' => true,
         'customer' => true,
         'company' => true,
         'confirmations' => true
