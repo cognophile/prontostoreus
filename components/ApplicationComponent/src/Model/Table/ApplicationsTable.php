@@ -10,6 +10,7 @@ use Prontostoreus\Api\Model\Table\AbstractComponentRepository;
 /**
  * Applications Model
  *
+ * @property \ApplicationComponent\Model\Table\ApplicationLinesTable|\Cake\ORM\Association\HasMany $ApplicationLines
  * @property \ApplicationComponent\Model\Table\CustomersTable|\Cake\ORM\Association\BelongsTo $Customers
  * @property \ApplicationComponent\Model\Table\CompaniesTable|\Cake\ORM\Association\BelongsTo $Companies
  * @property \ApplicationComponent\Model\Table\ConfirmationsTable|\Cake\ORM\Association\HasMany $Confirmations
@@ -27,7 +28,6 @@ use Prontostoreus\Api\Model\Table\AbstractComponentRepository;
  */
 class ApplicationsTable extends AbstractComponentRepository
 {
-
     /**
      * Initialize method
      *
@@ -44,18 +44,26 @@ class ApplicationsTable extends AbstractComponentRepository
 
         $this->addBehavior('Timestamp');
 
+        $this->hasMany('ApplicationLines', [
+            'foreignKey' => 'application_id',
+            'className' => 'ApplicationComponent.ApplicationLines'
+        ]);
+        
+        // TODO: Remove these inter-component dependencies if not needed
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',
-            'className' => 'ApplicationComponent.Customers'
+            'className' => 'CustomerComponent.Customers'
         ]);
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
-            'className' => 'ApplicationComponent.Companies'
+            'className' => 'LocationComponent.Companies'
         ]);
         $this->hasMany('Confirmations', [
             'foreignKey' => 'application_id',
-            'className' => 'ConfirmationsComponent.Confirmations'
+            'className' => 'ConfirmationComponent.Confirmations'
         ]);
+
+        $this->setAssociations(['ApplicationLines']);
     }
 
     /**
@@ -72,28 +80,26 @@ class ApplicationsTable extends AbstractComponentRepository
 
         $validator
             ->boolean('delivery')
-            ->requirePresence('delivery', 'create')
-            ->notEmpty('delivery');
+            ->requirePresence('delivery', 'create');
 
         $validator
-            ->dateTime('start_date')
+            ->date('start_date')
             ->requirePresence('start_date', 'create')
             ->notEmpty('start_date');
 
         $validator
-            ->dateTime('end_date')
+            ->date('end_date')
             ->requirePresence('end_date', 'create')
             ->notEmpty('end_date');
 
         $validator
-            ->decimal('total_cost')
+            ->scalar('total_cost')
             ->requirePresence('total_cost', 'create')
             ->notEmpty('total_cost');
 
         $validator
             ->boolean('cancelled')
-            ->requirePresence('cancelled', 'create')
-            ->notEmpty('cancelled');
+            ->allowEmpty('cancelled', 'create');
 
         return $validator;
     }
