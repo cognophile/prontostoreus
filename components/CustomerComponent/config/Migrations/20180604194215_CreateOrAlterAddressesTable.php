@@ -3,6 +3,7 @@ use Migrations\AbstractMigration;
 
 class CreateOrAlterAddressesTable extends AbstractMigration
 {
+    public $autoId = false;
    
     public function up()
     {
