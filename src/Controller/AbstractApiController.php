@@ -123,10 +123,10 @@ abstract class AbstractApiController extends CakeController
                 if ($results instanceof RecordNotFoundException) {
                     Log::write('error', $results->getMessage());
                     $this->respondError($results->getMessage(), $this->messageHandler->retrieve("Data", "NotFound"));
-                    $this->response = $this->response->withStatus(405);
+                    $this->response = $this->response->withStatus(404);
                 }
 
-                $this->respondSuccess($results, $this->messageHandler->retrieve("Data", "Found"));
+                $this->respondSuccess($results->toArray(), $this->messageHandler->retrieve("Data", "Found"));
                 $this->response = $this->response->withStatus(200);
             }
             else {
@@ -135,15 +135,15 @@ abstract class AbstractApiController extends CakeController
                 if ($result instanceof RecordNotFoundException) {
                     Log::write('error', $results->getMessage());
                     $this->respondError($result->getMessage(), $this->messageHandler->retrieve("Data", "NotFound"));
-                    $this->response = $this->response->withStatus(405);
+                    $this->response = $this->response->withStatus(404);
                 }
 
-                $this->respondSuccess($result, $this->messageHandler->retrieve("Data", "Found"));
+                $this->respondSuccess($result->toArray(), $this->messageHandler->retrieve("Data", "Found"));
                 $this->response = $this->response->withStatus(200);
             }
         }
         else {
-            throw new MethodNotAllowedException("HTTP Method disabled for creation: Use POST");
+            throw new MethodNotAllowedException("HTTP Method disabled for creation: Use GET");
         }
     }
 
@@ -195,20 +195,20 @@ abstract class AbstractApiController extends CakeController
                         $this->response = $this->response->withStatus(400);
                     }
                 } catch (RecordNotFoundException $ex) {
-                    Log::write('error', $results->getMessage());
+                    Log::write('error', $ex);
                     $this->respondError($ex->getMessage(), $this->messageHandler->retrieve("Data", "NotFound"));
-                    $this->response = $this->response->withStatus(405);
+                    $this->response = $this->response->withStatus(404);
                 }
             }
             else {
                 throw new BadRequestException($this->messageHandler->retrieve("Error", "MissingPayload"));
             }
         } else {
-            throw new MethodNotAllowedException("HTTP Method disabled for creation: Use PUT or PATCH");
+            throw new MethodNotAllowedException("HTTP Method disabled for creation: Use PUT or POST");
         } 
     }
 
-    protected function universalRemove() 
+    protected function universalRemove(\Cake\ORM\Table $entityModel, int $recordId) 
     {
         if ($this->request->is('delete')) {
                 $recordEntity = $entityModel->getOne($recordId);
