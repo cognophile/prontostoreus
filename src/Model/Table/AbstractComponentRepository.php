@@ -117,7 +117,6 @@ abstract class AbstractComponentRepository extends CakeTable
      * Query the called on model for a particular record
      * @param integer $recordId The ID of the persisted record to retrieve 
      * @throws InvalidArgumentException When the given record ID is classified as empty
-     * @throws RecordNotFoundException When no record exists for that ID
      * @return array|RecordNotFoundException The record corresponding to the given ID
      */
     public function getOne(int $recordId)
@@ -128,7 +127,7 @@ abstract class AbstractComponentRepository extends CakeTable
 
         try {
             $result = $this->get($recordId);
-            return $result->toArray();
+            return $result;
         }
         catch (RecordNotFoundException $ex) {
             return $ex;
@@ -137,14 +136,13 @@ abstract class AbstractComponentRepository extends CakeTable
 
     /**
      * Query the called on model for all records
-     * @throws RecordNotFoundException When no records exist
      * @return array|RecordNotFoundException The records corresponding to the called on model
      */
     public function getAll()
     {
         try {
             $results = $this->find('all');
-            return $results->toArray();
+            return $results;
         }
         catch (RecordNotFoundException $ex) {
             return $ex;
