@@ -210,5 +210,20 @@ abstract class AbstractApiController extends CakeController
 
     protected function universalRemove() 
     {
+        if ($this->request->is('delete')) {
+                $recordEntity = $entityModel->getOne($recordId);
+                $result = $entityModel->delete($recordEntity);
+
+                if ($results instanceof RecordNotFoundException) {
+                    Log::write('error', $result);
+                    $this->respondError($result->getMessage(), $this->messageHandler->retrieve("Data", "NotRemoved"));
+                    $this->response = $this->response->withStatus(404);
+                }
+
+                $this->respondSuccess($result, $this->messageHandler->retrieve("Data", "Removed"));
+                $this->response = $this->response->withStatus(200);
+        } else {
+            throw new MethodNotAllowedException("HTTP method disabled for deletion: Use DELETE");
+        }
     }
 }
