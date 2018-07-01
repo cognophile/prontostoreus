@@ -33,7 +33,8 @@
             "LocationComponent\\": "./components/LocationComponent/src/",
             "CustomerComponent\\": "./components/CustomerComponent/src/",
             "ApplicationComponent\\": "./components/ApplicationComponent/src/",
-            "ConfirmationComponent\\": "./components/ConfirmationComponent/src/"
+            "ConfirmationComponent\\": "./components/ConfirmationComponent/src/",
+            "InvoiceComponent\\": "./components/InvoiceComponent/src/"
         }
     },
     "autoload-dev": {
@@ -43,7 +44,8 @@
             "LocationComponent\\Test\\": "./components/LocationComponent/tests/",
             "CustomerComponent\\Test\\": "./components/CustomerComponent/tests/",
             "ApplicationComponent\\Test\\": "./components/ApplicationComponent/tests/",
-            "ConfirmationComponent\\Test\\": "./components/ConfirmationComponent/tests/"
+            "ConfirmationComponent\\Test\\": "./components/ConfirmationComponent/tests/",
+            "InvoiceComponent\\Test\\": "./components/InvoiceComponent/tests/"
         }
     },
     "scripts": {

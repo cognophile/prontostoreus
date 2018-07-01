@@ -231,7 +231,6 @@ Configure::write('Api.Routes.Location', Configure::read('Api.Base') . 'locate/')
 Configure::write('Api.Routes.Customer', Configure::read('Api.Base') . 'customer/');
 Configure::write('Api.Routes.Application', Configure::read('Api.Base') . 'apply/');
 
-
 /* 
  * See options and methods for Plugin loading, here: 
  *  https://api.cakephp.org/3.3/class-Cake.Core.Plugin.html#_load
@@ -240,3 +239,4 @@ Plugin::load('LocationComponent', ['bootstrap' => true, 'routes' => true, 'autol
 Plugin::load('CustomerComponent', ['bootstrap' => true, 'routes' => true, 'autoload' => true]);
 Plugin::load('ApplicationComponent', ['bootstrap' => true, 'routes' => true, 'autoload' => true]);
 Plugin::load('ConfirmationComponent', ['bootstrap' => true, 'routes' => true, 'autoload' => true]);
+Plugin::load('InvoiceComponent', ['bootstrap' => true, 'routes' => true, 'autoload' => true]);
