@@ -19,6 +19,7 @@ class ErrorController extends Controller
      */
     public function initialize()
     {
+        parent::initialize();
         $this->loadComponent('RequestHandler');
     }
 
@@ -41,6 +42,7 @@ class ErrorController extends Controller
     public function beforeRender(Event $event)
     {
         parent::beforeRender($event);
+        $this->RequestHandler->renderAs($this, 'json');
     }
 
     /**
