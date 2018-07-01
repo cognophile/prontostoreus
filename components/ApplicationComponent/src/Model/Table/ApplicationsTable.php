@@ -64,6 +64,7 @@ class ApplicationsTable extends AbstractComponentRepository
         ]);
 
         $this->setAssociations(['ApplicationLines']);
+        $this->setContained(['ApplicationLines']);
     }
 
     /**
