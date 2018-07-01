@@ -48,7 +48,7 @@ setfacl -R -d -m u:${HTTPDUSER}:rwx logs
 ## Database configuration
 Having set up your MySQL server and its root user, edit the following example file to insert a password suitable for your chosen level of security, and execute it as the root MySQL user. 
 
-Run the following commands to create the prontostoreus user and create the database. 
+Run the following commands to create the prontostoreus user and create the database. Only run `seed-db.sql` once all component migrations have been run. 
 
 ```
 cp database/spawn-db.sql.example database/spawn-db.sql
