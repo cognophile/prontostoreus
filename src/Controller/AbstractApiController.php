@@ -106,7 +106,15 @@ abstract class AbstractApiController extends CakeController
         } 
     }
 
-    protected function universalView(\Cake\ORM\Table $entityModel, $recordId = null) 
+    /**
+     * View a record of the given Entity type, with an optional record ID 
+     * 
+     * @param \Cake\ORM\Table $entity The entity model to view
+     * @param integer $recordId Optional specification to view a single record. If null, gets all.
+     * @throws Cake\Http\Exception\MethodNotAllowedException
+     * @return void
+     */
+    protected function universalView(\Cake\ORM\Table $entityModel, int $recordId = null) 
     {
         if ($this->request->is('get')) {
             if (empty($recordId)) {
@@ -139,7 +147,17 @@ abstract class AbstractApiController extends CakeController
         }
     }
 
-    protected function universalEdit(\Cake\ORM\Table $entityModel, $recordId, $hasAssociations = false) 
+    /**
+     * Edit a record of the given Entity type and record ID, with an optional association.
+     * 
+     * @param \Cake\ORM\Table $entity The entity model to edit
+     * @param integer $recordId ID of the record to edit
+     * @throws Cake\Datasource\Exception\RecordNotFoundException
+     * @throws Cake\Http\Exception\BadRequestException
+     * @throws Cake\Http\Exception\MethodNotAllowedException
+     * @return void
+     */
+    protected function universalEdit(\Cake\ORM\Table $entityModel, $recordId) 
     {
         if ($this->request->is('put') || $this->request->is('post')) {
             $data = $this->request->getData();
@@ -188,8 +206,6 @@ abstract class AbstractApiController extends CakeController
         } else {
             throw new MethodNotAllowedException("HTTP Method disabled for creation: Use PUT or PATCH");
         } 
-
-
     }
 
     protected function universalRemove() 

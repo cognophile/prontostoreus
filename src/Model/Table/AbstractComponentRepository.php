@@ -26,6 +26,11 @@ abstract class AbstractComponentRepository extends CakeTable
         parent::initialize($config);
     }
 
+    /**
+     * Returns the name of the associated entity at the given index
+     * @param integer $index The array index to retrieve from the property
+     * @return string|array The name of the associated entity, or the array of associated entities
+     */
     public function getAssociations($index = null)
     {
         if (is_int($index) && !empty($this->associated)) {
@@ -35,6 +40,11 @@ abstract class AbstractComponentRepository extends CakeTable
         return $this->associated;
     }
 
+    /**
+     * Returns the name of the entities this entity contains, at the given index
+     * @param integer $index The array index to retrieve from the property
+     * @return string|array The name of the contained entity, or the array of contained entities
+     */
     public function getContained($index = null)
     {
         if (is_int($index) && !empty($this->contained)) {
@@ -44,6 +54,11 @@ abstract class AbstractComponentRepository extends CakeTable
         return $this->contained;
     }
 
+    /**
+     * Appends an array of entity names to the array of entities this entity is related to
+     * @param array $associated The array of entity names to merge into the current associations
+     * @return void
+     */
     public function setAssociations(array $associated)
     {
         if (is_array($associated)) {
@@ -51,6 +66,11 @@ abstract class AbstractComponentRepository extends CakeTable
         }
     }
 
+    /**
+     * Appends an array of entity names to the array of entities this entity returns when queried
+     * @param array $associated The array of entity names to merge into the current associations
+     * @return void
+     */
     public function setContained(array $contained)
     {
         if (is_array($contained)) {
@@ -74,6 +94,13 @@ abstract class AbstractComponentRepository extends CakeTable
         }
     }
 
+    /**
+     * Save an entity in relation to its parent entity
+     * @param \Cake\ORM\Table $parentModel The entity model through which to save
+     * @param \Cake\Datasource\EntityInterface $parentEntity The entity object representing the parent record to save
+     * @param array $data The record to persist to the database
+     * @return \Cake\Datasource\EntityInterface An object representing the newly created record and its meta data.
+     */
     public function saveAssociatedEntity(\Cake\ORM\Table $parentModel, \Cake\Datasource\EntityInterface $parentEntity, array $data) : \Cake\Datasource\EntityInterface
     {
         $association = Inflector::tableize($this->getAssociations(0));
@@ -86,7 +113,14 @@ abstract class AbstractComponentRepository extends CakeTable
         return $associated;
     }
 
-    public function getOne($recordId) 
+    /**
+     * Query the called on model for a particular record
+     * @param integer $recordId The ID of the persisted record to retrieve 
+     * @throws InvalidArgumentException When the given record ID is classified as empty
+     * @throws RecordNotFoundException When no record exists for that ID
+     * @return array|RecordNotFoundException The record corresponding to the given ID
+     */
+    public function getOne(int $recordId)
     {
         if (empty($recordId)) {
             throw new InvalidArgumentException('Unable to retrieve record: A valid ID must be provided.');
@@ -101,6 +135,11 @@ abstract class AbstractComponentRepository extends CakeTable
         }
     }
 
+    /**
+     * Query the called on model for all records
+     * @throws RecordNotFoundException When no records exist
+     * @return array|RecordNotFoundException The records corresponding to the called on model
+     */
     public function getAll()
     {
         try {
@@ -112,6 +151,11 @@ abstract class AbstractComponentRepository extends CakeTable
         }
     }
 
+    /**
+     * Get the column name of the called upon table when used as a foreign key following CakePHP conventions
+     * @param string $tableName Name of the table to generate a CakePHP convention foreign key column name
+     * @return string Foreign key column name
+     */
     protected function getForeignKeyName(string $tableName) : string
     {
         return Inflector::singularize(Inflector::tableize($tableName)) . '_id';
