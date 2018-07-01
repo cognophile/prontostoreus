@@ -28,7 +28,7 @@ class ApplicationLine extends Entity
      * @var array
      */
     protected $_accessible = [
-        'applicaition_id' => true,
+        'application_id' => true,
         'furnishing_id' => true,
         'quantity' => true,
         'line_cost' => true,

@@ -83,7 +83,7 @@ class ApplicationLinesTable extends AbstractComponentRepository
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['applicaition_id'], 'Applications'));
+        $rules->add($rules->existsIn(['aapplication_id'], 'Applications'));
         $rules->add($rules->existsIn(['furnishing_id'], 'Furnishings'));
 
         return $rules;

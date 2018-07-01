@@ -20,8 +20,8 @@ class CreateApplicationLinesTable extends AbstractMigration
                 'autoIncrement' => true,
             ])
                 ->addPrimaryKey('id')
-                ->addColumn('applicaition_id', 'integer', ['null' => true, 'default' => null])
-                    ->addForeignKey('applicaition_id', 'applications', 'id', ['delete' => 'NO_ACTION', 'update' => 'NO_ACTION'])
+                ->addColumn('application_id', 'integer', ['null' => true, 'default' => null])
+                    ->addForeignKey('application_id', 'applications', 'id', ['delete' => 'NO_ACTION', 'update' => 'NO_ACTION'])
                 ->addColumn('furnishing_id', 'integer', ['null' => true, 'default' => null])
                     ->addForeignKey('furnishing_id', 'furnishings', 'id', ['delete' => 'NO_ACTION', 'update' => 'NO_ACTION'])
                 ->addColumn('quantity', 'integer', ['null' => false, 'default' => 0, 'signed' => false])
