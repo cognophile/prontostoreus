@@ -2,6 +2,8 @@
 namespace ApplicationComponent\Controller;
 
 use Cake\Log\Log;
+use Cake\Core\Configure;
+
 use Prontostoreus\Api\Controller\AbstractApiController;
 
 /**
@@ -18,7 +20,7 @@ class ApplicationsController extends AbstractApiController
     public function status()
     {
         $message = $this->messageHandler->retrieve("General", "RouteAlive");
-        $this->respondSuccess([], "Application base: {$message}");
+        $this->respondSuccess([], "Application base: {$message}", Configure::read('Api.Routes.Applications'));
     }
 
     public function add() 

@@ -2,6 +2,9 @@
 
 namespace LocationComponent\Controller;
 
+use Cake\Log\Log;
+use Cake\Core\Configure;
+
 use Prontostoreus\Api\Controller\AbstractApiController;
 
 class CompaniesController extends AbstractApiController
@@ -15,7 +18,7 @@ class CompaniesController extends AbstractApiController
     public function status()
     {
         $message = $this->messageHandler->retrieve("General", "RouteAlive");
-        $this->respondSuccess([], "Location Base: {$message}");
+        $this->respondSuccess([], "Location Base: {$message}", Configure::read('Api.Routes.Locations'));
     }
 
     public function locate(string $postcode)

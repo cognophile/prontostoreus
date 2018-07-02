@@ -8,7 +8,9 @@ Router::plugin(
     ['path' => '/confirmations'],
     function (RouteBuilder $routes) {
         $routes->get('/', ['controller' => 'Confirmations', 'action' => 'status']);
+        
         $routes->post('/', ['controller' => 'Confirmations', 'action' => 'acceptTerms']);
+        
         // $routes->fallbacks(DashedRoute::class);
     }
 );

@@ -227,9 +227,35 @@ Configure::write('File.ResponseMessages', 'responseMessages.json');
  * API URIs
  */
 Configure::write('Api.Base', 'http://localhost:8765/');
-Configure::write('Api.Routes.Location', Configure::read('Api.Base') . 'locate/');
-Configure::write('Api.Routes.Customer', Configure::read('Api.Base') . 'customer/');
-Configure::write('Api.Routes.Application', Configure::read('Api.Base') . 'apply/');
+Configure::write('Api.Routes.Locations', [
+        Configure::read('Api.Base') . 'locations/' => "GET",
+        Configure::read('Api.Base') . 'locations/?postcode' => "GET"
+]);
+
+Configure::write('Api.Routes.Customers', [
+        Configure::read('Api.Base') . 'customers/' => "GET",
+        Configure::read('Api.Base') . 'customers/' => "POST"
+]);
+
+Configure::write('Api.Routes.Applications', [
+        Configure::read('Api.Base') . 'applications/' => "GET",
+        Configure::read('Api.Base') . 'applications/room/?id' => "GET",
+        Configure::read('Api.Base') . 'applications/room/?id/furnishing/?id' => "GET",
+        Configure::read('Api.Base') . 'applications/company/?id/furnishing/?id/' => "GET",
+        Configure::read('Api.Base') . 'applications/add/' => "POST",
+        Configure::read('Api.Base') . 'applications/?id/edit/' => "POST"
+]);
+
+Configure::write('Api.Routes.Confirmations', [
+        Configure::read('Api.Base') . 'confirmations/' => "GET",
+        Configure::read('Api.Base') . 'confirmations/' => "POST",
+]);
+
+Configure::write('Api.Routes.Invoices', [
+        Configure::read('Api.Base') . 'invoices/' => "GET",
+        Configure::read('Api.Base') . 'invoices/?id' => "GET",
+        Configure::read('Api.Base') . 'invoices/applications/?id' => "GET"
+]);
 
 /* 
  * See options and methods for Plugin loading, here: 

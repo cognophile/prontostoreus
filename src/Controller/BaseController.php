@@ -13,7 +13,7 @@ class BaseController extends AbstractApiController
         $response = [
             'message' => $this->messageHandler->retrieve("General", "Welcome"),
             'version' => $this->messageHandler->retrieve("General", "Version"),
-            'links' => Configure::read('Api.Routes.Location'),
+            'links' => Configure::read('Api.Routes.Locations'),
             'success' => true
         ];
 

@@ -3,6 +3,8 @@
 namespace CustomerComponent\Controller;
 
 use Cake\ORM\TableRegistry;
+use Cake\Core\Configure;
+
 use Prontostoreus\Api\Controller\AbstractApiController;
 
 class CustomersController extends AbstractApiController
@@ -16,7 +18,7 @@ class CustomersController extends AbstractApiController
     public function status()
     {
         $message = $this->messageHandler->retrieve("General", "RouteAlive");
-        $this->respondSuccess([], "Customer base: {$message}");
+        $this->respondSuccess([], "Customer base: {$message}", Configure::read('Api.Routes.Customers'));
     }
 
     public function add() 
