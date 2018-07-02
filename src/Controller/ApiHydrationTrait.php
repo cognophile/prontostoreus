@@ -24,6 +24,14 @@ trait ApiHydrationTrait
         }
     }
 
+    /**
+     * Respond to the requestor indicating success
+     * @param string|array $data
+     * @param string $message
+     * @param array $links
+     * @param string $error
+     * @return void
+     */
     public function respondSuccess($data, string $message = "", array $links = [], string $error = "")
     {
         $response = [
@@ -37,6 +45,14 @@ trait ApiHydrationTrait
         $this->set($response);
     }
 
+    /**
+     * Respond to the requestor indicating failure or error
+     * @param string|array $error
+     * @param string $message
+     * @param array $links
+     * @param string $data
+     * @return void
+     */
     public function respondError($error, string $message = "", array $links = [], array $data = [])
     {
         $response = [
