@@ -37,6 +37,7 @@ trait ApiHydrationTrait
         $response = [
             'message' => $message,
             'success' => true,
+            'url' => Router::url($this->here, true),
             'error' => $error,
             'links' => $links,
             'data' => $data
@@ -58,6 +59,7 @@ trait ApiHydrationTrait
         $response = [
             'message' => $message,
             'success' => false,
+            'url' => Router::url($this->here, true),
             'error' => $error,
             'links' => $links,
             'data' => $data
