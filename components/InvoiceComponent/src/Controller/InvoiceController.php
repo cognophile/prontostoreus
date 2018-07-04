@@ -12,11 +12,67 @@ class InvoiceController extends AbstractApiController
     {
         parent::initialize();        
         $this->loadModel('InvoiceComponent.Invoices');
+        $this->loadModel('InvoiceComponent.Applications');
     }
 
     public function status()
     {
         $message = $this->messageHandler->retrieve("General", "RouteAlive");
         $this->respondSuccess([], "Invoice base: {$message}", Configure::read('Api.Routes.Invoices'));
+    }
+
+    public function getApplicationCustomer($applicationId)
+    {
+        if (!$applicationId) {
+            try {
+                throw new InvalidArgumentException('An application ID must be provided.');
+            }
+            catch (InvalidArgumentException $ex) {
+                Log::write('error', $ex->getErrors());
+                $this->response = $this->response->withStatus(400);
+                $this->respondError($ex->getErrors(), $this->messageHandler->retrieve("Error", "InvalidArgument"));
+            }
+        }
+
+        $results = $this->Applications->find('customerByApplicationId', ['applicationId' => $applicationId])
+            ->toArray();
+        
+        $this->response = $this->response->withStatus(200);
+        $this->respondSuccess($results, $this->messageHandler->retrieve("Data", "Found"));
+    }
+
+    public function getApplicationCompany($applicationId)
+    {
+        if (!$applicationId) {
+            try {
+                throw new InvalidArgumentException('An application ID must be provided.');
+            }
+            catch (InvalidArgumentException $ex) {
+                Log::write('error', $ex->getErrors());
+                $this->response = $this->response->withStatus(400);
+                $this->respondError($ex->getErrors(), $this->messageHandler->retrieve("Error", "InvalidArgument"));
+            }
+        }
+
+        $results = $this->Applications->find('companyByApplicationId', ['applicationId' => $applicationId])
+            ->toArray();
+        
+        $this->response = $this->response->withStatus(200);
+        $this->respondSuccess($results, $this->messageHandler->retrieve("Data", "Found"));
+    }
+
+    public function getApplicationMetadata($applicationId)
+    {
+
+    }
+
+    public function getApplicaitonLines($applicationId)
+    {
+
+    }
+
+    public function produceInvoice()
+    {
+
     }
 }

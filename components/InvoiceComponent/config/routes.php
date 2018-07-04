@@ -9,10 +9,16 @@ Router::plugin(
     function (RouteBuilder $routes) {
         $routes->get('/', ['controller' => 'Invoice', 'action' => 'status']);
 
-        $routes->get('/:id', ['controller' => 'Invoice', 'action' => 'status'])
+        $routes->get('/:id/', ['controller' => 'Invoice', 'action' => 'status'])
             ->setPass(['invoice_id']);
 
-        $routes->get('/applications/:application_id', ['controller' => 'Invoice', 'action' => 'status'])
+        $routes->get('/applications/:application_id/', ['controller' => 'Invoice', 'action' => 'view'])
+            ->setPass(['application_id']);
+
+        $routes->get('/applications/:application_id/customer/', ['controller' => 'Invoice', 'action' => 'getApplicationCustomer'])
+            ->setPass(['application_id']);
+
+        $routes->get('/applications/:application_id/company/', ['controller' => 'Invoice', 'action' => 'getApplicationCompany'])
             ->setPass(['application_id']);
 
         // $routes->fallbacks(DashedRoute::class);
