@@ -4,6 +4,7 @@ namespace Prontostoreus\Api\Controller;
 
 use Cake\Event\Event;
 use Cake\Filesystem\Folder;
+use Cake\Routing\Router;
 
 trait ApiHydrationTrait
 {
