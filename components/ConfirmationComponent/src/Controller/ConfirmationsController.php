@@ -25,8 +25,8 @@ class ConfirmationsController extends AbstractApiController
         $data = $this->request->getData();
 
         if (!empty($data)) {
-            $this->respondError("Empty payload", $this->messageHandler->retrieve("Error", "MissingPayload"));
             $this->response = $this->response->withStatus(404);
+            $this->respondError("Empty payload", $this->messageHandler->retrieve("Error", "MissingPayload"));
         }
         
         $applicationId = $data['application_id']; 

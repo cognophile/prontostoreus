@@ -19,8 +19,8 @@ class FurnishingsController extends AbstractApiController
         $this->loadModel('ApplicationComponent.Furnishings');
         $results = $this->Furnishings->find('byRoomId', ['roomId' => $roomId]);
 
-        $this->respondSuccess($results, $this->messageHandler->retrieve("Data", "Found"));
         $this->response = $this->response->withStatus(200);
+        $this->respondSuccess($results, $this->messageHandler->retrieve("Data", "Found"));
     }
 
     public function fetchFurnishingSize($roomId, $furnishingId)

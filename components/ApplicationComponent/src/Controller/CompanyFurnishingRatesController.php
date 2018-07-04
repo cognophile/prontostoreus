@@ -19,7 +19,7 @@ class CompanyFurnishingRatesController extends AbstractApiController
         $results = $this->CompanyFurnishingRates->find('companyItemPrice', 
             ['companyId' => $companyId, 'furnishingId' => $furnishingId]);
 
-        $this->respondSuccess($results, $this->messageHandler->retrieve("Data", "Found"));
         $this->response = $this->response->withStatus(200);
+        $this->respondSuccess($results, $this->messageHandler->retrieve("Data", "Found"));
     }
 }
