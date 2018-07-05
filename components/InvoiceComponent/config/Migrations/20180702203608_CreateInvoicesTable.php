@@ -18,7 +18,7 @@ class CreateInvoicesTable extends AbstractMigration
                 'autoIncrement' => true,
             ])
                 ->addPrimaryKey('id')
-                ->addColumn('application_id', 'integer', ['null' => true, 'default' => null])
+                ->addColumn('application_id', 'integer', ['null' => false, 'default' => null])
                     ->addForeignKey('application_id', 'applications', 'id', ['delete' => 'NO_ACTION', 'update' => 'NO_ACTION'])
                 
                 ->addColumn('reference', 'string', ['null' => false, 'default' => null])
