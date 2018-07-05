@@ -254,7 +254,9 @@ Configure::write('Api.Routes.Confirmations', [
 Configure::write('Api.Routes.Invoices', [
         Configure::read('Api.Base') . 'invoices/' => "GET",
         Configure::read('Api.Base') . 'invoices/?id' => "GET",
-        Configure::read('Api.Base') . 'invoices/applications/?id' => "GET"
+        Configure::read('Api.Base') . 'invoices/applications/?id' => "GET",
+        Configure::read('Api.Base') . 'invoices/applications/?id/customer' => "GET",
+        Configure::read('Api.Base') . 'invoices/applications/?id/company' => "GET"
 ]);
 
 /* 
