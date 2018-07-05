@@ -7,25 +7,19 @@ INSERT INTO companies (name, description, email, telephone)
     VALUES ("SuperSafeStore", "Safe, secure, convinient storage", "help@supersafestore.co.uk", "01234567891");
 
 INSERT INTO addresses (company_id, line_one, line_two, town, county, postcode) 
-    VALUES (1, "314 Reverend Road", "Cherry Hinton", "Cambridge", "Cambridgeshire", "CB15-FGH");
-
-
+    VALUES (1, "314 Reverend Road", "Cherry Hinton", "Cambridge", "Cambridgeshire", "CB15-1GH");
 
 INSERT INTO companies (name, description, email, telephone) 
     VALUES ("StorSafe", "Reassuring storage", "help@storsafe.co.uk", "01234567892");
 
 INSERT INTO addresses (company_id, line_one, town, county, postcode) 
-    VALUES (2, "4 East Road", "Cambridge", "Cambridgeshire", "CB12-W3D");
-
-
+    VALUES (2, "4 East Road", "Cambridge", "Cambridgeshire", "CB12-2RD");
 
 INSERT INTO companies (name, description, email, telephone) 
     VALUES ("Store4u", "Storage, tailored to you!", "help@store4u.co.uk", "01234567893");
 
 INSERT INTO addresses (company_id, line_one, line_two, town, county, postcode) 
-    VALUES (3, "45 Maxwell Street", "Trumpington", "Cambridge", "Cambridgeshire", "CB2-WOP");
-
-
+    VALUES (3, "45 Maxwell Street", "Trumpington", "Cambridge", "Cambridgeshire", "CB2-3QP");
 
 INSERT INTO companies (name, description, email, telephone) 
     VALUES ("24/7 Box Storage", "24/7 by name, 24/7 by nature", "help@247boxstorage.co.uk", "01234567894");
@@ -48,15 +42,11 @@ INSERT INTO customers (title, firstname, surname, dob, email, telephone)
 INSERT INTO addresses (customer_id, line_one, town, county, postcode) 
     VALUES (1, "23 Gravity Way", "Cambridge", "Cambridgeshire", "CB12-4BY");
 
-
-
 INSERT INTO customers (title, firstname, surname, dob, email, telephone)
     VALUES ("Mr", "Stephen", "Hawking", "1942-01-08", "stephen@hawking.co.uk", "01123456789");
 
 INSERT INTO addresses (customer_id, line_one, line_two, town, county, postcode) 
     VALUES (2, "13", "Radiation Road", "Cambridge", "Cambridgeshire", "CB18-3ET");
-
-
 
 INSERT INTO customers (title, firstname, surname, dob, email, telephone)
     VALUES ("Mrs", "Margaret", "Hamilton", "1936-08-17", "margaret@apollo-11.com", "012333555666");
@@ -76,11 +66,28 @@ INSERT INTO customers (title, firstname, surname, dob, email, telephone)
     VALUES ("Ms", "Grace", "Hopper", "1906-12-09", "grace@naval.com", "01542673967");
 
 INSERT INTO addresses (customer_id, line_one, town, county, postcode) 
-    VALUES (5, "15 Cobol Street", "Cambridge", "Cambridgeshire", "CB19-UT0");
+    VALUES (5, "15 Cobol Street", "Cambridge", "Cambridgeshire", "CB19-7TL");
 
 
 -- Application Component
-INSERT INTO applications () VALUES ();
+INSERT INTO applications (customer_id, company_id, delivery, start_date, end_date, total_cost, created, cancelled) 
+    VALUES (1, 1, 0, "2018-12-12", "2018-12-28", "50.50", NOW(), 0);
+
+INSERT INTO applications (customer_id, company_id, delivery, start_date, end_date, total_cost, created, cancelled) 
+    VALUES (2, 2, 1, "2018-11-01", "2018-11-14", "81.99", NOW(), 0);
+
+-- Application Lines
+INSERT INTO application_lines (application_id, furnishing_id, quantity, line_cost) 
+    VALUES (1, 1, 1, "25.25");
+
+INSERT INTO application_lines (application_id, furnishing_id, quantity, line_cost) 
+    VALUES (1, 2, 2, "25.25");
+
+INSERT INTO application_lines (application_id, furnishing_id, quantity, line_cost) 
+    VALUES (2, 1, 1, "30.50");
+
+INSERT INTO application_lines (application_id, furnishing_id, quantity, line_cost) 
+    VALUES (2, 2, 2, "51.49");
 
 COMMIT;
 
