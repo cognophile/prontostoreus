@@ -102,8 +102,7 @@ class ApplicationsTable extends AbstractComponentRepository
 
         $validator
             ->boolean('cancelled')
-            ->requirePresence('cancelled', 'create')
-            ->notEmpty('cancelled');
+            ->allowEmpty('cancelled');
 
         return $validator;
     }
