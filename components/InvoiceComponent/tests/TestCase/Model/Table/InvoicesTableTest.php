@@ -81,4 +81,31 @@ class InvoicesTableTest extends TestCase
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
+
+    public function testBuildInvoiceData()
+    {
+        $expected = [
+            'application_id' => 1,
+            'reference' => 'JOSM20180107',
+            'subject' => 'JOSM20180107: Self-storage Application',
+            'total' => '34.67'
+        ];
+
+        $customerData = ['firstname' => 'John', 'surname' => 'Smith'];
+        $applicationData = ['id' => 1, 'created' => '2018-01-07T16:45:44+00:00', 'total_cost' => '34.67'];
+        $invoiceData = $this->Invoices->buildInvoiceData($applicationData, $customerData['firstname'], $customerData['surname']);
+
+        $this->assertEquals($expected, $invoiceData);
+    }
+
+    public function testReferenceCodeGeneration()
+    {
+        $expected = 'JOSM20180107';
+        
+        $customerData = ['firstname' => 'John', 'surname' => 'Smith'];
+        $applicationData = ['id' => 1, 'created' => '2018-01-07T16:45:44+00:00', 'total_cost' => '34.67'];
+        $invoiceData = $this->Invoices->buildInvoiceData($applicationData, $customerData['firstname'], $customerData['surname']);
+
+        $this->assertTextEquals($expected, $invoiceData['reference']);
+    }
 }
