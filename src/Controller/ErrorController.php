@@ -5,12 +5,14 @@ namespace Prontostoreus\Api\Controller;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
 
+use Prontostoreus\Api\Controller\AbstractApiController;
+
 /**
  * Error Handling Controller
  *
  * Controller used by ExceptionRenderer to render error responses.
  */
-class ErrorController extends Controller
+class ErrorController extends AbstractApiController
 {
     /**
      * Initialization hook method.
