@@ -54,5 +54,8 @@ Router::scope('/', function (RouteBuilder $routes) {
 /**
  * Load all plugin routes. See the Plugin documentation on
  * how to customize the loading of plugin routes.
+ * @deprecated 2018-07-01 v.3.6.*
+ * 
+ * Plugin::routes();
  */
-Plugin::routes();
+
