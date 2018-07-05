@@ -6,7 +6,7 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
-use Prontostoreus\Api\Model\AbstractComponentRepository;
+use Prontostoreus\Api\Model\Table\AbstractComponentRepository;
 
 /**
  * Invoices Model
@@ -45,7 +45,7 @@ class InvoicesTable extends AbstractComponentRepository
 
         $this->belongsTo('Applications', [
             'foreignKey' => 'application_id',
-            'className' => 'ApplicationComponent.Applications'
+            'className' => 'InvoiceComponent.Applications'
         ]);
     }
 
@@ -119,17 +119,18 @@ class InvoicesTable extends AbstractComponentRepository
 
     public function buildInvoiceData(array $applicationData, string $firstname, string $surname): array
     {
-        $invoiceData = ['application_id' => $applicationData['id']];
-        $invoiceData = ['reference' => $this->generateReferenceCode(['firstname' => $firstname, 'surname' => $surname], $applicationData['created'])];
-        $invoiceData = ['subject' => $invoiceData['reference'] . ': ' . 'Self-storage Application'];
-        $invoiceData = ['total' => $applicationData['total_cost']];
+        $invoiceData = [];
+        $invoiceData['application_id'] = $applicationData['id'];
+        $invoiceData['reference'] = $this->generateReferenceCode(['firstname' => $firstname, 'surname' => $surname], $applicationData['created']);
+        $invoiceData['subject'] = $invoiceData['reference'] . ': ' . 'Self-storage Application';
+        $invoiceData['total'] = $applicationData['total_cost'];
 
         return $invoiceData;
     }
 
     private function generateReferenceCode(array $fullname, string $created)
     {
-        $prefix = substr($fullname['firstname'], 0, 2) . substr($fullname['surname'], 0, 2);
+        $prefix = strtoupper(substr($fullname['firstname'], 0, 2) . substr($fullname['surname'], 0, 2));
         $date = explode('T', $created);
         $suffix = str_replace("-", "", $date[0]);
 
