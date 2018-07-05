@@ -3,6 +3,7 @@ namespace ApplicationComponent\Controller;
 
 use Cake\Log\Log;
 use Cake\Core\Configure;
+use Cake\ORM\TableRegistry;
 
 use Prontostoreus\Api\Controller\AbstractApiController;
 
@@ -14,7 +15,7 @@ class ApplicationsController extends AbstractApiController
     public function initialize() 
     {
         parent::initialize();        
-        $this->loadModel('ApplicationComponent.Applications');
+        $this->InvoiceApplications = TableRegistry::get('InvoiceComponent.Applications');
         $this->loadModel('InvoiceComponent.Invoices');
     }
 
@@ -52,14 +53,17 @@ class ApplicationsController extends AbstractApiController
             throw new InvalidArgumentException('The provided data must be a valid array.');
         }
 
-        $customer = $this->Applications->find('customerByApplicationId')->toArray();
-        $invoiceData = $this->Invoices->buildInvoiceData($applicationData, $customer['firstname'], $customer['surname']);
+        $application = $this->InvoiceApplications->find('customerByApplicationId', ['applicationId' => $applicationData['id']])->toArray();
         
+        $customerFirstname = $application[0]['customer']['firstname']; 
+        $customerSurname = $application[0]['customer']['surname'];
+        $invoiceData = $this->Invoices->buildInvoiceData($applicationData, $customerFirstname, $customerSurname);
+
         $invoice = $this->Invoices->newEntity($invoiceData);
         $newInvoice = $this->Invoices->saveEntity($this->Invoices, $invoice);
 
         if ($newInvoice->getErrors()) {
-            Log::write('error', $entity->getErrors());
+            Log::write('error', $newInvoice->getErrors());
             return false;
         }
 

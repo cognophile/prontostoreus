@@ -1,6 +1,9 @@
 <?php
 namespace InvoiceComponent\Model\Table;
 
+use \DateTime;
+use \DateInterval;
+
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -75,8 +78,7 @@ class InvoicesTable extends AbstractComponentRepository
 
         $validator
             ->dateTime('issued')
-            ->requirePresence('issued', 'create')
-            ->notEmpty('issued');
+            ->allowEmpty('issued');
 
         $validator
             ->dateTime('due')
@@ -86,8 +88,7 @@ class InvoicesTable extends AbstractComponentRepository
         $validator
             ->scalar('paid')
             ->maxLength('paid', 255)
-            ->requirePresence('paid', 'create')
-            ->notEmpty('paid');
+            ->allowEmpty('paid');
 
         $validator
             ->scalar('total')
@@ -97,8 +98,7 @@ class InvoicesTable extends AbstractComponentRepository
 
         $validator
             ->boolean('complete')
-            ->requirePresence('complete', 'create')
-            ->notEmpty('complete');
+            ->allowEmpty('complete');
 
         return $validator;
     }
@@ -120,9 +120,17 @@ class InvoicesTable extends AbstractComponentRepository
     public function buildInvoiceData(array $applicationData, string $firstname, string $surname): array
     {
         $invoiceData = [];
+        
+        $endDate = new DateTime($applicationData['end_date']);
+        $dueDate = new DateTime($applicationData['end_date']);
+        $oneMonth = new DateInterval('P1M');
+        $dueDate->add($oneMonth);
+
         $invoiceData['application_id'] = $applicationData['id'];
         $invoiceData['reference'] = $this->generateReferenceCode(['firstname' => $firstname, 'surname' => $surname], $applicationData['created']);
         $invoiceData['subject'] = $invoiceData['reference'] . ': ' . 'Self-storage Application';
+        $invoiceData['due'] = $dueDate->format('Y-m-d H:i:s');
+        $invoiceData['issued'] = $endDate->format('Y-m-d H:i:s');
         $invoiceData['total'] = $applicationData['total_cost'];
 
         return $invoiceData;
