@@ -24,10 +24,10 @@ class ApplicationsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.invoice_component.applications',
+        'plugin.application_component.applications',
         'plugin.customer_component.customers',
         'plugin.location_component.companies',
-        'plugin.applicaiton_component.application_lines',
+        'plugin.application_component.application_lines',
         'plugin.confirmation_component.confirmations',
         'plugin.invoice_component.invoices'
     ];

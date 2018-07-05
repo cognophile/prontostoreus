@@ -15,7 +15,7 @@ class CustomersControllerTest extends IntegrationTestCase
 
     public function testGetCustomersComponentStatusRouteWhereResponseIsSuccessful()
     {
-        $this->get('/customer');
+        $this->get('/customers');
         
         $this->assertResponseOk();
         $this->assertResponseCode(200);
@@ -23,34 +23,36 @@ class CustomersControllerTest extends IntegrationTestCase
 
     public function testMultipleGetCustomersComponentStatusRouteInSuccessionIsStable()
     {
-        $this->get('/customer');
+        $this->get('/customers');
         $this->assertResponseOk();
 
-        $this->get('/customer');
+        $this->get('/customers');
         $this->assertResponseOk();
     }
 
     public function testGetCustomersComponentStatusRouteResponseIsJsonFormat()
     {
-        $this->get('/customer');
+        $this->get('/customers');
         $this->assertContentType('application/json');
     }
 
     public function testGetCustomersComponentStatusRouteResponseIsNotEmpty()
     {
-        $this->get('/customer');
+        $this->get('/customers');
         $this->assertResponseNotEmpty();
     }
 
     public function testGetCustomersComponentStatusRouteResponseStructure()
     {
-        $this->get('/customer');
+        $this->get('/customers');
 
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertArrayHasKey('message', $responseArray);
         $this->assertArrayHasKey('success', $responseArray);
+        $this->assertArrayHasKey('url', $responseArray);
         $this->assertArrayHasKey('error', $responseArray);
+        $this->assertArrayHasKey('links', $responseArray);
         $this->assertArrayHasKey('data', $responseArray);
     }
 }

@@ -21,7 +21,7 @@ class ApplicationLinesFixture extends TestFixture
         'applicaition_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'furnishing_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'quantity' => ['type' => 'integer', 'length' => 11, 'unsigned' => true, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'line_cost' => ['type' => 'decimal', 'length' => 10, 'precision' => 0, 'unsigned' => true, 'null' => false, 'default' => '0', 'comment' => ''],
+        'line_cost' => ['type' => 'string', 'null' => false, 'default' => '0.00', 'comment' => ''],
         '_indexes' => [
             'applicaition_id' => ['type' => 'index', 'columns' => ['applicaition_id'], 'length' => []],
             'furnishing_id' => ['type' => 'index', 'columns' => ['furnishing_id'], 'length' => []],

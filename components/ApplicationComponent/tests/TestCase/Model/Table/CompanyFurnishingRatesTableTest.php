@@ -25,7 +25,7 @@ class CompanyFurnishingRatesTableTest extends TestCase
      */
     public $fixtures = [
         'plugin.application_component.company_furnishing_rates',
-        'plugin.application_component.companies',
+        'plugin.location_component.companies',
         'plugin.application_component.furnishings'
     ];
 

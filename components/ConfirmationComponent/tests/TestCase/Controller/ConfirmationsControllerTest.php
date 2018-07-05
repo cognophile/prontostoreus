@@ -15,7 +15,7 @@ class ConfirmationsControllerTest extends IntegrationTestCase
 
     public function testGetConfirmationComponentStatusRouteWhereResponseIsSuccessful()
     {
-        $this->get('/confirm');
+        $this->get('/confirmations');
         
         $this->assertResponseOk();
         $this->assertResponseCode(200);
@@ -23,34 +23,36 @@ class ConfirmationsControllerTest extends IntegrationTestCase
 
     public function testMultipleGetConfirmationComponentStatusRouteInSuccessionIsStable()
     {
-        $this->get('/confirm');
+        $this->get('/confirmations');
         $this->assertResponseOk();
 
-        $this->get('/confirm');
+        $this->get('/confirmations');
         $this->assertResponseOk();
     }
 
     public function testGetConfirmationComponentStatusRouteResponseIsJsonFormat()
     {
-        $this->get('/confirm');
+        $this->get('/confirmations');
         $this->assertContentType('application/json');
     }
 
     public function testGetConfirmationComponentStatusRouteResponseIsNotEmpty()
     {
-        $this->get('/confirm');
+        $this->get('/confirmations');
         $this->assertResponseNotEmpty();
     }
 
     public function testGetConfirmationComponentStatusRouteResponseStructure()
     {
-        $this->get('/confirm');
+        $this->get('/confirmations');
 
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertArrayHasKey('message', $responseArray);
         $this->assertArrayHasKey('success', $responseArray);
+        $this->assertArrayHasKey('url', $responseArray);
         $this->assertArrayHasKey('error', $responseArray);
+        $this->assertArrayHasKey('links', $responseArray);
         $this->assertArrayHasKey('data', $responseArray);
     }
 }

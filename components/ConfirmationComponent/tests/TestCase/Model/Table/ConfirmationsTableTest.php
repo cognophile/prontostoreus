@@ -25,7 +25,7 @@ class ConfirmationsTableTest extends TestCase
      */
     public $fixtures = [
         'plugin.confirmation_component.confirmations',
-        'plugin.applications_component.applications'
+        'plugin.application_component.applications'
     ];
 
     /**

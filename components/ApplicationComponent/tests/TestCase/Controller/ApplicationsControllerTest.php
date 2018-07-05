@@ -15,7 +15,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
 
     public function testGetApplicationsComponentStatusRouteWhereResponseIsSuccessful()
     {
-        $this->get('/apply');
+        $this->get('/applications');
         
         $this->assertResponseOk();
         $this->assertResponseCode(200);
@@ -23,34 +23,36 @@ class ApplicationsControllerTest extends IntegrationTestCase
 
     public function testMultipleGetApplicationsComponentStatusRouteInSuccessionIsStable()
     {
-        $this->get('/apply');
+        $this->get('/applications');
         $this->assertResponseOk();
 
-        $this->get('/apply');
+        $this->get('/applications');
         $this->assertResponseOk();
     }
 
     public function testGetApplicationsComponentStatusRouteResponseIsJsonFormat()
     {
-        $this->get('/apply');
+        $this->get('/applications');
         $this->assertContentType('application/json');
     }
 
     public function testGetApplicationsComponentStatusRouteResponseIsNotEmpty()
     {
-        $this->get('/apply');
+        $this->get('/applications');
         $this->assertResponseNotEmpty();
     }
 
     public function testGetApplicationsComponentStatusRouteResponseStructure()
     {
-        $this->get('/apply');
+        $this->get('/applications');
 
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertArrayHasKey('message', $responseArray);
         $this->assertArrayHasKey('success', $responseArray);
+        $this->assertArrayHasKey('url', $responseArray);
         $this->assertArrayHasKey('error', $responseArray);
+        $this->assertArrayHasKey('links', $responseArray);
         $this->assertArrayHasKey('data', $responseArray);
     }
 }

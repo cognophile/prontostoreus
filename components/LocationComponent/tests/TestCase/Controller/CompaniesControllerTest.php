@@ -16,7 +16,7 @@ class CompaniesControllerTest extends IntegrationTestCase
 
     public function testGetLocationComponentStatusRouteWhereResponseIsSuccessful()
     {
-        $this->get('/locate');
+        $this->get('/locations');
         
         $this->assertResponseOk();
         $this->assertResponseCode(200);
@@ -24,33 +24,34 @@ class CompaniesControllerTest extends IntegrationTestCase
 
     public function testMultipleGetLocationComponentStatusRouteInSuccessionIsStable()
     {
-        $this->get('/locate');
+        $this->get('/locations');
         $this->assertResponseOk();
 
-        $this->get('/locate');
+        $this->get('/locations');
         $this->assertResponseOk();
     }
 
     public function testGetLocationComponentStatusRouteResponseIsJsonFormat()
     {
-        $this->get('/locate');
+        $this->get('/locations');
         $this->assertContentType('application/json');
     }
 
     public function testGetLocationComponentStatusRouteResponseIsNotEmpty()
     {
-        $this->get('/locate');
+        $this->get('/locations');
         $this->assertResponseNotEmpty();
     }
 
     public function testGetLocationComponentStatusRouteResponseStructure()
     {
-        $this->get('/locate');
+        $this->get('/locations');
 
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertArrayHasKey('message', $responseArray);
         $this->assertArrayHasKey('success', $responseArray);
+        $this->assertArrayHasKey('url', $responseArray);
         $this->assertArrayHasKey('error', $responseArray);
         $this->assertArrayHasKey('links', $responseArray);
         $this->assertArrayHasKey('data', $responseArray);
@@ -61,7 +62,7 @@ class CompaniesControllerTest extends IntegrationTestCase
         $expectedError = 'The postcode must conform to the following format: AreaDistrict-SectorUnit';
         $expectedMessage = 'The given URI argument was invalid.';
 
-        $this->get('/locate/AB121DE');
+        $this->get('/locations/AB121DE');
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertContains($expectedError, $responseArray);
@@ -73,7 +74,7 @@ class CompaniesControllerTest extends IntegrationTestCase
         $expectedError = 'The postcode must conform to the following format: AreaDistrict-SectorUnit';
         $expectedMessage = 'The given URI argument was invalid.';
 
-        $this->get('/locate/AB21DE');
+        $this->get('/locations/AB21DE');
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertContains($expectedError, $responseArray);
@@ -84,7 +85,7 @@ class CompaniesControllerTest extends IntegrationTestCase
     {
         $expectedMessage = 'The data was successfully located.';
 
-        $this->get('/locate/AB12-1DE');        
+        $this->get('/locations/AB12-1DE');        
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertContains($expectedMessage, $responseArray);
@@ -95,7 +96,7 @@ class CompaniesControllerTest extends IntegrationTestCase
         $expectedError = 'The postcode must conform to the following format: AreaDistrict-SectorUnit';
         $expectedMessage = 'The given URI argument was invalid.';
 
-        $this->get('/locate/12AB-D12');        
+        $this->get('/locations/12AB-D12');        
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertContains($expectedError, $responseArray);
