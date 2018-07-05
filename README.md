@@ -48,7 +48,9 @@ setfacl -R -d -m u:${HTTPDUSER}:rwx logs
 ## Database configuration
 Having set up your MySQL server and its root user, edit the following example file to insert a password suitable for your chosen level of security, and execute it as the root MySQL user. 
 
-Run the following commands to create the prontostoreus user and create the database. Only run `seed-db.sql` once all component migrations have been run. 
+Run the following commands to create the prontostoreus user and create the database. 
+
+**NOTICE: Only run `seed-db.sql` once all component migrations have been run, in order (see 'Application Database Configuration' for this).** 
 
 ```
 cp database/spawn-db.sql.example database/spawn-db.sql
@@ -123,6 +125,8 @@ To add new components, follow these steps:
 - Edit `composer.json` for the `autoload` and `autoload-dev` sections to ensure all component paths are specified as `./components/ExampleComponent`.
 - Reload the autoload configuration again: `{php} composer{.phar} dump-autoload`.
 - Run the built-in dev server (`bin/cake server`). If this throws an exception, it's because it can't locate the new component. Check all the above steps again. 
+
+The `ApplicaitonComponent` and `InvoiceComponent` are somewhat coupled (as expected) currently, but will be unpicked as time progresses. 
 
 ---
 
