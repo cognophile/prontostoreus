@@ -88,11 +88,13 @@ class InvoicesTableTest extends TestCase
             'application_id' => 1,
             'reference' => 'JOSM20180107',
             'subject' => 'JOSM20180107: Self-storage Application',
+            'due' => '2018-08-06 16:45:44',
+            'issued' => '2018-07-06 16:45:44',
             'total' => '34.67'
         ];
 
         $customerData = ['firstname' => 'John', 'surname' => 'Smith'];
-        $applicationData = ['id' => 1, 'created' => '2018-01-07T16:45:44+00:00', 'total_cost' => '34.67'];
+        $applicationData = ['id' => 1, 'end_date' => '2018-07-06T16:45:44+00:00', 'created' => '2018-01-07T16:45:44+00:00', 'total_cost' => '34.67'];
         $invoiceData = $this->Invoices->buildInvoiceData($applicationData, $customerData['firstname'], $customerData['surname']);
 
         $this->assertEquals($expected, $invoiceData);
@@ -103,7 +105,7 @@ class InvoicesTableTest extends TestCase
         $expected = 'JOSM20180107';
         
         $customerData = ['firstname' => 'John', 'surname' => 'Smith'];
-        $applicationData = ['id' => 1, 'created' => '2018-01-07T16:45:44+00:00', 'total_cost' => '34.67'];
+        $applicationData = ['id' => 1, 'end_date' => '2018-07-06T16:45:44+00:00', 'created' => '2018-01-07T16:45:44+00:00', 'total_cost' => '34.67'];
         $invoiceData = $this->Invoices->buildInvoiceData($applicationData, $customerData['firstname'], $customerData['surname']);
 
         $this->assertTextEquals($expected, $invoiceData['reference']);
