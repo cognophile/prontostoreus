@@ -136,11 +136,20 @@ class InvoicesTable extends AbstractComponentRepository
         return $invoiceData;
     }
 
+    public function findByApplicationId(Query $query, array $options)
+    {
+        $applicationId = $options['application_id'];
+
+        return $query->find()->select($this->Invoices, $this->Invoices->Applications->Confirmations)
+            ->where(['Invoices.application_id' => $applicationId])
+            ->andWhere(['Invoices.Applications.Confirmations.application_id' => $applicationId])
+            ->andWhere(['Invoices.cancelled' => 0]);
+    }
+
     private function generateReferenceCode(array $fullname, string $created)
     {
         $prefix = strtoupper(substr($fullname['firstname'], 0, 2) . substr($fullname['surname'], 0, 2));
-        $date = explode('T', $created);
-        $suffix = str_replace("-", "", $date[0]);
+        $suffix = str_replace("-", "", explode('T', $created)[0]);
 
         return "{$prefix}{$suffix}";
     }

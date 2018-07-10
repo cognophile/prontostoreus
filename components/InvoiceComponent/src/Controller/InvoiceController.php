@@ -10,7 +10,8 @@ class InvoiceController extends AbstractApiController
 {
     public function initialize() 
     {
-        parent::initialize();        
+        parent::initialize();  
+        // TODO: Test removal of these      
         $this->loadModel('InvoiceComponent.Invoices');
         $this->loadModel('InvoiceComponent.Applications');
     }
@@ -31,6 +32,7 @@ class InvoiceController extends AbstractApiController
                 Log::write('error', $ex->getErrors());
                 $this->response = $this->response->withStatus(400);
                 $this->respondError($ex->getErrors(), $this->messageHandler->retrieve("Error", "InvalidArgument"));
+                return;
             }
         }
 
@@ -51,6 +53,7 @@ class InvoiceController extends AbstractApiController
                 Log::write('error', $ex->getErrors());
                 $this->response = $this->response->withStatus(400);
                 $this->respondError($ex->getErrors(), $this->messageHandler->retrieve("Error", "InvalidArgument"));
+                return;
             }
         }
 
@@ -63,7 +66,22 @@ class InvoiceController extends AbstractApiController
 
     public function getApplicationMetadata($applicationId)
     {
+        if (!$applicationId) {
+            try {
+                throw new InvalidArgumentException('An application ID must be provided.');
+            }
+            catch (InvalidArgumentException $ex) {
+                Log::write('error', $ex->getErrors());
+                $this->response = $this->response->withStatus(400);
+                $this->respondError($ex->getErrors(), $this->messageHandler->retrieve("Error", "InvalidArgument"));
+                return;
+            }
+        }
 
+        $results = $this->Invoices->find('byApplicationId', ['applicationId' => $applicationId])->toArray();
+
+        $this->response = $this->response->withStatus(200);
+        $this->respondSuccess($results, $this->messageHandler->retrieve("Data", "Found"));
     }
 
     public function getApplicaitonLines($applicationId)
