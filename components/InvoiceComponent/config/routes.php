@@ -23,7 +23,7 @@ Router::plugin(
 
         $routes->get('/applications/:application_id/', ['controller' => 'Invoice', 'action' => 'getInvoiceDataByApplication'])
             ->setPass(['application_id']);
-            
+
         // $routes->fallbacks(DashedRoute::class);
     }
 );

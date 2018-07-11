@@ -127,7 +127,8 @@ class ApplicationsTable extends AbstractComponentRepository
         $applicationId = $options['applicationId'];
 
         return $query->find('all')
-            ->contain('Customers.Addresses')->where(['Applications.id' => $applicationId]);
+            ->contain('Customers.Addresses')->where(['Applications.id' => $applicationId])
+            ->andWhere(['cancelled' => 0]);
     }
 
     public function findCompanyByApplicationId(Query $query, array $options)
@@ -135,6 +136,16 @@ class ApplicationsTable extends AbstractComponentRepository
         $applicationId = $options['applicationId'];
 
         return $query->find('all')
-            ->contain('Companies.Addresses')->where(['Applications.id' => $applicationId]);
+            ->contain('Companies.Addresses')->where(['Applications.id' => $applicationId])
+            ->andWhere(['cancelled' => 0]);
+    }
+
+    public function findLinesByApplicationId(Query $query, array $options)
+    {
+        $applicationId = $options['applicationId'];
+
+        return $query->find('all')->contain('ApplicationLines.Furnishings.Rooms')
+            ->where(['Applications.id' => $applicationId])
+            ->andWhere(['cancelled' => 0]);
     }
 }

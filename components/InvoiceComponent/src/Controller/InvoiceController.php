@@ -84,9 +84,24 @@ class InvoiceController extends AbstractApiController
         $this->respondSuccess($results, $this->messageHandler->retrieve("Data", "Found"));
     }
 
-    public function getApplicaitonLines($applicationId)
+    public function getApplicationLines($applicationId)
     {
+        if (!$applicationId) {
+            try {
+                throw new InvalidArgumentException('An application ID must be provided.');
+            }
+            catch (InvalidArgumentException $ex) {
+                Log::write('error', $ex->getErrors());
+                $this->response = $this->response->withStatus(400);
+                $this->respondError($ex->getErrors(), $this->messageHandler->retrieve("Error", "InvalidArgument"));
+                return;
+            }
+        }
 
+        $results = $this->Applications->find('linesByApplicationId', ['applicationId' => $applicationId])->toArray();
+
+        $this->response = $this->response->withStatus(200);
+        $this->respondSuccess($results, $this->messageHandler->retrieve("Data", "Found"));        
     }
 
     public function produceInvoice()
