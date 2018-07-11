@@ -64,7 +64,7 @@ class InvoiceController extends AbstractApiController
         $this->respondSuccess($results, $this->messageHandler->retrieve("Data", "Found"));
     }
 
-    public function getApplicationMetadata($applicationId)
+    public function getInvoiceDataByApplication($applicationId)
     {
         if (!$applicationId) {
             try {
