@@ -21,9 +21,12 @@ Router::plugin(
         $routes->get('/applications/:application_id/lines/', ['controller' => 'Invoice', 'action' => 'getApplicationLines'])
             ->setPass(['application_id']);
 
-        $routes->get('/applications/:application_id/', ['controller' => 'Invoice', 'action' => 'getInvoiceDataByApplication'])
+        $routes->get('/applications/:application_id/data', ['controller' => 'Invoice', 'action' => 'getInvoiceDataByApplication'])
             ->setPass(['application_id']);
 
+        $routes->get('/applications/:application_id/', ['controller' => 'Invoice', 'action' => 'produceInvoice'])
+            ->setPass(['application_id']);
+            
         // $routes->fallbacks(DashedRoute::class);
     }
 );
