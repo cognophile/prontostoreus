@@ -268,3 +268,24 @@ Plugin::load('CustomerComponent', ['bootstrap' => true, 'routes' => true, 'autol
 Plugin::load('ApplicationComponent', ['bootstrap' => true, 'routes' => true, 'autoload' => true]);
 Plugin::load('ConfirmationComponent', ['bootstrap' => true, 'routes' => true, 'autoload' => true]);
 Plugin::load('InvoiceComponent', ['bootstrap' => true, 'routes' => true, 'autoload' => true]);
+
+Plugin::load('CakePdf', ['bootstrap' => true]);
+
+Configure::write('CakePdf', [
+    'engine' => [
+        'className' => 'CakePdf.WkHtmlToPdf',
+        'binary' => '/usr/bin/wkhtmltopdf',
+        'options' => [
+            'print-media-type' => false,
+            'outline'          => true,
+            'footer-font-size' => 8,
+            'header-font-size' => 8,
+            'margin-top' => 30,
+            'margin-left' => 20,
+            'margin-right' => 20,
+            'margin-bottom' => 30
+        ],
+        'pageSize' => 'A4',
+        'download' => false,
+    ]
+]);
