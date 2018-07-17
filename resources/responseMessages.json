@@ -15,6 +15,10 @@
         "NotEdited": "The data could not be edited.",
         "NotRemoved": "The data could not be removed."
     },
+    "File": {
+        "Retrieved": "The file was successfully retrieved.",
+        "NotRetrieved": "The file could not be retrieved."
+    },
     "Error": {
         "UnsupportedRequestMethod": "The request method used is unsupported.",
         "Unknown": "An unknown error occurred during the request.",

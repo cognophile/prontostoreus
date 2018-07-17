@@ -273,19 +273,13 @@ Plugin::load('CakePdf', ['bootstrap' => true]);
 
 Configure::write('CakePdf', [
     'engine' => [
-        'className' => 'CakePdf.WkHtmlToPdf',
-        'binary' => '/usr/bin/wkhtmltopdf',
+        'className' => 'CakePdf.Mpdf',
         'options' => [
-            'print-media-type' => false,
-            'outline'          => true,
-            'footer-font-size' => 8,
-            'header-font-size' => 8,
-            'margin-top' => 30,
-            'margin-left' => 20,
-            'margin-right' => 20,
-            'margin-bottom' => 30
+            'mode' => 'UTF-8',
+            'format' => [190, 236], 
+            'orientation' => 'P',
+            'pdf_version' => 1.4
         ],
         'pageSize' => 'A4',
-        'download' => false,
     ]
 ]);

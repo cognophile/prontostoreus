@@ -1,10 +1,9 @@
 <html lang='en-GB'>
 <head>
     <?= $this->Html->charset() ?>
-    <?= $this->Html->css([API_CLIENT . 'public/css/bootstrap.css']); ?>
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prontostoreus - <?= $data['subject']; ?></title>
+    <title>Prontostoreus - Self-storage Application Invoice</title>
     <style>
         body {
             color: black !important;
@@ -18,6 +17,8 @@
     </style>
 </head>
     <body>
-        <?= $this->fetch('invoiceContent') ?>
+        <h2>Prontostoreus - Invoice #ABC123</h2>
+        <hr><br>
+        <?= $this->fetch('content') ?>
     </body>
 </html>

@@ -42,6 +42,11 @@ define('APP_DIR', 'src');
 define('APP', ROOT . DS . APP_DIR . DS);
 
 /**
+ * Path to the compoents directories.
+ */
+define('COMPS', ROOT . DS . 'components' . DS);
+
+/**
  * Path to the config directory.
  */
 define('CONFIG', ROOT . DS . 'config' . DS);

@@ -145,6 +145,15 @@ class InvoicesTable extends AbstractComponentRepository
             ->andWhere(['cancelled' => 0]);
     }
 
+    public function findFullApplicationInvoiceData(Query $query, array $options) 
+    {
+        $applicationId = $options['applicationId'];
+
+        return $query->find('all')->contain(['Applications' => ['Confirmations', 'ApplicationLines.Furnishings', 'Companies', 'Customers']])
+            ->where(['application_id' => $applicationId])
+            ->andWhere(['cancelled' => 0]);
+    }
+
     private function generateReferenceCode(array $fullname, string $created)
     {
         $prefix = strtoupper(substr($fullname['firstname'], 0, 2) . substr($fullname['surname'], 0, 2));
