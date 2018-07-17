@@ -93,6 +93,7 @@ Then run all migrations to create the database schema on a per-component basis. 
 4. Confirmation
 5. Invoice
 
+#### Handy-dandy CakeMigrations Commands (A Phinx Wrapper)
 - Check status: `bin/cake migrations status -p <name>Component`
 - Migrate up: `bin/cake migrations migrate -p <name>Component {-t <target-version>}`
 - Rollback: `bin/cake migrations rollback -p <name>Component {-t <target-version>}`
