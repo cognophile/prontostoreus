@@ -11,9 +11,7 @@ This project was produced as an accompanying artefact to a dissertation project.
  The components are included in the repository (but are capable of being held within their own repositories).
 
 **Note:**
-
  This application was designed and constructed purely for academic and proof-of-concept purposes. It is not intended for commercial or real-world usage. 
-
 
 ## Requirements
 - All CakePHP dependencies, listed later in this file. See to it that these are installed first.
@@ -74,7 +72,6 @@ FLUSH PRIVILEGES;
 ```
 
 ### Application Database Configuration
-
 Enter this newly created information into the `config/app.php` file. Under the `Datasources` key, ensure `MySql` is set as the driver type, and amend the following keys: 
 ```
 'host' => 'localhost',
@@ -128,6 +125,13 @@ To add new components, follow these steps:
 - Run the built-in dev server (`bin/cake server`). If this throws an exception, it's because it can't locate the new component. Check all the above steps again. 
 
 The `ApplicaitonComponent` and `InvoiceComponent` are somewhat coupled (as expected) currently, but will be unpicked as time progresses. 
+
+## Server Configuration
+As this software is not suitable for real-world use due to many factors (eg. security, error handling, security), the simplest development environment has been selected to run this application - the built in CakePHP development environment server. To use this server, issue the following command in the project directory.
+
+```
+bin/cake server
+```
 
 ---
 
