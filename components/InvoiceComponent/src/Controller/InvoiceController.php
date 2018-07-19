@@ -140,15 +140,14 @@ class InvoiceController extends AbstractApiController
                 }
             }
 
+            $filename = COMPS . DS . 'InvoiceComponent' . DS . 'tmp' . DS . 'test.pdf';
             $CakePdf = new CakePdf();
             $CakePdf->template('InvoiceComponent.invoice', 'InvoiceComponent.default');
 
             $data = $this->Invoices->find('fullApplicationInvoiceData', ['applicationId' => $applicationId])->toArray();
-
-            $this->set('data', $data);  
+            $this->set(['data' => $data[0]]);
             $CakePdf->viewVars($this->viewVars);
 
-            $filename = COMPS . DS . 'InvoiceComponent' . DS . 'tmp' . DS . 'test.pdf';
             $isSuccessfulCreation = $CakePdf->write($filename);
 
             if (!$isSuccessfulCreation) {
