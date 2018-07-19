@@ -17,8 +17,6 @@
     </style>
 </head>
     <body>
-        <h2>Prontostoreus - Invoice #ABC123</h2>
-        <hr><br>
         <?= $this->fetch('content') ?>
     </body>
 </html>
