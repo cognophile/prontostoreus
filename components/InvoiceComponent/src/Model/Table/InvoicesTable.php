@@ -149,7 +149,7 @@ class InvoicesTable extends AbstractComponentRepository
     {
         $applicationId = $options['applicationId'];
 
-        return $query->find('all')->contain(['Applications' => ['Confirmations', 'ApplicationLines.Furnishings', 'Companies', 'Customers']])
+        return $query->find('all')->contain(['Applications' => ['Confirmations', 'ApplicationLines.Furnishings.Rooms', 'Companies.Addresses', 'Customers.Addresses']])
             ->where(['application_id' => $applicationId])
             ->andWhere(['cancelled' => 0]);
     }
