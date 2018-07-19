@@ -276,9 +276,14 @@ Configure::write('CakePdf', [
         'className' => 'CakePdf.Mpdf',
         'options' => [
             'mode' => 'UTF-8',
-            'format' => [190, 236], 
             'orientation' => 'P',
-            'pdf_version' => 1.4
+            'pdf_version' => 1.7,
+            'margin_left' => 15,
+            'margin_right' => 15,
+            'margin_top' => 20,
+            'margin_bottom' => 20,
+            'margin_header' => 10,
+            'margin_footer' => 10
         ],
         'pageSize' => 'A4',
     ]
