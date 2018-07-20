@@ -3,9 +3,9 @@
 namespace InvoiceComponent\Controller;
 
 use Cake\Core\Configure;
-use \CakePdf\Pdf\CakePdf;
 
 use Prontostoreus\Api\Controller\AbstractApiController;
+use UtilitiesComponent\Pdf\PdfCreator;
 
 class InvoiceController extends AbstractApiController
 {
@@ -140,25 +140,26 @@ class InvoiceController extends AbstractApiController
                 }
             }
 
-            $filename = COMPS . DS . 'InvoiceComponent' . DS . 'tmp' . DS . 'test.pdf';
-            $CakePdf = new CakePdf();
-            $CakePdf->template('InvoiceComponent.invoice', 'InvoiceComponent.default');
-
             $data = $this->Invoices->find('fullApplicationInvoiceData', ['applicationId' => $applicationId])->toArray();
             $this->set(['data' => $data[0]]);
-            $CakePdf->viewVars($this->viewVars);
+            
+            $filename = 'prontostoreus_invoice_' . $data[0]['reference'] . '.pdf';
+            $outputLocation = COMPS . DS . 'InvoiceComponent' . DS . 'tmp' . DS . $filename;
+            
+            $pdfCreator = new PdfCreator($outputLocation);
+            $pdfCreator->setTemplates('InvoiceComponent.invoice', 'InvoiceComponent.default');
+            $pdfCreator->setContents($this->viewVars);
+            $isCreated = $pdfCreator->render();
 
-            $isSuccessfulCreation = $CakePdf->write($filename);
-
-            if (!$isSuccessfulCreation) {
-                Log::write('error', 'Could not retrieve Invoice PDF: ' . $filename);
+            if (!$isCreated) {
+                Log::write('error', 'Could not retrieve Invoice PDF: ' . $outputLocation);
                 $this->response = $this->response->withStatus(400);
-                $this->respondError('Could not retrieve Invoice PDF: ' . $filename, $this->messageHandler->retrieve("File", "NotRetrieved"));
+                $this->respondError('Could not retrieve Invoice PDF: ' . $outputLocation, $this->messageHandler->retrieve("File", "NotRetrieved"));
                 return;
             } 
 
             $this->response = $this->response->withStatus(201);
-            $this->response = $this->response->withFile($filename, ['name' => 'invoice-abc123.pdf', 'download' => true]);
+            $this->response = $this->response->withFile($outputLocation, ['name' => $filename, 'download' => true]);
             
             // Required as to not attempt to render the file response as a view
             return $this->response;
