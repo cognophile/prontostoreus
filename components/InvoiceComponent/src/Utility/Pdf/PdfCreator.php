@@ -1,6 +1,6 @@
 <?php
 
-namespace UtilitiesComponent\Pdf;
+namespace InvoiceComponent\Utility\Pdf;
 
 use Cake\Core\Configure;
 use CakePdf\Pdf\CakePdf;

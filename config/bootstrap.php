@@ -263,8 +263,6 @@ Configure::write('Api.Routes.Invoices', [
  * See options and methods for Plugin loading, here: 
  *  https://api.cakephp.org/3.3/class-Cake.Core.Plugin.html#_load
 */
-Plugin::load('UtilitiesComponent', ['bootstrap' => false, 'routes' => false, 'autoload' => true]);
-
 Plugin::load('LocationComponent', ['bootstrap' => true, 'routes' => true, 'autoload' => true]);
 Plugin::load('CustomerComponent', ['bootstrap' => true, 'routes' => true, 'autoload' => true]);
 Plugin::load('ApplicationComponent', ['bootstrap' => true, 'routes' => true, 'autoload' => true]);

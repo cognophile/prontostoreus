@@ -36,8 +36,7 @@
             "CustomerComponent\\": "./components/CustomerComponent/src/",
             "ApplicationComponent\\": "./components/ApplicationComponent/src/",
             "ConfirmationComponent\\": "./components/ConfirmationComponent/src/",
-            "InvoiceComponent\\": "./components/InvoiceComponent/src/",
-            "UtilitiesComponent\\": "./components/UtilitiesComponent/src/"
+            "InvoiceComponent\\": "./components/InvoiceComponent/src/"
         }
     },
     "autoload-dev": {
@@ -48,8 +47,7 @@
             "CustomerComponent\\Test\\": "./components/CustomerComponent/tests/",
             "ApplicationComponent\\Test\\": "./components/ApplicationComponent/tests/",
             "ConfirmationComponent\\Test\\": "./components/ConfirmationComponent/tests/",
-            "InvoiceComponent\\Test\\": "./components/InvoiceComponent/tests/",
-            "UtilitiesComponent\\Test\\": "./components/UtilitiesComponent/tests/"
+            "InvoiceComponent\\Test\\": "./components/InvoiceComponent/tests/"
         }
     },
     "scripts": {
