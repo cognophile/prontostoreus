@@ -216,15 +216,16 @@ if (Configure::read('debug')) {
     Plugin::load('DebugKit', ['bootstrap' => true]);
 }
 
+
 /*
-* Prontostoreus: Custom Bootstrapping
-* Options and rules for the API, and any available Components.
-*/
+ * Prontostoreus: Custom Bootstrapping
+ * Options and rules for the API, and any available Components.
+ */
 Configure::write('Folder.Resources', '/resources/');
 Configure::write('File.ResponseMessages', 'responseMessages.json');
 
 /**
- * API URIs
+ * API Available URI Declarations
  */
 Configure::write('Api.Base', 'http://localhost:8765/');
 Configure::write('Api.Routes.Locations', [
@@ -260,17 +261,14 @@ Configure::write('Api.Routes.Invoices', [
         Configure::read('Api.Base') . 'invoices/applications/?id/data' => "GET"
 ]);
 
-/* 
- * See options and methods for Plugin loading, here: 
- *  https://api.cakephp.org/3.3/class-Cake.Core.Plugin.html#_load
-*/
-Plugin::load('LocationComponent', ['bootstrap' => true, 'routes' => true, 'autoload' => true]);
-Plugin::load('CustomerComponent', ['bootstrap' => true, 'routes' => true, 'autoload' => true]);
-Plugin::load('ApplicationComponent', ['bootstrap' => true, 'routes' => true, 'autoload' => true]);
-Plugin::load('ConfirmationComponent', ['bootstrap' => true, 'routes' => true, 'autoload' => true]);
+/**
+ * API Hyperlink Declarations 
+ */
 
+/**
+ * Third-party Plugin Loading and configuration
+ */
 Plugin::load('CakePdf', ['bootstrap' => true, 'routes' => false, 'autoload' => true]);
-
 Configure::write('CakePdf', [
     'engine' => [
         'className' => 'CakePdf.Mpdf',
@@ -289,4 +287,13 @@ Configure::write('CakePdf', [
     ]
 ]);
 
+/* 
+ * First-party Plugin Loading
+ * See options and methods for Plugin loading, here: 
+ *  https://api.cakephp.org/3.3/class-Cake.Core.Plugin.html#_load
+ */
+Plugin::load('LocationComponent', ['bootstrap' => true, 'routes' => true, 'autoload' => true]);
+Plugin::load('CustomerComponent', ['bootstrap' => true, 'routes' => true, 'autoload' => true]);
+Plugin::load('ApplicationComponent', ['bootstrap' => true, 'routes' => true, 'autoload' => true]);
+Plugin::load('ConfirmationComponent', ['bootstrap' => true, 'routes' => true, 'autoload' => true]);
 Plugin::load('InvoiceComponent', ['bootstrap' => true, 'routes' => true, 'autoload' => true]);
