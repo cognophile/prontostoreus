@@ -2,6 +2,16 @@
 <html>
     <head>
         <style>
+            #invoice-header {
+                background-color: #634db3;
+                border-color: #634db3;
+            }
+
+            #invoice-header {
+                color: white;
+                padding: 5px;
+            }
+            
             #invoice-notice {
                 text-align: center;
             }
@@ -39,8 +49,12 @@
         </style>
     </head>
     <body>
-        <h2>Prontostoreus</h2>
-        <h3><?= $data['subject']; ?></h3>
+        <div id="invoice-header">
+            <div id="invoice-header-content">
+                <h2>Prontostoreus</h2>
+                <h3><?= $data['subject']; ?></h3>
+            </div>
+        </div>
         <hr><br>
 
         <div id="invoice-body">
@@ -150,6 +164,8 @@
                             <th scope="col">Submission Date</th>
                             <th scope="col">Invoice Issued</th>
                             <th scope="col">Payment Due</th>
+                            <th scope="col">Start Date</th>
+                            <th scope="col">End Date</th>
                             <th scope="col">Method</th>
                             <th scope="col">Terms and Conditions</th>
                         </tr>
@@ -176,6 +192,18 @@
                             <td id="invoice-payment-due-date">
                                 <?php 
                                     $date = explode(",", $data['due']);
+                                    echo str_replace('-','/', date("d-m-Y", strtotime($date[0])));
+                                ?>
+                            </td>
+                            <td id="invoice-start-date">
+                                <?php 
+                                    $date = explode(",", $data['application']['start_date']);
+                                    echo str_replace('-','/', date("d-m-Y", strtotime($date[0])));
+                                ?>
+                            </td>
+                            <td id="invoice-end-date">
+                                <?php 
+                                    $date = explode(",", $data['application']['end_date']);
                                     echo str_replace('-','/', date("d-m-Y", strtotime($date[0])));
                                 ?>
                             </td>

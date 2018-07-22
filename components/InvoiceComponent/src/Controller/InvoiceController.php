@@ -5,7 +5,7 @@ namespace InvoiceComponent\Controller;
 use Cake\Core\Configure;
 
 use Prontostoreus\Api\Controller\AbstractApiController;
-use InvoiceComponent\Utility\Pdf;
+use InvoiceComponent\Utility\Pdf\PdfCreator;
 
 class InvoiceController extends AbstractApiController
 {
