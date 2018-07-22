@@ -60,9 +60,9 @@
         <div id="invoice-body">
             <div>
                 <h4 id="invoice-notice">Thank you for your application!</h4>
-                <p>This invoice confirms we are processing your application and summarises its particulars. 
-                If you need to contact the company, you can find their details below. 
-                Please note the company will contact you within 3 days of this invoices date of issue to arrange the collection or delivery of your belongings to their facility.</p>
+                <p>This invoice confirms we are processing your application and summarises its particulars. We'll update you on progress via email from here on.
+                If you need to contact the company, you can find their details below. Please note your selected company will contact you within 3 days of this 
+                invoices date of issue to arrange the collection or delivery of your belongings to their facility, and to take payment.</p>
             </div>
             <div id="application-parties-data">
                 <div id="customer-details">
