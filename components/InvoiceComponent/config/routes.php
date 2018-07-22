@@ -9,9 +9,6 @@ Router::plugin(
     function (RouteBuilder $routes) {
         $routes->get('/', ['controller' => 'Invoice', 'action' => 'status']);
 
-        $routes->get('/:invoice_id/', ['controller' => 'Invoice', 'action' => 'status'])
-            ->setPass(['invoice_id']);
-
         $routes->get('/applications/:application_id/customer/', ['controller' => 'Invoice', 'action' => 'getApplicationCustomer'])
             ->setPass(['application_id']);
 
