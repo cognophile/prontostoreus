@@ -208,6 +208,14 @@ abstract class AbstractApiController extends CakeController
         } 
     }
 
+    /**
+     * Non-cascading delete of a record of the given Entity type with the given record ID.
+     *
+     * @param \Cake\ORM\Table $entityModel The entity model to delete
+     * @param integer $recordId The ID of the record to delete
+     * @throws Cake\Http\Exception\MethodNotAllowedException
+     * @return void
+     */
     protected function universalRemove(\Cake\ORM\Table $entityModel, int $recordId) 
     {
         if ($this->request->is('delete')) {

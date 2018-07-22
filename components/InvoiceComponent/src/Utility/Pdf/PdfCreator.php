@@ -9,6 +9,7 @@ class PdfCreator
 {
     private $cakePdf;
     private $config;
+    private $contents;
     private $layoutFile;
     private $templateFile;
     private $outputLocation;
@@ -27,6 +28,12 @@ class PdfCreator
         $this->cakePdf = new CakePdf();
     }
 
+    /**
+     * Append additional options to the configuration of this PDF library
+     *
+     * @param array $additionalConfig
+     * @return void
+     */
     public function configure(array $additionalConfig): void
     {
         if (!$additionalConfig) {
@@ -38,6 +45,13 @@ class PdfCreator
         $this->config = Configure::read('CakePdf');
     }
 
+    /**
+     * Set the layout and body templates to use, found under 'Template/'
+     *
+     * @param string $templateFile
+     * @param string $layoutFile
+     * @return void
+     */
     public function setTemplates($templateFile, $layoutFile): void
     {   
         if (!$templateFile || !$layoutFile) {
@@ -47,18 +61,32 @@ class PdfCreator
         $this->templateFile = $templateFile;
         $this->layoutFile = $layoutFile;
 
-        $this->cakePdf->template($templateFile, $layoutFile);
+        $this->cakePdf->template($this->templateFile, $this->layoutFile);
     }
 
+    /**
+     * Set the data contents for the file
+     *
+     * @param mixed $contents
+     * @return void
+     */
     public function setContents($contents): void
     {   
         if (!$contents) {
             throw new \InvalidArgumentException('Valid file content must be provided');
         }
 
-        $this->cakePdf->viewVars($contents);
+        $this->contents = $contents;
+
+        $this->cakePdf->viewVars($this->contents);
     }
 
+    /**
+     * Set the location to output the produced pdf
+     *
+     * @param [type] $location
+     * @return void
+     */
     public function setOutputLocation($location): void
     {
         if (!$location) {
