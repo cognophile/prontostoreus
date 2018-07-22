@@ -6,13 +6,14 @@
     <title>Prontostoreus - Self-storage Application Invoice</title>
     <style>
         body {
-            color: black !important;
+            color: black;
         }
-        tr:last-child > td {
-            border-bottom: 1px solid #ddd !important;
+        table {
+            border-collapse: collapse;
         }
         table, tr, td, th, tbody, thead, tfoot {
             page-break-inside: avoid !important;
+            border: 1px solid black;
         }
     </style>
 </head>

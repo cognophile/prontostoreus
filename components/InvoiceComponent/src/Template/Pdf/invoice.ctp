@@ -8,7 +8,7 @@
             }
 
             #invoice-header {
-                color: white;
+                color: white !important;
                 padding: 5px;
             }
             
