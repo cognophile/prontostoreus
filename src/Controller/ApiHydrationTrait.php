@@ -27,6 +27,7 @@ trait ApiHydrationTrait
 
     /**
      * Respond to the requestor indicating success
+     * 
      * @param string|array $data
      * @param string $message
      * @param array $links
@@ -49,6 +50,7 @@ trait ApiHydrationTrait
 
     /**
      * Respond to the requestor indicating failure or error
+     * 
      * @param string|array $error
      * @param string $message
      * @param array $links
@@ -67,6 +69,21 @@ trait ApiHydrationTrait
         ];
 
         $this->set($response);
+    }
+
+    /**
+     * Response to the request with a file
+     *
+     * @param string $location Path to file
+     * @param string $filename Output name of file
+     * @param boolean $download Force download of file
+     * @return void
+     */
+    public function respondFile($location, $filename, $download = true)
+    {
+        $this->response = $this->response->withStatus(201);
+        $this->response->header('Access-Control-Allow-Origin','*');
+        $this->response = $this->response->withFile($location, ['name' => $filename, 'download' => $download]);
     }
 
     private function setCorsHeaders() 

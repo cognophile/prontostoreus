@@ -158,10 +158,8 @@ class InvoiceController extends AbstractApiController
                 return;
             } 
 
-            $this->response = $this->response->withStatus(201);
-            $this->response = $this->response->withFile($outputLocation, ['name' => $filename, 'download' => true]);
-            
-            // Required as to not attempt to render the file response as a view
+            // Required as to not attempt to render the file response as a view file, but as binary
+            $this->respondFile($outputLocation, $filename, true);
             return $this->response;
         }
         else {
