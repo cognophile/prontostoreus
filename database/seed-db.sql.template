@@ -27,7 +27,6 @@ INSERT INTO companies (name, description, email, telephone)
 INSERT INTO addresses (company_id, line_one, line_two, town, county, postcode) 
     VALUES (4, "Unit A", "Wilberforce Road", "Cambridge", "Cambridgeshire", "CB2-0TY");
 
-
 INSERT INTO companies (name, description, email, telephone) 
     VALUES ("StorezAway", "Don't throw it away, just store it", "help@storezaway.co.uk", "01234567894");
 

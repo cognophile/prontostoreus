@@ -89,8 +89,9 @@
                         ?>
                     </p>
                     <p id="customer-address-line-two">
-                        <?= 
-                            $data['application']['customer']['addresses'][0]['line_two'];
+                        <?php
+                            $lineTwo = $data['application']['customer']['addresses'][0]['line_two'];
+                            echo ($lineTwo && $lineTwo !== "null") ? $lineTwo : '';
                         ?>
                     </p>
                     <p id="customer-address-town">
@@ -131,8 +132,9 @@
                         ?>
                     </p>
                     <p id="company-address-line-two">
-                        <?= 
-                            $data['application']['company']['addresses'][0]['line_two'];
+                        <?php 
+                            $lineTwo = $data['application']['company']['addresses'][0]['line_two'];
+                            echo ($lineTwo && $lineTwo !== "null") ? $lineTwo : '';
                         ?>
                     </p>
                     <p id="company-address-town">
@@ -214,7 +216,7 @@
                             </td>
                             <td id="invoice-terms">
                                 <?= 
-                                    ($data['confirmations']['accepted']) ? "Accepted" : "Declined";
+                                    ($data['application']['confirmations'][0]['accepted']) ? "Accepted" : "Declined";
                                 ?>
                             </td>
                         </tr>

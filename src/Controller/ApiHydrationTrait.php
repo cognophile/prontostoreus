@@ -5,6 +5,7 @@ namespace Prontostoreus\Api\Controller;
 use Cake\Event\Event;
 use Cake\Filesystem\Folder;
 use Cake\Routing\Router;
+use Cake\Http\Exception\MethodNotAllowedException;
 
 trait ApiHydrationTrait
 {
@@ -89,11 +90,25 @@ trait ApiHydrationTrait
     private function setCorsHeaders() 
     {
         // For development purposes only
-        $this->response->cors($this->request)
+        $this->response
+            ->cors($this->request)
+            ->allowOrigin(['*'])
             ->allowOrigin(['http://localhost:8080/'])
             ->allowMethods(['*'])
             ->build();
 
         $this->response = $this->response->withHeader('Access-Control-Allow-Origin','*');
+    }
+
+    protected function requestFailWhenNot($methods)
+    {      
+        if (!is_array($methods) && !$this->request->is($methods)) {
+            throw new MethodNotAllowedException("HTTP Method disabled for endpoint: Use {$methods}");
+        }
+
+        if (is_array($methods) && !in_array($this->request->getMethod(), $methods)) {
+            $availableMethods = implode(" OR ", $methods);
+            throw new MethodNotAllowedException("HTTP Method disabled for endpoint: Use {$availableMethods}");
+        }
     }
 }

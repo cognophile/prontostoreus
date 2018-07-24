@@ -37,9 +37,9 @@ class ApplicationsController extends AbstractApiController
                 throw new InvalidArgumentException('An application ID must be provided.');
             }
             catch (InvalidArgumentException $ex) {
-                Log::write('error', $ex->getErrors());
+                Log::write('error', $ex);
                 $this->response = $this->response->withStatus(400);
-                $this->respondError($ex->getErrors(), $this->messageHandler->retrieve("Error", "InvalidArgument"));
+                $this->respondError($ex->getMessage(), $this->messageHandler->retrieve("Error", "InvalidArgument"));
             }
         }
 

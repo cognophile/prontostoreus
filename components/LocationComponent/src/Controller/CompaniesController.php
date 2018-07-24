@@ -4,6 +4,7 @@ namespace LocationComponent\Controller;
 
 use Cake\Log\Log;
 use Cake\Core\Configure;
+use Cake\Http\Exception\MethodNotAllowedException;
 
 use Prontostoreus\Api\Controller\AbstractApiController;
 
@@ -23,6 +24,16 @@ class CompaniesController extends AbstractApiController
 
     public function locate(string $postcode)
     {
+        try {
+            $this->requestFailWhenNot('GET');
+        }
+        catch (MethodNotAllowedException $ex) {
+            Log::write('error', $ex);
+            $this->response = $this->response->withStatus(405);
+            $this->respondError($ex->getMessage(), $this->messageHandler->retrieve("Error", "UnsuccessfulEdit"));
+            return;
+        }
+
         // Not a foolproof criteria as UK postcodes vary greatly, but, covers the basic variations
         if (!preg_match('/^[A-Z]{1,2}\d{1,2}(?:(-)\d[A-Z]{2})?$/', $postcode)) {
             $this->respondError($this->messageHandler->retrieve('Error', 'InvalidArgument'), 

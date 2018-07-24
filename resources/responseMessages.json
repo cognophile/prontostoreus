@@ -2,29 +2,33 @@
     "General": {
         "Welcome": "Prontostoreus API - Welcome!",
         "Version": "0.8.0",
-        "RouteAlive": "This is a live Route."
+        "RouteAlive": "This is a live Route"
     },
     "Data": {
-        "Found": "The data was successfully located.",
-        "Added": "The data was successfully added.",
-        "Edited": "The data was successfully edited.",
-        "Removed": "The data was successfully removed.",
+        "Found": "The data was successfully located",
+        "Added": "The data was successfully added",
+        "Edited": "The data was successfully edited",
+        "Removed": "The data was successfully removed",
         
-        "NotFound": "The requested data could not be located.",
-        "NotAdded": "The data could not be added.",
-        "NotEdited": "The data could not be edited.",
-        "NotRemoved": "The data could not be removed."
+        "NotFound": "The requested data could not be located",
+        "NotAdded": "The data could not be added",
+        "NotEdited": "The data could not be edited",
+        "NotRemoved": "The data could not be removed"
     },
     "File": {
-        "Retrieved": "The file was successfully retrieved.",
-        "NotRetrieved": "The file could not be retrieved."
+        "Retrieved": "The file was successfully retrieved",
+        "NotRetrieved": "The file could not be retrieved"
     },
     "Error": {
-        "UnsupportedRequestMethod": "The request method used is unsupported.",
-        "Unknown": "An unknown error occurred during the request.",
-        "UnsuccessfulAdd": "An error occurred when storing the data.",
-        "MissingPayload": "An error occurred when parsing the payload which appeared empty.",
-        "InvalidArgument": "The given URI argument was invalid.",
-        "InvalidType": "The supplied argument was invalid"
+        "UnsupportedRequestMethod": "The request method used is unsupported",
+        "Unknown": "An unknown error occurred during the request",
+        "UnsuccessfulAdd": "An error occurred when storing the data",
+        "UnsuccessfulView": "An error occurred when reading the data",
+        "UnsuccessfulEdit": "An error occurred when updating the data",
+        "UnsuccessfulDelete": "An error occurred when removing the data",
+        "MissingPayload": "An error occurred when parsing the payload which appeared empty",
+        "InvalidArgument": "The given URI argument was invalid",
+        "InvalidType": "The supplied argument was invalid",
+        "MethodNotAllowed": "The request was denied due to invalid method"
     }
 }

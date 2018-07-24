@@ -3,6 +3,8 @@
 namespace ConfirmationComponent\Controller;
 
 use Cake\Core\Configure;
+use Cake\Log\Log;
+use Cake\Http\Exception\MethodNotAllowedException;
 
 use Prontostoreus\Api\Controller\AbstractApiController;
 
@@ -22,9 +24,19 @@ class ConfirmationsController extends AbstractApiController
 
     public function acceptTerms() 
     {   
+        try {
+            $this->requestFailWhenNot('POST');
+        }
+        catch (MethodNotAllowedException $ex) {
+            Log::write('error', $ex);
+            $this->response = $this->response->withStatus(405);
+            $this->respondError($ex->getMessage(), $this->messageHandler->retrieve("Error", "UnsuccessfulEdit"));
+            return;
+        }
+
         $data = $this->request->getData();
 
-        if (!empty($data)) {
+        if (empty($data)) {
             $this->response = $this->response->withStatus(404);
             $this->respondError("Empty payload", $this->messageHandler->retrieve("Error", "MissingPayload"));
         }
