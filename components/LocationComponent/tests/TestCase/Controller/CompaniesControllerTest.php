@@ -59,47 +59,47 @@ class CompaniesControllerTest extends IntegrationTestCase
     
     public function testLocationComponentWhereInvalidPostcodeMissingHyphenGivenReturnsJsonError()
     {
-        $expectedError = 'The postcode must conform to the following format: AreaDistrict-SectorUnit';
-        $expectedMessage = 'The given URI argument was invalid.';
+        $expectedMessage = 'The postcode must conform to the following format: AreaDistrict-SectorUnit';
+        $expectedError = 'The given URI argument was invalid';
 
         $this->get('/locations/AB121DE');
         $responseArray = json_decode($this->_response->getBody(), true);
         
-        $this->assertContains($expectedError, $responseArray);
-        $this->assertContains($expectedMessage, $responseArray);
+        $this->assertContains($expectedError, $responseArray["error"]);
+        $this->assertContains($expectedMessage, $responseArray["message"]);
     }
 
     public function testLocationComponentWhereInvalidMediumLengthPostcodeMissingHyphenGivenReturnsJsonError()
     {
-        $expectedError = 'The postcode must conform to the following format: AreaDistrict-SectorUnit';
-        $expectedMessage = 'The given URI argument was invalid.';
+        $expectedMessage = 'The postcode must conform to the following format: AreaDistrict-SectorUnit';
+        $expectedError = 'The given URI argument was invalid';
 
         $this->get('/locations/AB21DE');
         $responseArray = json_decode($this->_response->getBody(), true);
         
-        $this->assertContains($expectedError, $responseArray);
-        $this->assertContains($expectedMessage, $responseArray);
+        $this->assertContains($expectedError, $responseArray["error"]);
+        $this->assertContains($expectedMessage, $responseArray["message"]);
     }
 
     public function testLocationComponentWhereValidFullLengthHyphenatedPostcodeGivenReturnsJsonSuccess()
     {
-        $expectedMessage = 'The data was successfully located.';
+        $expectedMessage = 'The data was successfully located';
 
         $this->get('/locations/AB12-1DE');        
         $responseArray = json_decode($this->_response->getBody(), true);
 
-        $this->assertContains($expectedMessage, $responseArray);
+        $this->assertContains($expectedMessage, $responseArray["message"]);
     }
 
     public function testLocationComponentWhereInvalidAlphanumericFormattedPostcodeGivenReturnsJsonError()
     {   
-        $expectedError = 'The postcode must conform to the following format: AreaDistrict-SectorUnit';
-        $expectedMessage = 'The given URI argument was invalid.';
+        $expectedMessage = 'The postcode must conform to the following format: AreaDistrict-SectorUnit';
+        $expectedError = 'The given URI argument was invalid';
 
         $this->get('/locations/12AB-D12');        
         $responseArray = json_decode($this->_response->getBody(), true);
         
-        $this->assertContains($expectedError, $responseArray);
-        $this->assertContains($expectedMessage, $responseArray);
+        $this->assertContains($expectedError, $responseArray["error"]);
+        $this->assertContains($expectedMessage, $responseArray["message"]);
     }
 }
