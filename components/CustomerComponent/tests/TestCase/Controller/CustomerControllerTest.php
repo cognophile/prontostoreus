@@ -157,22 +157,21 @@ class CustomersControllerTest extends IntegrationTestCase
     public function testPostToAddCustomerWithValidCustomerDuplicateEmailReturnsSuccessfulResponse()
     {
         $customer = $this->validCustomerProvider();
+        $duplicateCustomer = $this->validCustomerProvider();
         $expectedMessage = "The data was successfully added";
 
         $this->post('/customers/add', $customer);
         $responseArray = json_decode($this->_response->getBody(), true);
         
+        $this->post('/customers/add', $duplicateCustomer);
+        $duplicateResponseArray = json_decode($this->_response->getBody(), true);
+
         $this->assertResponseSuccess();        
         $this->assertContains($expectedMessage, $responseArray["message"]);
         $this->assertTrue($responseArray["success"]);
-
-        $duplicateCustomer = $this->validCustomerProvider();
-
-        $this->post('/customers/add', $duplicateCustomer);
-        $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertResponseSuccess();        
-        $this->assertContains($expectedMessage, $responseArray["message"]);
-        $this->assertTrue($responseArray["success"]);
+        $this->assertContains($expectedMessage, $duplicateResponseArray["message"]);
+        $this->assertTrue($duplicateResponseArray["success"]);
     }
 }
