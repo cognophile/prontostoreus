@@ -6,7 +6,6 @@ use Cake\Controller\Controller as CakeController;
 use Cake\Event\Event;
 use Cake\Core\Configure;
 use Cake\Filesystem\Folder;
-use Cake\Log\Log;
 
 use Cake\Http\Exception\MethodNotAllowedException;
 use Cake\Http\Exception\BadRequestException;
@@ -62,9 +61,7 @@ abstract class AbstractApiController extends CakeController
             $this->requestFailWhenNot('POST');
         }
         catch (MethodNotAllowedException $ex) {
-            Log::write('error', $ex);
-            $this->response = $this->response->withStatus(405);
-            $this->respondError($ex->getMessage(), $this->messageHandler->retrieve("Error", "UnsuccessfulAdd"));
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "UnsuccessfulAdd"));
             return;
         }
 
@@ -81,19 +78,16 @@ abstract class AbstractApiController extends CakeController
             $entity = $entityModel->saveEntity($entityModel, $newEntity);
 
             if ($entity->getErrors()) {
-                // TODO: Configure error handler and renderer and logging, centrally
-                Log::write('error', $entity->getErrors());
-                $this->response = $this->response->withStatus(400);
-                $this->respondError($entity->getErrors(), $this->messageHandler->retrieve("Error", "UnsuccessfulAdd"));
+                $this->respondError($entity->getErrors(), 400, $this->messageHandler->retrieve("Error", "UnsuccessfulAdd"));
+                return;
             }
 
             if (!empty($entity) && $hasAssociations) {
                 $associatedEntity = $entityModel->saveAssociatedEntity($entityModel, $entity, $data);
 
                 if ($associatedEntity->getErrors()) {
-                    Log::write('error', $associatedEntity->getErrors());
-                    $this->response = $this->response->withStatus(400);
-                    $this->respondError($associatedEntity->getErrors(), $this->messageHandler->retrieve("Error", "UnsuccessfulAdd"));
+                    $this->respondError($associatedEntity->getErrors(), 400, $this->messageHandler->retrieve("Error", "UnsuccessfulAdd"));
+                    return;
                 }
             } 
 
@@ -104,11 +98,16 @@ abstract class AbstractApiController extends CakeController
                 $created = $entityModel->get($newEntity->id, ['contain' => $contained]);
             }
             
-            $this->response = $this->response->withStatus(201);
-            $this->respondSuccess($created, $this->messageHandler->retrieve("Data", "Added"));
+            $this->respondSuccess($created, 201, $this->messageHandler->retrieve("Data", "Added"));
         }
         else {
-            throw new BadRequestException($this->messageHandler->retrieve("Error", "MissingPayload"));
+            try {
+                throw new BadRequestException();
+            }
+            catch (BadRequestException $ex) {
+                $this->respondException($ex, $this->messageHandler->retrieve("Error", "MissingPayload"));
+                return;
+            }
         }
     }
 
@@ -126,9 +125,7 @@ abstract class AbstractApiController extends CakeController
             $this->requestFailWhenNot('GET');
         }
         catch (MethodNotAllowedException $ex) {
-            Log::write('error', $ex);
-            $this->response = $this->response->withStatus(405);
-            $this->respondError($ex->getMessage(), $this->messageHandler->retrieve("Error", "UnsuccessfulView"));
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "UnsuccessfulView"));
             return;
         }
 
@@ -136,25 +133,23 @@ abstract class AbstractApiController extends CakeController
             $results = $entityModel->getAll();
 
             if ($results instanceof RecordNotFoundException) {
-                Log::write('error', $results->getMessage());
-                $this->response = $this->response->withStatus(404);
-                $this->respondError($results->getMessage(), $this->messageHandler->retrieve("Data", "NotFound"));
+                $ex = $results;
+                $this->respondException($ex, $this->messageHandler->retrieve("Data", "NotFound"));
+                return;
             }
 
-            $this->response = $this->response->withStatus(200);
-            $this->respondSuccess($results->toArray(), $this->messageHandler->retrieve("Data", "Found"));
+            $this->respondSuccess($results->toArray(), 200, $this->messageHandler->retrieve("Data", "Found"));
         }
         else {
             $result = $entityModel->getOne($recordId);
 
             if ($result instanceof RecordNotFoundException) {
-                Log::write('error', $results->getMessage());
-                $this->response = $this->response->withStatus(404);
-                $this->respondError($result->getMessage(), $this->messageHandler->retrieve("Data", "NotFound"));
+                $ex = $result;
+                $this->respondException($ex, $this->messageHandler->retrieve("Data", "NotFound"));
+                return;
             }
 
-            $this->response = $this->response->withStatus(200);
-            $this->respondSuccess($result->toArray(), $this->messageHandler->retrieve("Data", "Found"));
+            $this->respondSuccess($result->toArray(), 200, $this->messageHandler->retrieve("Data", "Found"));
         }
     }
 
@@ -174,9 +169,7 @@ abstract class AbstractApiController extends CakeController
             $this->requestFailWhenNot(['PUT', 'POST']);
         }
         catch (MethodNotAllowedException $ex) {
-            Log::write('error', $ex);
-            $this->response = $this->response->withStatus(405);
-            $this->respondError($ex->getMessage(), $this->messageHandler->retrieve("Error", "UnsuccessfulEdit"));
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "UnsuccessfulEdit"));
             return;
         }
 
@@ -207,21 +200,24 @@ abstract class AbstractApiController extends CakeController
                         $updatedRecord = $entityModel->get($recordId, ['contain' => $contained]);
                     }
 
-                    $this->response = $this->response->withStatus(200);
-                    $this->respondSuccess($updatedRecord, $this->messageHandler->retrieve("Data", "Edited"));
+                    $this->respondSuccess($updatedRecord, 200, $this->messageHandler->retrieve("Data", "Edited"));
                 } else {
-                    Log::write('error', $updatedEntity->getErrors());
-                    $this->response = $this->response->withStatus(400);
-                    $this->respondError($updatedEntity->getErrors(), $this->messageHandler->retrieve("Data", "NotEdited"));
+                    $this->respondError($updatedEntity->getErrors(), 400, $this->messageHandler->retrieve("Data", "NotEdited"));
+                    return;
                 }
             } catch (RecordNotFoundException $ex) {
-                Log::write('error', $ex);
-                $this->response = $this->response->withStatus(404);
-                $this->respondError($ex->getMessage(), $this->messageHandler->retrieve("Data", "NotFound"));
+                $this->respondException($ex, $this->messageHandler->retrieve("Data", "NotFound"));
+                return;
             }
         }
         else {
-            throw new BadRequestException($this->messageHandler->retrieve("Error", "MissingPayload"));
+            try {
+                throw new BadRequestException();
+            }
+            catch (BadRequestException $ex) {
+                $this->respondException($ex, $this->messageHandler->retrieve("Error", "MissingPayload"));
+                return;
+            }
         }
     }
 
@@ -239,22 +235,19 @@ abstract class AbstractApiController extends CakeController
             $this->requestFailWhenNot('DELETE');
         }
         catch (MethodNotAllowedException $ex) {
-            Log::write('error', $ex);
-            $this->response = $this->response->withStatus(405);
-            $this->respondError($ex->getMessage(), $this->messageHandler->retrieve("Error", "UnsuccessfulDelete"));
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "UnsuccessfulDelete"));
             return;
         }
 
         $recordEntity = $entityModel->getOne($recordId);
         $result = $entityModel->delete($recordEntity);
 
-        if ($results instanceof RecordNotFoundException) {
-            Log::write('error', $result);
-            $this->response = $this->response->withStatus(404);
-            $this->respondError($result->getMessage(), $this->messageHandler->retrieve("Data", "NotRemoved"));
+        if ($result instanceof RecordNotFoundException) {
+            $ex = $result;
+            $this->respondException($ex, $this->messageHandler->retrieve("Data", "NotRemoved"));
+            return;
         }
 
-        $this->response = $this->response->withStatus(200);
-        $this->respondSuccess($result, $this->messageHandler->retrieve("Data", "Removed"));
+        $this->respondSuccess($result, 200, $this->messageHandler->retrieve("Data", "Removed"));
     }
 }

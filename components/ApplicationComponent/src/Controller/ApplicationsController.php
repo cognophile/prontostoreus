@@ -1,7 +1,6 @@
 <?php
 namespace ApplicationComponent\Controller;
 
-use Cake\Log\Log;
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 
@@ -22,7 +21,7 @@ class ApplicationsController extends AbstractApiController
     public function status()
     {
         $message = $this->messageHandler->retrieve("General", "RouteAlive");
-        $this->respondSuccess([], "Application base: {$message}", Configure::read('Api.Routes.Applications'));
+        $this->respondSuccess([], 200, "Application base: {$message}", Configure::read('Api.Routes.Applications'));
     }
 
     public function add() 
@@ -37,9 +36,8 @@ class ApplicationsController extends AbstractApiController
                 throw new InvalidArgumentException('An application ID must be provided.');
             }
             catch (InvalidArgumentException $ex) {
-                Log::write('error', $ex);
-                $this->response = $this->response->withStatus(400);
-                $this->respondError($ex->getMessage(), $this->messageHandler->retrieve("Error", "InvalidArgument"));
+                $this->respondException($ex, $this->messageHandler->retrieve("Error", "InvalidArgument"));
+                return;
             }
         }
 

@@ -18,7 +18,7 @@ class CustomersController extends AbstractApiController
     public function status()
     {
         $message = $this->messageHandler->retrieve("General", "RouteAlive");
-        $this->respondSuccess([], "Customer base: {$message}", Configure::read('Api.Routes.Customers'));
+        $this->respondSuccess([], 200, "Customer base: {$message}", Configure::read('Api.Routes.Customers'));
     }
 
     public function add() 

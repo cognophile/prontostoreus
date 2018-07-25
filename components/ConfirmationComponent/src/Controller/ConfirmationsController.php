@@ -3,8 +3,8 @@
 namespace ConfirmationComponent\Controller;
 
 use Cake\Core\Configure;
-use Cake\Log\Log;
 use Cake\Http\Exception\MethodNotAllowedException;
+use Cake\Http\Exception\BadRequestException;
 
 use Prontostoreus\Api\Controller\AbstractApiController;
 
@@ -19,7 +19,7 @@ class ConfirmationsController extends AbstractApiController
     public function status()
     {
         $message = $this->messageHandler->retrieve("General", "RouteAlive");
-        $this->respondSuccess([], "Confirmations Base: {$message}", Configure::read('Api.Routes.Confirmations'));
+        $this->respondSuccess([], 200, "Confirmations Base: {$message}", Configure::read('Api.Routes.Confirmations'));
     }
 
     public function acceptTerms() 
@@ -28,17 +28,20 @@ class ConfirmationsController extends AbstractApiController
             $this->requestFailWhenNot('POST');
         }
         catch (MethodNotAllowedException $ex) {
-            Log::write('error', $ex);
-            $this->response = $this->response->withStatus(405);
-            $this->respondError($ex->getMessage(), $this->messageHandler->retrieve("Error", "UnsuccessfulEdit"));
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "UnsuccessfulEdit"));
             return;
         }
 
         $data = $this->request->getData();
 
         if (empty($data)) {
-            $this->response = $this->response->withStatus(404);
-            $this->respondError("Empty payload", $this->messageHandler->retrieve("Error", "MissingPayload"));
+            try {
+                throw new BadRequestException();
+            }
+            catch (BadRequestException $ex) {
+                $this->respondException($ex, $this->messageHandler->retrieve("Error", "MissingPayload"));
+                return;
+            }
         }
         
         $applicationId = $data['application_id']; 

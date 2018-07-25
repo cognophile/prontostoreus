@@ -2,7 +2,6 @@
 
 namespace LocationComponent\Controller;
 
-use Cake\Log\Log;
 use Cake\Core\Configure;
 use Cake\Http\Exception\MethodNotAllowedException;
 
@@ -19,7 +18,7 @@ class CompaniesController extends AbstractApiController
     public function status()
     {
         $message = $this->messageHandler->retrieve("General", "RouteAlive");
-        $this->respondSuccess([], "Location Base: {$message}", Configure::read('Api.Routes.Locations'));
+        $this->respondSuccess([], 200, "Location Base: {$message}", Configure::read('Api.Routes.Locations'));
     }
 
     public function locate(string $postcode)
@@ -28,15 +27,13 @@ class CompaniesController extends AbstractApiController
             $this->requestFailWhenNot('GET');
         }
         catch (MethodNotAllowedException $ex) {
-            Log::write('error', $ex);
-            $this->response = $this->response->withStatus(405);
-            $this->respondError($ex->getMessage(), $this->messageHandler->retrieve("Error", "UnsuccessfulEdit"));
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "MethodNotAllowed"));
             return;
         }
 
         // Not a foolproof criteria as UK postcodes vary greatly, but, covers the basic variations
         if (!preg_match('/^[A-Z]{1,2}\d{1,2}(?:(-)\d[A-Z]{2})?$/', $postcode)) {
-            $this->respondError($this->messageHandler->retrieve('Error', 'InvalidArgument'), 
+            $this->respondError($this->messageHandler->retrieve('Error', 'InvalidArgument'), 400, 
                 'The postcode must conform to the following format: AreaDistrict-SectorUnit');
             return;
         }
@@ -45,11 +42,11 @@ class CompaniesController extends AbstractApiController
         
         if (!empty($results)) {
             $message = $this->messageHandler->retrieve("Data", "Found");
-            $this->respondSuccess($results, $message);
+            $this->respondSuccess($results, 200, $message);
         }
         else {
             $message = $this->messageHandler->retrieve("Data", "NotFound");
-            $this->respondError("No companies matching {$postcode} found.", $message);
+            $this->respondError("No companies matching {$postcode} found.", 404, $message);
         }                                                  
     }
 }

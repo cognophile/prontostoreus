@@ -20,7 +20,7 @@ class InvoiceController extends AbstractApiController
     public function status()
     {
         $message = $this->messageHandler->retrieve("General", "RouteAlive");
-        $this->respondSuccess([], "Invoice base: {$message}", Configure::read('Api.Routes.Invoices'));
+        $this->respondSuccess([], 200, "Invoice base: {$message}", Configure::read('Api.Routes.Invoices'));
     }
 
     public function getApplicationCustomer($applicationId)
@@ -29,9 +29,7 @@ class InvoiceController extends AbstractApiController
             $this->requestFailWhenNot('GET');
         }
         catch (MethodNotAllowedException $ex) {
-            Log::write('error', $ex);
-            $this->response = $this->response->withStatus(405);
-            $this->respondError($ex->getMessage(), $this->messageHandler->retrieve("Error", "UnsuccessfulEdit"));
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "MethodNotAllowed"));
             return;
         }
         
@@ -40,9 +38,7 @@ class InvoiceController extends AbstractApiController
                 throw new InvalidArgumentException('An application ID must be provided.');
             }
             catch (InvalidArgumentException $ex) {
-                Log::write('error', $ex);
-                $this->response = $this->response->withStatus(400);
-                $this->respondError($ex->getMessage(), $this->messageHandler->retrieve("Error", "InvalidArgument"));
+                $this->respondException($ex, $this->messageHandler->retrieve("Error", "InvalidArgument"));
                 return;
             }
         }
@@ -50,8 +46,7 @@ class InvoiceController extends AbstractApiController
         $results = $this->Applications->find('customerByApplicationId', ['applicationId' => $applicationId])
             ->toArray();
         
-        $this->response = $this->response->withStatus(200);
-        $this->respondSuccess($results, $this->messageHandler->retrieve("Data", "Found"));
+        $this->respondSuccess($results, 200, $this->messageHandler->retrieve("Data", "Found"));
     }
 
     public function getApplicationCompany($applicationId)
@@ -60,9 +55,7 @@ class InvoiceController extends AbstractApiController
             $this->requestFailWhenNot('GET');
         }
         catch (MethodNotAllowedException $ex) {
-            Log::write('error', $ex);
-            $this->response = $this->response->withStatus(405);
-            $this->respondError($ex->getMessage(), $this->messageHandler->retrieve("Error", "UnsuccessfulEdit"));
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "MethodNotAllowed"));
             return;
         }
 
@@ -71,9 +64,7 @@ class InvoiceController extends AbstractApiController
                 throw new InvalidArgumentException('An application ID must be provided.');
             }
             catch (InvalidArgumentException $ex) {
-                Log::write('error', $ex);
-                $this->response = $this->response->withStatus(400);
-                $this->respondError($ex->getMessage(), $this->messageHandler->retrieve("Error", "InvalidArgument"));
+                $this->respondException($ex, $this->messageHandler->retrieve("Error", "InvalidArgument"));
                 return;
             }
         }
@@ -81,8 +72,7 @@ class InvoiceController extends AbstractApiController
         $results = $this->Applications->find('companyByApplicationId', ['applicationId' => $applicationId])
             ->toArray();
         
-        $this->response = $this->response->withStatus(200);
-        $this->respondSuccess($results, $this->messageHandler->retrieve("Data", "Found")); 
+        $this->respondSuccess($results, 200, $this->messageHandler->retrieve("Data", "Found")); 
     }
 
     public function getInvoiceDataByApplication($applicationId)
@@ -91,9 +81,7 @@ class InvoiceController extends AbstractApiController
             $this->requestFailWhenNot('GET');
         }
         catch (MethodNotAllowedException $ex) {
-            Log::write('error', $ex);
-            $this->response = $this->response->withStatus(405);
-            $this->respondError($ex->getMessage(), $this->messageHandler->retrieve("Error", "UnsuccessfulEdit"));
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "MethodNotAllowed"));
             return;
         }
         
@@ -102,17 +90,14 @@ class InvoiceController extends AbstractApiController
                 throw new InvalidArgumentException('An application ID must be provided.');
             }
             catch (InvalidArgumentException $ex) {
-                Log::write('error', $ex);
-                $this->response = $this->response->withStatus(400);
-                $this->respondError($ex->getMessage(), $this->messageHandler->retrieve("Error", "InvalidArgument"));
+                $this->respondException($ex, $this->messageHandler->retrieve("Error", "InvalidArgument"));
                 return;
             }
         }
 
         $results = $this->Invoices->find('byApplicationId', ['applicationId' => $applicationId])->toArray();
 
-        $this->response = $this->response->withStatus(200);
-        $this->respondSuccess($results, $this->messageHandler->retrieve("Data", "Found"));
+        $this->respondSuccess($results, 200, $this->messageHandler->retrieve("Data", "Found"));
     }
 
     public function getApplicationLines($applicationId)
@@ -121,9 +106,7 @@ class InvoiceController extends AbstractApiController
             $this->requestFailWhenNot('GET');
         }
         catch (MethodNotAllowedException $ex) {
-            Log::write('error', $ex);
-            $this->response = $this->response->withStatus(405);
-            $this->respondError($ex->getMessage(), $this->messageHandler->retrieve("Error", "UnsuccessfulEdit"));
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "MethodNotAllowed"));
             return;
         }
 
@@ -132,17 +115,14 @@ class InvoiceController extends AbstractApiController
                 throw new InvalidArgumentException('An application ID must be provided.');
             }
             catch (InvalidArgumentException $ex) {
-                Log::write('error', $ex);
-                $this->response = $this->response->withStatus(400);
-                $this->respondError($ex->getMessage(), $this->messageHandler->retrieve("Error", "InvalidArgument"));
+                $this->respondException($ex, $this->messageHandler->retrieve("Error", "InvalidArgument"));
                 return;
             }
         }
 
         $results = $this->Applications->find('linesByApplicationId', ['applicationId' => $applicationId])->toArray();
 
-        $this->response = $this->response->withStatus(200);
-        $this->respondSuccess($results, $this->messageHandler->retrieve("Data", "Found"));       
+        $this->respondSuccess($results, 200, $this->messageHandler->retrieve("Data", "Found"));       
     }
 
     public function produceInvoice($applicationId)
@@ -151,9 +131,7 @@ class InvoiceController extends AbstractApiController
             $this->requestFailWhenNot('GET');
         }
         catch (MethodNotAllowedException $ex) {
-            Log::write('error', $ex);
-            $this->response = $this->response->withStatus(405);
-            $this->respondError($ex->getMessage(), $this->messageHandler->retrieve("Error", "UnsuccessfulEdit"));
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "MethodNotAllowed"));
             return;
         }
 
@@ -162,9 +140,7 @@ class InvoiceController extends AbstractApiController
                 throw new InvalidArgumentException('An application ID must be provided.');
             }
             catch (InvalidArgumentException $ex) {
-                Log::write('error', $ex);
-                $this->response = $this->response->withStatus(400);
-                $this->respondError($ex->getMessage(), $this->messageHandler->retrieve("Error", "InvalidArgument"));
+                $this->respondException($ex, $this->messageHandler->retrieve("Error", "InvalidArgument"));
                 return;
             }
         }
@@ -181,9 +157,8 @@ class InvoiceController extends AbstractApiController
         $isCreated = $pdfCreator->render();
 
         if (!$isCreated) {
-            Log::write('error', 'Could not retrieve Invoice PDF: ' . $outputLocation);
-            $this->response = $this->response->withStatus(400);
-            $this->respondError('Could not retrieve Invoice PDF: ' . $outputLocation, $this->messageHandler->retrieve("File", "NotRetrieved"));
+            $this->respondError('Could not retrieve Invoice PDF: ' . $outputLocation, 500, 
+                $this->messageHandler->retrieve("File", "NotRetrieved"));
             return;
         } 
 
