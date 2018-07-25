@@ -106,7 +106,7 @@ abstract class AbstractComponentRepository extends CakeTable
         $association = Inflector::tableize($this->getAssociations(0));
         $associatedEntity = TableRegistry::get($this->getAssociations(0));
 
-        $data[$association][$this->getForeignKeyName($parentModel->alias())] = $parentEntity->id;
+        $data[$association][$this->getForeignKeyName($parentModel->getAlias())] = $parentEntity->id;
         $newAssociatedEntity = $associatedEntity->newEntity($data[$association]);
         
         $associated = $this->saveEntity($associatedEntity, $newAssociatedEntity);
