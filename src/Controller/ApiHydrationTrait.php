@@ -5,6 +5,7 @@ namespace Prontostoreus\Api\Controller;
 use Cake\Event\Event;
 use Cake\Filesystem\Folder;
 use Cake\Routing\Router;
+use Cake\Log\Log;
 use Cake\Http\Exception\MethodNotAllowedException;
 
 trait ApiHydrationTrait
@@ -35,7 +36,7 @@ trait ApiHydrationTrait
      * @param string $error
      * @return void
      */
-    public function respondSuccess($data, string $message = "", array $links = [], string $error = "")
+    protected function respondSuccess($data, int $code, string $message = "", array $links = [], string $error = ""): void
     {
         $response = [
             'message' => $message,
@@ -46,6 +47,7 @@ trait ApiHydrationTrait
             'data' => $data
         ];
     
+        $this->response = $this->response->withStatus($code);
         $this->set($response);
     }
 
@@ -58,8 +60,11 @@ trait ApiHydrationTrait
      * @param string $data
      * @return void
      */
-    public function respondError($error, string $message = "", array $links = [], array $data = [])
+    protected function respondError($error, int $code, string $message = "", array $links = [], array $data = []): void
     {
+        Log::write('error', $code . ": " . $message . " (" . Router::url($this->here, true) . ")");
+        Log::write('error', $error);
+
         $response = [
             'message' => $message,
             'success' => false,
@@ -69,6 +74,33 @@ trait ApiHydrationTrait
             'data' => $data
         ];
 
+        $this->response = $this->response->withStatus($code);
+        $this->set($response);
+    }
+
+    /**
+     * Respond to the requestor indicating a raised exception
+     *
+     * @param Exception $ex
+     * @param string $message
+     * @param array $links
+     * @param array $data
+     * @return void
+     */
+    protected function respondException(\Exception $ex, string $message = "", array $links = [], array $data = []): void
+    {
+        Log::write('error', $ex);
+
+        $response = [
+            'message' => $message,
+            'success' => false,
+            'url' => Router::url($this->here, true),
+            'error' => $ex->getMessage(),
+            'links' => $links,
+            'data' => $data
+        ];
+
+        $this->response = $this->response->withStatus($ex->getCode());
         $this->set($response);
     }
 
@@ -80,14 +112,27 @@ trait ApiHydrationTrait
      * @param boolean $download Force download of file
      * @return void
      */
-    public function respondFile($location, $filename, $download = true)
+    protected function respondFile($location, $filename, $download = true): void
     {
         $this->response = $this->response->withStatus(201);
         $this->response->header('Access-Control-Allow-Origin','*');
         $this->response = $this->response->withFile($location, ['name' => $filename, 'download' => $download]);
     }
 
-    private function setCorsHeaders() 
+
+    protected function requestFailWhenNot($methods): void
+    {      
+        if (!is_array($methods) && !$this->request->is($methods)) {
+            throw new MethodNotAllowedException("HTTP Method disabled for endpoint: Use {$methods}");
+        }
+
+        if (is_array($methods) && !in_array($this->request->getMethod(), $methods)) {
+            $availableMethods = implode(" OR ", $methods);
+            throw new MethodNotAllowedException("HTTP Method disabled for endpoint: Use {$availableMethods}");
+        }
+    }
+
+    private function setCorsHeaders(): void
     {
         // For development purposes only
         $this->response
@@ -98,17 +143,5 @@ trait ApiHydrationTrait
             ->build();
 
         $this->response = $this->response->withHeader('Access-Control-Allow-Origin','*');
-    }
-
-    protected function requestFailWhenNot($methods)
-    {      
-        if (!is_array($methods) && !$this->request->is($methods)) {
-            throw new MethodNotAllowedException("HTTP Method disabled for endpoint: Use {$methods}");
-        }
-
-        if (is_array($methods) && !in_array($this->request->getMethod(), $methods)) {
-            $availableMethods = implode(" OR ", $methods);
-            throw new MethodNotAllowedException("HTTP Method disabled for endpoint: Use {$availableMethods}");
-        }
     }
 }
