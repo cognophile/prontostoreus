@@ -235,7 +235,7 @@ Configure::write('Api.Routes.Locations', [
 
 Configure::write('Api.Routes.Customers', [
         Configure::read('Api.Base') . 'customers/' => "GET",
-        Configure::read('Api.Base') . 'customers/' => "POST"
+        Configure::read('Api.Base') . 'customers/add' => "POST"
 ]);
 
 Configure::write('Api.Routes.Applications', [
