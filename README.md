@@ -46,7 +46,7 @@ setfacl -R -d -m u:${HTTPDUSER}:rwx logs
 ## Database configuration
 Having set up your MySQL server and its root user, edit the following example file to insert a password suitable for your chosen level of security, and execute it as the root MySQL user. 
 
-Run the following commands to create the prontostoreus user and create the database. 
+Run the following commands to create the prontostoreus user and create the database.  The test database does not require migrating or seeding, as this is automatically handled by CakePHP at test runtime. However, should it be required in the future, simply use `mysql -u root -p test_prontostoreus < database/seed-db.sql` to initially seed the database, and then the Phinx commands listed in the _"Handy-dandy CakeMigrations Commands (A Phinx Wrapper)"_ section with the additional `--connection test` command flag (the name of which is defined under the `Datasources` array in `app.php`).
 
 **NOTICE: Only run `seed-db.sql` once all component migrations have been run, in order (see 'Application Database Configuration' for this).** 
 
@@ -56,7 +56,6 @@ vi spawn-db.sql
     insert a password into the file
 mysql -u root -p < database/spawn-db.sql
 mysql -u root -p prontostoreus < database/seed-db.sql
-mysql -u root -p test_prontostoreus < database/seed-db.sql
 ```
 
 If you experience this error when running the script with `mysql > source database/spawn-db.sql` or `mysql -u root -p < database/spawn-db.sql`, then see [this Stack Overflow post](https://stackoverflow.com/a/6332971/5012644), or, issue the steps below the error block:
