@@ -93,7 +93,8 @@ class CompanyFurnishingRatesTable extends AbstractComponentRepository
     {
         return $query->select(['company_id', 'furnishing_id', 'cost'])
             ->where(['company_id' => $options['companyId']])
-            ->where(['furnishing_id' => $options['furnishingId']])
-            ->first()->toArray();
+            ->andWhere(['furnishing_id' => $options['furnishingId']])
+            ->andWhere(['deleted' => 0])
+            ->toArray();
     }
 }
