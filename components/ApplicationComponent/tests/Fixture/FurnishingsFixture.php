@@ -51,6 +51,13 @@ class FurnishingsFixture extends TestFixture
                 'weight' => 1,
                 'room_id' => 1
             ],
+            [
+                'id' => 2,
+                'description' => 'Lorem ipsum dolor sit amet',
+                'size' => 5,
+                'weight' => 5,
+                'room_id' => 1
+            ],
         ];
         parent::init();
     }
