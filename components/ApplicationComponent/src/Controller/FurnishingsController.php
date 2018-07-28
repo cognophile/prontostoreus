@@ -29,6 +29,12 @@ class FurnishingsController extends AbstractApiController
         $this->loadModel('ApplicationComponent.Furnishings');
         $results = $this->Furnishings->find('byRoomId', ['roomId' => $roomId])->toArray();
 
+        if (!$results) {
+            $this->respondError('Requested room does not exist', 404, 
+                $this->messageHandler->retrieve("Data", "NotFound"));
+            return;
+        }
+
         $this->respondSuccess($results, 200, $this->messageHandler->retrieve("Data", "Found"));
     }
 

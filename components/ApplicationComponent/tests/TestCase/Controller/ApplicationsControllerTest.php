@@ -111,6 +111,24 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $this->assertEquals($expected, $responseArray['data']);
     }
 
+    public function testGetApplicationRoomFurnishingsEndpointWithNonExistentRoomIdRespondsError()
+    {
+        $roomId = 999;
+        $expectedError = "Requested room does not exist";
+        $expectedMessage = "The requested data could not be located";
+
+        $query = TableRegistry::get('ApplicationComponent.Furnishings')->find('all')->where(['room_id' => $roomId]);
+        $expected = $query->enableHydration(false)->toArray();
+
+        $this->get("/applications/room/{$roomId}/furnishing");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(404);
+        $this->assertFalse($responseArray['success']);
+        $this->assertEquals($expectedError, $responseArray['error']);
+        $this->assertEquals($expectedMessage, $responseArray['message']);
+    }
+
     public function testGetApplicationRoomEndpointWithNonExistentRecordIdRespondsException()
     {
         $roomId = 999;
