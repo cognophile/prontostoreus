@@ -27,7 +27,13 @@ class CompanyFurnishingRatesController extends AbstractApiController
         }
         
         $results = $this->CompanyFurnishingRates->find('companyItemPrice', 
-            ['companyId' => $companyId, 'furnishingId' => $furnishingId]);
+            ['companyId' => $companyId, 'furnishingId' => $furnishingId])->toArray();
+        
+        if (!$results) {
+            $this->respondError('Requested company or furnishing ID does not exist', 404, 
+                $this->messageHandler->retrieve("Data", "NotFound"));
+            return;
+        }
 
         $this->respondSuccess($results, 200, $this->messageHandler->retrieve("Data", "Found"));
     }
