@@ -63,6 +63,7 @@ class ApplicationsController extends AbstractApiController
 
     private function createInvoice(array $applicationData)
     {
+        // TODO: Add test for this (document only happens on re-post of full application to edit [fix])
         if (!is_array($applicationData) || empty($applicationData)) {
             throw new InvalidArgumentException("The provided data must be a valid array.");
         }
