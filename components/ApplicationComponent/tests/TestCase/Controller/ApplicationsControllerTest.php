@@ -11,12 +11,46 @@ use ApplicationComponent\Controller\ApplicationsController;
 class ApplicationsControllerTest extends IntegrationTestCase
 {
     public $fixtures = [
+        // TODO: Remove reliance upon other components by baking these classes into this component (requires updates to relationship definitions on existing component models)
         'plugin.application_component.applications',
         'plugin.application_component.company_furnishing_rates',
         'plugin.application_component.rooms',
         'plugin.application_component.furnishings',
-        'plugin.application_component.application_lines'    
+        'plugin.application_component.application_lines',
+        'plugin.customer_component.customers',
+        'plugin.location_component.companies'
     ];
+
+    private function validApplicationProvider($lines)
+    {
+        return 
+        [
+            "customer_id" => 1,
+            "company_id" => 1,
+            "delivery" => 0,
+            "start_date" => "2018-08-01",
+            "end_date" => "2018-08-31",
+            "total_cost" => "50.50",
+            "application_lines" => $lines
+        ];
+    }
+
+    private function validLinesProvider()
+    {
+        return 
+        [
+            "line_one" => [
+                "furnishing_id" => 1,
+                "quantity" => 1,
+                "line_cost" => "10.50"
+            ],
+            "line_two" => [
+                "furnishing_id" => 2,
+                "quantity" => 2,
+                "line_cost" => "40.00"
+            ]
+        ];
+    }
 
     public function testGetApplicationsComponentStatusRouteWhereResponseIsSuccessful()
     {
@@ -145,7 +179,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
     }
 
 
-    public function testGetApplicationRoomsListEndpointWithNonExistentRoomAndValidFurnishingIdReturnsException()
+    public function testGetApplicationRoomsListEndpointWithNonExistentRoomAndValidFurnishingIdReturnsError()
     {
         $roomId = 999; $furnishingId = 1;
         $expectedError = "Requested furnishing not associated with requested room";
@@ -203,5 +237,48 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $this->assertResponseCode(404);
         $this->assertFalse($responseArray['success']);
         $this->assertEquals($expectedError, $responseArray['error']);
+    }
+
+    public function testPostApplicationWithoutLinesDataReturnsErrorResponse()
+    {
+        $data = $this->validApplicationProvider([]);
+        $expectedMessage = "An error occurred when storing the data";
+        $expectedError = "Cannot create an application without furniture lines data";
+
+        $this->post('/applications/add', $data);
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(422);
+        $this->assertFalse($responseArray['success']);
+        $this->assertEquals($expectedError, $responseArray['error']);
+        $this->assertEquals($expectedMessage, $responseArray['message']);
+    }
+
+    public function testPostApplicationWithValidDataReturnsSuccessfulResponse()
+    {
+        $data = $this->validApplicationProvider($this->validLinesProvider());
+        $expectedMessage = "The data was successfully added";
+
+        $this->post('/applications/add', $data);
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseSuccess();        
+        $this->assertContains($expectedMessage, $responseArray["message"]);
+        $this->assertTrue($responseArray["success"]);
+    }
+
+    public function testPutAddApplicaitonWithValidDataReturnsErrorResponse()
+    {
+        $data = $this->validApplicationProvider($this->validLinesProvider());
+        $expectedMessage = "An error occurred when storing the data";
+        $expectedError = "HTTP Method disabled for endpoint: Use POST";
+
+        $this->put('/applications/add', $data);
+        $responseArray = json_decode($this->_response->getBody(), true);
+        
+        $this->assertResponseCode(405);        
+        $this->assertFalse($responseArray["success"]);
+        $this->assertContains($expectedMessage, $responseArray["message"]);
+        $this->assertContains($expectedError, $responseArray["error"]);
     }
 }

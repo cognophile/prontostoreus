@@ -3,6 +3,7 @@ namespace ApplicationComponent\Controller;
 
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
+use Cake\Datasource\Exception\RecordNotFoundException;
 
 use Prontostoreus\Api\Controller\AbstractApiController;
 
@@ -26,6 +27,14 @@ class ApplicationsController extends AbstractApiController
 
     public function add() 
     {
+        $data = $this->request->getData();
+
+        if (empty($data['application_lines'])) {
+            $this->respondError('Cannot create an application without furniture lines data', 422,
+                $this->messageHandler->retrieve("Error", "UnsuccessfulAdd"));
+            return;
+        }
+
         return $this->universalAdd($this->Applications);
     }
 
@@ -41,22 +50,27 @@ class ApplicationsController extends AbstractApiController
             }
         }
 
-        $isSuccessful = $this->createInvoice($this->request->getData());
+        try {
+            $isSuccessful = $this->createInvoice($this->request->getData());
+        }
+        catch (Excetion $ex) {
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "Unknown"));
+            return;
+        }
+        
         return $this->universalEdit($this->Applications, $applicationId);
     }
 
     private function createInvoice(array $applicationData)
     {
         if (!is_array($applicationData) || empty($applicationData)) {
-            throw new InvalidArgumentException('The provided data must be a valid array.');
+            throw new InvalidArgumentException("The provided data must be a valid array.");
         }
 
         $application = $this->InvoiceApplications->find('customerByApplicationId', ['applicationId' => $applicationData['id']])->toArray();
         
         if (!$application) {
-            $this->respondError('Associated application not found', 404, 
-                $this->messageHandler->retrieve("File", "NotRetrieved"));
-            return;
+            throw new RecordNotFoundException("An Application matching the given ID was not found");
         }
 
         $customerFirstname = $application[0]['customer']['firstname']; 
