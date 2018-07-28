@@ -99,6 +99,6 @@ class FurnishingsTable extends AbstractComponentRepository
     public function findByRoomId(Query $query, array $options)
     {
         $roomId = $options['roomId'];
-        return $query->where(['room_id' => $roomId])->toArray();
+        return $query->where(['room_id' => $roomId]);
     }
 }
