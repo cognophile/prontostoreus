@@ -69,10 +69,12 @@ abstract class AbstractApiController extends CakeController
 
         if (!empty($data)) {
             $associated = $entityModel->getAssociations(0);
-            $newEntity = $entityModel->newEntity($data);
 
             if (!empty($associated)) {
                 $newEntity = $entityModel->newEntity($data, ['associated' => $associated]);
+            }
+            else {
+                $newEntity = $entityModel->newEntity($data);
             }
 
             $entity = $entityModel->saveEntity($entityModel, $newEntity);
@@ -92,10 +94,12 @@ abstract class AbstractApiController extends CakeController
             } 
 
             $contained = $entityModel->getContained(0);
-            $created = $entityModel->get($newEntity->id);
 
             if (!empty($contained)) {
                 $created = $entityModel->get($newEntity->id, ['contain' => $contained]);
+            }
+            else {
+                $created = $entityModel->get($newEntity->id);
             }
             
             $this->respondSuccess($created, 201, $this->messageHandler->retrieve("Data", "Added"));
