@@ -40,7 +40,7 @@ class ApplicationLinesTable extends AbstractComponentRepository
         $this->setPrimaryKey('id');
 
         $this->belongsTo('Applications', [
-            'foreignKey' => 'applicaition_id',
+            'foreignKey' => 'application_id',
             'className' => 'ApplicationComponent.Applications'
         ]);
         $this->belongsTo('Furnishings', [
@@ -83,7 +83,7 @@ class ApplicationLinesTable extends AbstractComponentRepository
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['aapplication_id'], 'Applications'));
+        $rules->add($rules->existsIn(['application_id'], 'Applications'));
         $rules->add($rules->existsIn(['furnishing_id'], 'Furnishings'));
 
         return $rules;

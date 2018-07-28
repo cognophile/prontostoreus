@@ -7,7 +7,7 @@ use Cake\ORM\Entity;
  * ApplicationLine Entity
  *
  * @property int $id
- * @property int $applicaition_id
+ * @property int $application_id
  * @property int $furnishing_id
  * @property int $quantity
  * @property float $line_cost
