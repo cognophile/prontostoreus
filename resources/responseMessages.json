@@ -20,7 +20,7 @@
         "NotRetrieved": "The file could not be retrieved"
     },
     "Error": {
-        "Unknown": "An unknown error occurred during the request",
+        "Unknown": "An unknown error occurred during the request (see error for details)",
         "UnsuccessfulAdd": "An error occurred when storing the data",
         "UnsuccessfulView": "An error occurred when reading the data",
         "UnsuccessfulEdit": "An error occurred when updating the data",
