@@ -53,6 +53,12 @@ class ApplicationsController extends AbstractApiController
 
         $application = $this->InvoiceApplications->find('customerByApplicationId', ['applicationId' => $applicationData['id']])->toArray();
         
+        if (!$application) {
+            $this->respondError('Associated application not found', 404, 
+                $this->messageHandler->retrieve("File", "NotRetrieved"));
+            return;
+        }
+
         $customerFirstname = $application[0]['customer']['firstname']; 
         $customerSurname = $application[0]['customer']['surname'];
         $invoiceData = $this->Invoices->buildInvoiceData($applicationData, $customerFirstname, $customerSurname);
@@ -61,6 +67,7 @@ class ApplicationsController extends AbstractApiController
         $newInvoice = $this->Invoices->saveEntity($this->Invoices, $invoice);
 
         if ($newInvoice->getErrors()) {
+            // * Don't respond with an error as this is a hidden process
             Log::write('error', $newInvoice->getErrors());
             return false;
         }
