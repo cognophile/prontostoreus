@@ -20,7 +20,6 @@
         "NotRetrieved": "The file could not be retrieved"
     },
     "Error": {
-        "UnsupportedRequestMethod": "The request method used is unsupported",
         "Unknown": "An unknown error occurred during the request",
         "UnsuccessfulAdd": "An error occurred when storing the data",
         "UnsuccessfulView": "An error occurred when reading the data",
