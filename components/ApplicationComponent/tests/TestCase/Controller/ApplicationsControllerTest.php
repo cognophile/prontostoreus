@@ -87,26 +87,15 @@ class ApplicationsControllerTest extends IntegrationTestCase
 
     public function testGetApplicationRoomsListEndpointWithZeroRecordIdReturnsFullyPopulatedList()
     {
+        $roomId = 0;
         $query = TableRegistry::get('ApplicationComponent.Rooms')->find('all');
         $expected = $query->enableHydration(false)->toArray();
 
-        $this->get('/applications/room/0');
+        $this->get("/applications/room/{$roomId}");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseSuccess();
         $this->assertEquals($expected, $responseArray['data']);
-    }
-
-    public function testGetApplicationRoomsListEndpointWithNonExistentRecordIdReturnsException()
-    {
-        $errorMessage = "The requested data could not be located";
-
-        $this->get('/applications/room/123');
-        $responseArray = json_decode($this->_response->getBody(), true);
-
-        $this->assertResponseCode(404);
-        $this->assertEquals($errorMessage, $responseArray['message']);
-        $this->assertFalse($responseArray['success']);
     }
 
     public function testGetApplicationRoomFurnishingsEndpointReturnsFullyPopulatedListOfFurnitureForSelectedRoom()
@@ -120,6 +109,37 @@ class ApplicationsControllerTest extends IntegrationTestCase
 
         $this->assertResponseSuccess();
         $this->assertEquals($expected, $responseArray['data']);
+    }
+
+    public function testGetApplicationRoomEndpointWithNonExistentRecordIdRespondsException()
+    {
+        $roomId = 999;
+        $expectedError = "Record not found in table \"rooms\"";
+        $expectedMessage = "The requested data could not be located";
+
+        $this->get("/applications/room/{$roomId}");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(404);
+        $this->assertFalse($responseArray['success']);
+        $this->assertEquals($expectedError, $responseArray['error']);
+        $this->assertEquals($expectedMessage, $responseArray['message']);
+    }
+
+
+    public function testGetApplicationRoomsListEndpointWithNonExistentRoomAndValidFurnishingIdReturnsException()
+    {
+        $roomId = 999; $furnishingId = 1;
+        $expectedError = "Requested furnishing not associated with requested room";
+        $expectedMessage = "The requested data could not be located";
+
+        $this->get("/applications/room/{$roomId}/furnishing/{$furnishingId}");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(404);
+        $this->assertFalse($responseArray['success']);
+        $this->assertEquals($expectedError, $responseArray['error']);
+        $this->assertEquals($expectedMessage, $responseArray['message']);
     }
 
     public function testGetApplicationRoomFurnishingsEndpointReturnsSingleFurnishingRecordForSelectedRoom()
@@ -138,19 +158,32 @@ class ApplicationsControllerTest extends IntegrationTestCase
     public function testGetApplicationItemCostByCompanyEndpointReturnsSingleFurnishingRecordWithRatesForGivenCompany()
     {
         $companyId = 1; $furnishingId = 1;
-        $table = TableRegistry::get('ApplicationComponent.CompanyFurnishingRates')->find('all');
+        $table = TableRegistry::get('ApplicationComponent.CompanyFurnishingRates')->find();
         
         $query = $table->select(['company_id', 'furnishing_id', 'cost'])
             ->where(['company_id' => $companyId])
             ->andWhere(['furnishing_id' => $furnishingId])
             ->andWhere(['deleted' => 0]);
-            
-        $expected = $query->toArray();
+        
+        $expected = $query->enableHydration(false)->toArray();
 
         $this->get("/applications/company/{$companyId}/furnishing/{$furnishingId}");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseSuccess();
         $this->assertEquals($expected, $responseArray['data']);
+    }
+
+    public function testGetApplicationItemCostByCompanyEndpointReturnsUnsuccessfulResponseWithInvalidFurnishingId()
+    {
+        $expectedError = "Requested company or furnishing ID does not exist";
+        $companyId = 1; $furnishingId = 999;
+
+        $this->get("/applications/company/{$companyId}/furnishing/{$furnishingId}");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(404);
+        $this->assertFalse($responseArray['success']);
+        $this->assertEquals($expectedError, $responseArray['error']);
     }
 }
