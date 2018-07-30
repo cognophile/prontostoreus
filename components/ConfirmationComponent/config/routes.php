@@ -8,7 +8,8 @@ Router::plugin(
     ['path' => '/confirmations'],
     function (RouteBuilder $routes) {
         $routes->connect('/', ['controller' => 'Confirmations', 'action' => 'status']);
-        $routes->connect('/update', ['controller' => 'Confirmations', 'action' => 'acceptTerms']);
+        $routes->connect('/applications/:application_id/update', ['controller' => 'Confirmations', 'action' => 'acceptTerms'])
+            ->setPass(['application_id']);
         
         // $routes->fallbacks(DashedRoute::class);
     }
