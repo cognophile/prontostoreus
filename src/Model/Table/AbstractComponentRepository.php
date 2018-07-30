@@ -82,7 +82,7 @@ abstract class AbstractComponentRepository extends CakeTable
      * Wrapper method for saving entities
      * @param \Cake\ORM\Table $model The entitiy through which to save
      * @param \Cake\Datasource\EntityInterface $newEntity The new entity (record) to save
-     * @return \Cake\Datasource\EntityInterface The now stored entity, or the original $newEntity containing errors
+     * @return \Cake\Datasource\EntityInterface The persisted entity object, or the unpersisted $newEntity with errors
      */
     public function saveEntity(\Cake\ORM\Table $model, \Cake\Datasource\EntityInterface $newEntity)
     {
