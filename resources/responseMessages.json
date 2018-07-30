@@ -23,11 +23,11 @@
         "Unknown": "An unknown error occurred during the request (see error for details)",
         "UnsuccessfulAdd": "An error occurred when storing the data",
         "UnsuccessfulView": "An error occurred when reading the data",
-        "UnsuccessfulEdit": "An error occurred when updating the data",
+        "UnsuccessfulEdit": "An error occurred when editing the data",
         "UnsuccessfulDelete": "An error occurred when removing the data",
         "MissingPayload": "An error occurred when parsing the payload which appeared empty",
         "InvalidArgument": "The given URI argument was invalid",
-        "InvalidType": "The supplied argument was invalid",
+        "InvalidType": "The request argument type was invalid",
         "MethodNotAllowed": "The request was denied due to invalid method"
     }
 }
