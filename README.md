@@ -1,5 +1,5 @@
 # Protostoreus
-## Immediate comparison of, access to, and reservation of local self-storage.
+## Immediate access to and reservation of local self-storage.
 This project was produced as an accompanying artefact to a dissertation project. This project focused on attempting to answer the question: How do we architect software to be both extensible and maintainable to prevent stagnation, remain agile and proactive to business change, and to explore the architectural patterns and methods which provide these qualities (and more) and how they might oppose, relate, or cooperate with one another.
 
  As a brief overview, this repository is the backing API for the Prontostoreus client (see sibling repository on profile). It has been architected to separate the platform from the business components which provide functionality. As such, the API platform uses an architecture similar to the Mediator design pattern and Micro-kernal architecture where it is only responsible for establishing the platform, handling the request-response cycle, hosting, and routing to components.  
