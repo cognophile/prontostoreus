@@ -63,7 +63,8 @@ class ConfirmationsTable extends AbstractComponentRepository
 
         $validator
             ->dateTime('date_accepted')
-            ->allowEmpty('date_accepted');
+            ->requirePresence('accepted', 'create')
+            ->notEmpty('date_accepted');
 
         return $validator;
     }
