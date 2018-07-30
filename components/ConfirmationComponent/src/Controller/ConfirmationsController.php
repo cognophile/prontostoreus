@@ -7,6 +7,7 @@ use Cake\Http\Exception\MethodNotAllowedException;
 use Cake\Http\Exception\BadRequestException;
 
 use Prontostoreus\Api\Controller\AbstractApiController;
+use Prontostoreus\Api\Utility\TypeChecker;
 
 class ConfirmationsController extends AbstractApiController
 {
@@ -22,7 +23,7 @@ class ConfirmationsController extends AbstractApiController
         $this->respondSuccess([], 200, "Confirmations Base: {$message}", Configure::read('Api.Routes.Confirmations'));
     }
 
-    public function acceptTerms() 
+    public function acceptTerms($applicationId) 
     {   
         try {
             $this->requestFailWhenNot('POST');
@@ -30,6 +31,16 @@ class ConfirmationsController extends AbstractApiController
         catch (MethodNotAllowedException $ex) {
             $this->respondException($ex, $this->messageHandler->retrieve("Error", "UnsuccessfulEdit"));
             return;
+        }
+        
+        if (!$applicationId || !TypeChecker::isNumeric($applicationId)) {
+            try {
+                throw new BadRequestException();
+            }
+            catch (BadRequestException $ex) {
+                $this->respondException($ex, $this->messageHandler->retrieve("Error", "InvalidType"));
+                return;
+            }
         }
 
         $data = $this->request->getData();
@@ -43,8 +54,6 @@ class ConfirmationsController extends AbstractApiController
                 return;
             }
         }
-        
-        $applicationId = $data['application_id']; 
         
         if ($applicationId) {
             $results = $this->Confirmations->find('byApplicationId', ['application_id' => $applicationId]);
