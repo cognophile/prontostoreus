@@ -53,16 +53,16 @@ class ApplicationsTable extends AbstractComponentRepository
         // TODO: Remove these inter-component dependencies if not needed
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',
-            'className' => 'CustomerComponent.Customers'
+            'className' => 'ApplicationComponent.Customers'
         ]);
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
-            'className' => 'LocationComponent.Companies'
+            'className' => 'ApplicationComponent.Companies'
         ]);
-        $this->hasMany('Confirmations', [
-            'foreignKey' => 'application_id',
-            'className' => 'ConfirmationComponent.Confirmations'
-        ]);
+        // $this->hasMany('Confirmations', [
+        //     'foreignKey' => 'application_id',
+        //     'className' => 'ConfirmationComponent.Confirmations'
+        // ]);
 
         $this->setAssociations(['ApplicationLines']);
         $this->setContained(['ApplicationLines']);

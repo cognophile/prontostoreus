@@ -1,22 +1,22 @@
 <?php
 namespace ApplicationComponent\Test\TestCase\Model\Table;
 
-use ApplicationComponent\Model\Table\ApplicationsTable;
+use ApplicationComponent\Model\Table\CustomersTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * ApplicationComponent\Model\Table\ApplicationsTable Test Case
+ * ApplicationComponent\Model\Table\CustomersTable Test Case
  */
-class ApplicationsTableTest extends TestCase
+class CustomersTableTest extends TestCase
 {
 
     /**
      * Test subject
      *
-     * @var \ApplicationComponent\Model\Table\ApplicationsTable
+     * @var \ApplicationComponent\Model\Table\CustomersTable
      */
-    public $Applications;
+    public $Customers;
 
     /**
      * Fixtures
@@ -24,11 +24,9 @@ class ApplicationsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.application_component.applications',
-        'plugin.application_component.application_lines',
         'plugin.application_component.customers',
-        'plugin.application_component.companies',
-        // 'plugin.confirmation_component.confirmations'
+        // 'plugin.application_component.addresses',
+        'plugin.application_component.applications'
     ];
 
     /**
@@ -39,8 +37,8 @@ class ApplicationsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('Applications') ? [] : ['className' => ApplicationsTable::class];
-        $this->Applications = TableRegistry::getTableLocator()->get('Applications', $config);
+        $config = TableRegistry::getTableLocator()->exists('Customers') ? [] : ['className' => CustomersTable::class];
+        $this->Customers = TableRegistry::getTableLocator()->get('Customers', $config);
     }
 
     /**
@@ -50,7 +48,7 @@ class ApplicationsTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->Applications);
+        unset($this->Customers);
 
         parent::tearDown();
     }

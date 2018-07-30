@@ -17,8 +17,8 @@ class ApplicationsControllerTest extends IntegrationTestCase
         'plugin.application_component.rooms',
         'plugin.application_component.furnishings',
         'plugin.application_component.application_lines',
-        'plugin.customer_component.customers',
-        'plugin.location_component.companies'
+        'plugin.application_component.customers',
+        'plugin.application_component.companies'
     ];
 
     private function validApplicationProvider($lines)
