@@ -61,6 +61,17 @@ class ApplicationsFixture extends TestFixture
                 'created' => '2018-07-31 21:50:30',
                 'cancelled' => 1
             ],
+            [
+                'id' => 2,
+                'customer_id' => 1,
+                'company_id' => 1,
+                'delivery' => 1,
+                'start_date' => '2018-07-31',
+                'end_date' => '2018-07-31',
+                'total_cost' => 'Lorem ipsum dolor sit amet',
+                'created' => '2018-07-31 21:50:30',
+                'cancelled' => 1
+            ],
         ];
         parent::init();
     }
