@@ -484,7 +484,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $this->assertTrue($responseArray["success"]);
     }
 
-    public function testPutAddApplicaitonWithValidDataReturnsErrorResponse()
+    public function testPutAddApplicationWithValidDataReturnsErrorResponse()
     {
         $data = $this->validAddApplicationProvider($this->validLinesProvider());
         $expectedMessage = "An error occurred when storing the data";
