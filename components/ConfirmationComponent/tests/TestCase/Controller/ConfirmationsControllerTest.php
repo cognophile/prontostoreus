@@ -87,14 +87,14 @@ class ConfirmationsControllerTest extends IntegrationTestCase
         $this->assertArrayHasKey('data', $responseArray);
     }
 
-    public function testPostConfirmationsComponentUpdateWithValidPayloadReturnsUnsuccessfulResponse()
+    public function testPutConfirmationsComponentUpdateWithValidPayloadReturnsUnsuccessfulResponse()
     {   
         $applicationId = 1;
         $data = $this->validConfirmationProvider($applicationId);
         $expectedMessage = "An error occurred when editing the data";
-        $expectedError = "HTTP Method disabled for endpoint: Use PUT";
+        $expectedError = "HTTP Method disabled for endpoint: Use POST";
 
-        $this->post("/confirmations/applications/{$applicationId}/update", $data);
+        $this->put("/confirmations/applications/{$applicationId}/update", $data);
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertResponseCode(405);        
@@ -103,13 +103,13 @@ class ConfirmationsControllerTest extends IntegrationTestCase
         $this->assertContains($expectedError, $responseArray["error"]);
     }
 
-    public function testPutConfirmationsComponentUpdateWithValidPayloadReturnsSuccessfulResponse()
+    public function testPostConfirmationsComponentUpdateWithValidPayloadReturnsSuccessfulResponse()
     {   
         $applicationId = 1;
         $data = $this->validConfirmationProvider($applicationId);
         $expectedMessage = "The data was successfully edited";
 
-        $this->put("/confirmations/applications/{$applicationId}/update", $data);
+        $this->post("/confirmations/applications/{$applicationId}/update", $data);
         $responseArray = json_decode($this->_response->getBody(), true);
                 
         $this->assertResponseSuccess();        
@@ -117,14 +117,14 @@ class ConfirmationsControllerTest extends IntegrationTestCase
         $this->assertContains($expectedMessage, $responseArray["message"]);
     }
 
-    public function testPutConfirmationsComponentUpdateWithNonExistentApplicationIdReturnsErrorResponse()
+    public function testPostConfirmationsComponentUpdateWithNonExistentApplicationIdReturnsErrorResponse()
     {   
         $applicationId = 999;
         $data = $this->validConfirmationProvider($applicationId);
         $expectedMessage = "An error occurred when storing the data";
         $expectedError = "The requested record does not exist";
 
-        $this->put("/confirmations/applications/{$applicationId}/update", $data);
+        $this->post("/confirmations/applications/{$applicationId}/update", $data);
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertResponseCode(400);        
@@ -133,14 +133,14 @@ class ConfirmationsControllerTest extends IntegrationTestCase
         $this->assertContains($expectedError, $responseArray["error"]);
     }
 
-    public function testPutConfirmationsComponentUpdateWithInvalidUriArgumentAsCharacterTypeReturnsInvalidTypeError()
+    public function testPostConfirmationsComponentUpdateWithInvalidUriArgumentAsCharacterTypeReturnsInvalidTypeError()
     {   
         $applicationId = "A";
         $data = $this->validConfirmationProvider($applicationId);
         $expectedError = "A valid application ID must be provided";
         $expectedMessage = "The given URI argument was invalid";
 
-        $this->put("/confirmations/applications/{$applicationId}/update", $data);
+        $this->post("/confirmations/applications/{$applicationId}/update", $data);
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertResponseCode(400);        
@@ -149,13 +149,27 @@ class ConfirmationsControllerTest extends IntegrationTestCase
         $this->assertContains($expectedMessage, $responseArray["message"]);
     }
 
-    public function testPutConfirmationsComponentUpdateWithInvalidUriArgumentAsStringNumericTypeReturnsInvalidTypeError()
+    public function testPostConfirmationsComponentUpdateWithInvalidUriArgumentAsStringNumericTypeReturnsInvalidTypeError()
     {   
         $applicationId = "1";
         $data = $this->validConfirmationProvider($applicationId);
         $expectedMessage = "The data was successfully edited";
 
-        $this->put("/confirmations/applications/{$applicationId}/update", $data);
+        $this->post("/confirmations/applications/{$applicationId}/update", $data);
+        $responseArray = json_decode($this->_response->getBody(), true);
+        
+        $this->assertResponseSuccess();        
+        $this->assertTrue($responseArray["success"]);
+        $this->assertContains($expectedMessage, $responseArray["message"]);
+    }
+
+    public function testPostConfirmationComponentWithValidApplicationIdWithoutConfirmationRecordCreatesRecordReturnsSuccessfulResponse() 
+    {
+        $applicationId = 2;
+        $data = $this->validConfirmationProvider($applicationId);
+        $expectedMessage = "The data was successfully added";
+
+        $this->post("/confirmations/applications/{$applicationId}/update", $data);
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertResponseSuccess();        

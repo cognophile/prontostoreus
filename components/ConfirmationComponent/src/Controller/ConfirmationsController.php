@@ -28,7 +28,7 @@ class ConfirmationsController extends AbstractApiController
         $this->loadModel('ConfirmationComponent.Applications');
     
         try {
-            $this->requestFailWhenNot('PUT');
+            $this->requestFailWhenNot('POST');
         }
         catch (MethodNotAllowedException $ex) {
             $this->respondException($ex, $this->messageHandler->retrieve("Error", "UnsuccessfulEdit"));
