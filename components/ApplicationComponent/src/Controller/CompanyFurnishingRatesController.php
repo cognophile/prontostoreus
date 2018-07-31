@@ -5,7 +5,7 @@ use Cake\Http\Exception\MethodNotAllowedException;
 use Cake\Http\Exception\BadRequestException;
 
 use Prontostoreus\Api\Controller\AbstractApiController;
-use ApplicationComponent\Utility\TypeChecker;
+use ApplicationComponent\Utility\TypeChecker\TypeChecker;
 
 /**
  * CompanyFurnishingRatesController Controller

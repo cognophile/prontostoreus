@@ -7,7 +7,7 @@ use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Exception\BadRequestException;
 
 use Prontostoreus\Api\Controller\AbstractApiController;
-use ApplicationComponent\Utility\TypeChecker;
+use ApplicationComponent\Utility\TypeChecker\TypeChecker;
 
 /**
  * Applications Controller

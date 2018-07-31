@@ -1,6 +1,6 @@
 <?php
 
-namespace ConfirmationComponent\Utility;
+namespace ConfirmationComponent\Utility\TypeChecker;
 
 abstract class TypeChecker
 {

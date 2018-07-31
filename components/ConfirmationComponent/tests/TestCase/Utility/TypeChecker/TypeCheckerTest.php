@@ -1,9 +1,9 @@
 <?php
 
-namespace ConfirmationComponent\Test\TestCase\Utility;
+namespace ConfirmationComponent\Test\TestCase\Utility\TypeChecker;
 
 use Cake\TestSuite\TestCase;
-use ConfirmationComponent\Utility\TypeChecker;
+use ConfirmationComponent\Utility\TypeChecker\TypeChecker;
 
 class TypeCheckerTest extends TestCase
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace ApplicationComponent\Utility;
+namespace ApplicationComponent\Utility\TypeChecker;
 
 abstract class TypeChecker
 {

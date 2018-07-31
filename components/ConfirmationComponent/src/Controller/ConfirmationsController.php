@@ -7,7 +7,7 @@ use Cake\Http\Exception\MethodNotAllowedException;
 use Cake\Http\Exception\BadRequestException;
 
 use Prontostoreus\Api\Controller\AbstractApiController;
-use ConfirmationComponent\Utility\TypeChecker;
+use ConfirmationComponent\Utility\TypeChecker\TypeChecker;
 
 class ConfirmationsController extends AbstractApiController
 {
