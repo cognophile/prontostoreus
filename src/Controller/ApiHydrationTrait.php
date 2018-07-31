@@ -120,6 +120,13 @@ trait ApiHydrationTrait
     }
 
 
+    /**
+     * Assert the response type is of a given method(s) or raise exception
+     *
+     * @param string|array $methods
+     * @throws MethodNotAllowedException
+     * @return void
+     */
     protected function requestFailWhenNot($methods): void
     {      
         if (!is_array($methods) && !$this->request->is($methods)) {
