@@ -28,6 +28,7 @@
         "MissingPayload": "An error occurred when parsing the payload which appeared empty",
         "InvalidArgument": "The given URI argument was invalid",
         "InvalidType": "The request argument type was invalid",
-        "MethodNotAllowed": "The request was denied due to invalid method"
+        "MethodNotAllowed": "The request was denied due to invalid method",
+        "RecordNotFound": "The requested record does not exist"
     }
 }
