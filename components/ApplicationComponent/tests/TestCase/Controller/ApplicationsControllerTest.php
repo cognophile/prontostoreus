@@ -21,10 +21,25 @@ class ApplicationsControllerTest extends IntegrationTestCase
         'plugin.application_component.companies'
     ];
 
-    private function validApplicationProvider($lines)
+    private function validAddApplicationProvider($lines)
     {
         return 
         [
+            "customer_id" => 1,
+            "company_id" => 1,
+            "delivery" => 0,
+            "start_date" => "2018-08-01",
+            "end_date" => "2018-08-31",
+            "total_cost" => "50.50",
+            "application_lines" => $lines
+        ];
+    }
+
+    private function validUpdateApplicationProvider($lines)
+    {
+        return 
+        [
+            "id" => 1,
             "customer_id" => 1,
             "company_id" => 1,
             "delivery" => 0,
@@ -161,6 +176,39 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $this->assertFalse($responseArray['success']);
         $this->assertEquals($expectedError, $responseArray['error']);
         $this->assertEquals($expectedMessage, $responseArray['message']);
+        $this->assertEquals($expected, $responseArray['data']);
+    }
+
+    public function testGetApplicationRoomFurnishingsWithInvalidUriArgumentAsCharacterTypeReturnsInvalidArgumentError()
+    {
+        $roomId = "A";
+        $expectedError = 'A valid room ID must be provided';
+        $expectedMessage = 'The given URI argument was invalid';
+
+        $this->get("/applications/room/{$roomId}/furnishing");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(400);
+        $this->assertFalse($responseArray['success']);
+        $this->assertEquals($expectedError, $responseArray['error']);
+        $this->assertEquals($expectedMessage, $responseArray['message']);
+    }
+
+    public function testGetApplicationRoomFurnishingsWithValidUriArgumentAsNumericStringTypeReturnsSuccessfulResponse()
+    {
+        $roomId = "1";
+        $expectedMessage = "The data was successfully located";
+
+        $query = TableRegistry::get('ApplicationComponent.Furnishings')->find('all')->where(['room_id' => $roomId]);
+        $expected = $query->enableHydration(false)->toArray();
+
+        $this->get("/applications/room/{$roomId}/furnishing");
+        $responseArray = json_decode($this->_response->getBody(), true);
+        
+        $this->assertResponseSuccess();        
+        $this->assertTrue($responseArray["success"]);
+        $this->assertContains($expectedMessage, $responseArray["message"]);
+        $this->assertEquals($expected, $responseArray['data']);
     }
 
     public function testGetApplicationRoomEndpointWithNonExistentRecordIdRespondsException()
@@ -178,8 +226,39 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $this->assertEquals($expectedMessage, $responseArray['message']);
     }
 
+    public function testGetApplicationRoomEndpointWithInvalidUriArgumentAsCharacterTypeReturnsInvalidArgumentError()
+    {
+        $roomId = "A";
+        $expectedError = 'A valid room ID must be provided';
+        $expectedMessage = 'The given URI argument was invalid';
 
-    public function testGetApplicationRoomsListEndpointWithNonExistentRoomAndValidFurnishingIdReturnsError()
+        $this->get("/applications/room/{$roomId}");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(400);
+        $this->assertFalse($responseArray['success']);
+        $this->assertEquals($expectedError, $responseArray['error']);
+        $this->assertEquals($expectedMessage, $responseArray['message']);
+    }
+
+    public function testGetApplicationRoomEndpointWithValidUriArgumentAsNumericStringTypeReturnsSuccessfulResponse()
+    {
+        $roomId = "1";
+        $expectedMessage = "The data was successfully located";
+
+        $query = TableRegistry::get('ApplicationComponent.Rooms')->find()->where(['id' => $roomId]);
+        $expected = $query->enableHydration(false)->toArray();
+
+        $this->get("/applications/room/{$roomId}");
+        $responseArray = json_decode($this->_response->getBody(), true);
+        
+        $this->assertResponseSuccess();        
+        $this->assertTrue($responseArray["success"]);
+        $this->assertContains($expectedMessage, $responseArray["message"]);
+        $this->assertEquals($expected[0], $responseArray['data']);
+    }
+
+    public function testGetApplicationRoomFurnishingsEndpointWithNonExistentRoomAndValidFurnishingIdReturnsError()
     {
         $roomId = 999; $furnishingId = 1;
         $expectedError = "Requested furnishing not associated with requested room";
@@ -207,6 +286,70 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $this->assertEquals($expected, $responseArray['data']);
     }
 
+    public function testGetApplicationRoomFurnishingEndpointWithInvalidUriRoomIdArgumentAsCharacterTypeReturnsInvalidArgumentError()
+    {
+        $roomId = 'A'; $furnishingId = 1;
+        $expectedError = 'Both valid room and furnishing IDs must be provided';
+        $expectedMessage = 'The given URI argument was invalid';
+
+        $this->get("/applications/room/{$roomId}/furnishing/{$furnishingId}");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(400);
+        $this->assertFalse($responseArray['success']);
+        $this->assertEquals($expectedError, $responseArray['error']);
+        $this->assertEquals($expectedMessage, $responseArray['message']);
+    }
+
+    public function testGetApplicationRoomFurnishingEndpointWithInvalidUriFurnishingIdArgumentAsCharacterTypeReturnsInvalidArgumentError()
+    {
+        $roomId = 1; $furnishingId = 'A';
+        $expectedError = 'Both valid room and furnishing IDs must be provided';
+        $expectedMessage = 'The given URI argument was invalid';
+
+        $this->get("/applications/room/{$roomId}/furnishing/{$furnishingId}");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(400);
+        $this->assertFalse($responseArray['success']);
+        $this->assertEquals($expectedError, $responseArray['error']);
+        $this->assertEquals($expectedMessage, $responseArray['message']);
+    }
+
+    public function testGetApplicationRoomFurnishingsEndpointWithValidRoomIdUriArgumentAsNumericStringTypeReturnsSuccessfulResponse()
+    {
+        $roomId = "1"; $furnishingId = 1;
+        $expectedMessage = "The data was successfully located";
+
+        $query = TableRegistry::get('ApplicationComponent.Furnishings')->find()->where(['room_id' => $roomId]);
+        $expected = $query->enableHydration(false)->toArray();
+
+        $this->get("/applications/room/{$roomId}/furnishing/{$furnishingId}");
+        $responseArray = json_decode($this->_response->getBody(), true);
+        
+        $this->assertResponseSuccess();        
+        $this->assertTrue($responseArray["success"]);
+        $this->assertContains($expectedMessage, $responseArray["message"]);
+        $this->assertEquals($expected[0], $responseArray['data']);
+    }
+
+    public function testGetApplicationRoomFurnishingsEndpointWithValidRoomIdAndFurnishingIdUriArgumentAsNumericStringTypeReturnsSuccessfulResponse()
+    {
+        $roomId = "1"; $furnishingId = "1";
+        $expectedMessage = "The data was successfully located";
+
+        $query = TableRegistry::get('ApplicationComponent.Furnishings')->find()->where(['room_id' => $roomId]);
+        $expected = $query->enableHydration(false)->toArray();
+
+        $this->get("/applications/room/{$roomId}/furnishing/{$furnishingId}");
+        $responseArray = json_decode($this->_response->getBody(), true);
+        
+        $this->assertResponseSuccess();        
+        $this->assertTrue($responseArray["success"]);
+        $this->assertContains($expectedMessage, $responseArray["message"]);
+        $this->assertEquals($expected[0], $responseArray['data']);
+    }
+
     public function testGetApplicationItemCostByCompanyEndpointReturnsSingleFurnishingRecordWithRatesForGivenCompany()
     {
         $companyId = 1; $furnishingId = 1;
@@ -228,8 +371,8 @@ class ApplicationsControllerTest extends IntegrationTestCase
 
     public function testGetApplicationItemCostByCompanyEndpointReturnsUnsuccessfulResponseWithInvalidFurnishingId()
     {
-        $expectedError = "Requested company or furnishing ID does not exist";
         $companyId = 1; $furnishingId = 999;
+        $expectedError = "Requested company or furnishing ID does not exist";
 
         $this->get("/applications/company/{$companyId}/furnishing/{$furnishingId}");
         $responseArray = json_decode($this->_response->getBody(), true);
@@ -239,9 +382,83 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $this->assertEquals($expectedError, $responseArray['error']);
     }
 
+    public function testGetApplicationItemCostByCompanyEndpointWithInvalidUriRoomIdArgumentAsCharacterTypeReturnsInvalidArgumentError()
+    {
+        $companyId = 'A'; $furnishingId = 1;
+        $expectedError = 'Both valid company and furnishing IDs must be provided';
+        $expectedMessage = 'The given URI argument was invalid';
+
+        $this->get("/applications/company/{$companyId}/furnishing/{$furnishingId}");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(400);
+        $this->assertFalse($responseArray['success']);
+        $this->assertEquals($expectedError, $responseArray['error']);
+        $this->assertEquals($expectedMessage, $responseArray['message']);
+    }
+
+    public function testGetApplicationItemCostByCompanyEndpointWithInvalidUriFurnishingIdArgumentAsCharacterTypeReturnsInvalidArgumentError()
+    {
+        $companyId = 1; $furnishingId = 'A';
+        $expectedError = 'Both valid company and furnishing IDs must be provided';
+        $expectedMessage = 'The given URI argument was invalid';
+
+        $this->get("/applications/company/{$companyId}/furnishing/{$furnishingId}");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(400);
+        $this->assertFalse($responseArray['success']);
+        $this->assertEquals($expectedError, $responseArray['error']);
+        $this->assertEquals($expectedMessage, $responseArray['message']);
+    }
+
+    public function testGetApplicationItemCostByCompanyEndpointWithValidRoomIdUriArgumentAsNumericStringTypeReturnsSuccessfulResponse()
+    {
+        $companyId = "1"; $furnishingId = 1;
+        $expectedMessage = "The data was successfully located";
+
+        $table = TableRegistry::get('ApplicationComponent.CompanyFurnishingRates')->find();
+        $query = $table->select(['company_id', 'furnishing_id', 'cost'])
+            ->where(['company_id' => $companyId])
+            ->andWhere(['furnishing_id' => $furnishingId])
+            ->andWhere(['deleted' => 0]);
+        
+        $expected = $query->enableHydration(false)->toArray();
+
+        $this->get("/applications/company/{$companyId}/furnishing/{$furnishingId}");
+        $responseArray = json_decode($this->_response->getBody(), true);
+        
+        $this->assertResponseSuccess();        
+        $this->assertTrue($responseArray["success"]);
+        $this->assertContains($expectedMessage, $responseArray["message"]);
+        $this->assertEquals($expected, $responseArray['data']);
+    }
+
+    public function testGetApplicationItemCostByCompanyEndpointWithValidRoomIdAndFurnishingIdUriArgumentAsNumericStringTypeReturnsSuccessfulResponse()
+    {
+        $companyId = "1"; $furnishingId = "1";
+        $expectedMessage = "The data was successfully located";
+        
+        $table = TableRegistry::get('ApplicationComponent.CompanyFurnishingRates')->find();
+        $query = $table->select(['company_id', 'furnishing_id', 'cost'])
+            ->where(['company_id' => $companyId])
+            ->andWhere(['furnishing_id' => $furnishingId])
+            ->andWhere(['deleted' => 0]);
+        
+        $expected = $query->enableHydration(false)->toArray();
+
+        $this->get("/applications/company/{$companyId}/furnishing/{$furnishingId}");
+        $responseArray = json_decode($this->_response->getBody(), true);
+        
+        $this->assertResponseSuccess();        
+        $this->assertTrue($responseArray["success"]);
+        $this->assertContains($expectedMessage, $responseArray["message"]);
+        $this->assertEquals($expected, $responseArray['data']);
+    }
+
     public function testPostApplicationWithoutLinesDataReturnsErrorResponse()
     {
-        $data = $this->validApplicationProvider([]);
+        $data = $this->validAddApplicationProvider([]);
         $expectedMessage = "An error occurred when storing the data";
         $expectedError = "Cannot create an application without furniture lines data";
 
@@ -256,7 +473,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
 
     public function testPostApplicationWithValidDataReturnsSuccessfulResponse()
     {
-        $data = $this->validApplicationProvider($this->validLinesProvider());
+        $data = $this->validAddApplicationProvider($this->validLinesProvider());
         $expectedMessage = "The data was successfully added";
 
         $this->post('/applications/add', $data);
@@ -269,7 +486,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
 
     public function testPutAddApplicaitonWithValidDataReturnsErrorResponse()
     {
-        $data = $this->validApplicationProvider($this->validLinesProvider());
+        $data = $this->validAddApplicationProvider($this->validLinesProvider());
         $expectedMessage = "An error occurred when storing the data";
         $expectedError = "HTTP Method disabled for endpoint: Use POST";
 
@@ -280,5 +497,21 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $this->assertFalse($responseArray["success"]);
         $this->assertContains($expectedMessage, $responseArray["message"]);
         $this->assertContains($expectedError, $responseArray["error"]);
+    }
+
+    public function testPostApplicationComponentUpdateWithInvalidUriArgumentAsCharacterTypeReturnsInvalidTypeError()
+    {   
+        $applicationId = "A";
+        $data = $this->validAddApplicationProvider($this->validLinesProvider());
+        $expectedError = 'A valid application ID must be provided';
+        $expectedMessage = 'The given URI argument was invalid';
+
+        $this->post("/applications/{$applicationId}/edit", $data);
+        $responseArray = json_decode($this->_response->getBody(), true);
+        
+        $this->assertResponseCode(400);        
+        $this->assertFalse($responseArray["success"]);
+        $this->assertContains($expectedError, $responseArray["error"]);
+        $this->assertContains($expectedMessage, $responseArray["message"]);
     }
 }

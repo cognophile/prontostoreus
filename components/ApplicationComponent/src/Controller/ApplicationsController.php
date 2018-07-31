@@ -4,8 +4,10 @@ namespace ApplicationComponent\Controller;
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\Datasource\Exception\RecordNotFoundException;
+use Cake\Http\Exception\BadRequestException;
 
 use Prontostoreus\Api\Controller\AbstractApiController;
+use ApplicationComponent\Utility\TypeChecker;
 
 /**
  * Applications Controller
@@ -40,11 +42,11 @@ class ApplicationsController extends AbstractApiController
 
     public function edit($applicationId) 
     {
-        if (!$applicationId) {
+        if (!$applicationId || !TypeChecker::isNumeric($applicationId)) {
             try {
-                throw new InvalidArgumentException('An application ID must be provided.');
+                throw new BadRequestException('A valid application ID must be provided');
             }
-            catch (InvalidArgumentException $ex) {
+            catch (BadRequestException $ex) {
                 $this->respondException($ex, $this->messageHandler->retrieve("Error", "InvalidArgument"));
                 return;
             }
@@ -53,7 +55,7 @@ class ApplicationsController extends AbstractApiController
         try {
             $isSuccessful = $this->createInvoice($this->request->getData());
         }
-        catch (Excetion $ex) {
+        catch (Exception $ex) {
             $this->respondException($ex, $this->messageHandler->retrieve("Error", "Unknown"));
             return;
         }
@@ -65,7 +67,7 @@ class ApplicationsController extends AbstractApiController
     {
         // TODO: Add test for this (document only happens on re-post of full application to edit [fix])
         if (!is_array($applicationData) || empty($applicationData)) {
-            throw new InvalidArgumentException("The provided data must be a valid array.");
+            throw new InvalidArgumentException("The provided data must be a valid array");
         }
 
         $application = $this->InvoiceApplications->find('customerByApplicationId', ['applicationId' => $applicationData['id']])->toArray();
