@@ -63,7 +63,7 @@ class ConfirmationsTable extends AbstractComponentRepository
 
         $validator
             ->dateTime('date_accepted')
-            ->requirePresence('accepted', 'create')
+            ->requirePresence('date_accepted', 'create')
             ->notEmpty('date_accepted');
 
         return $validator;
@@ -92,6 +92,6 @@ class ConfirmationsTable extends AbstractComponentRepository
     public function findByApplicationId(Query $query, array $options)
     {
         $applicationId = $options['application_id'];
-        return $query->where(['application_id' => $applicationId])->toArray();
+        return $query->where(['application_id' => $applicationId]);
     }
 }

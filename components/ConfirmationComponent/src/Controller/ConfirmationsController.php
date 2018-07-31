@@ -7,14 +7,13 @@ use Cake\Http\Exception\MethodNotAllowedException;
 use Cake\Http\Exception\BadRequestException;
 
 use Prontostoreus\Api\Controller\AbstractApiController;
-use Prontostoreus\Api\Utility\TypeChecker;
+use ConfirmationComponent\Utility\TypeChecker;
 
 class ConfirmationsController extends AbstractApiController
 {
     public function initialize()
     {
         parent::initialize();
-        $this->loadModel('ConfirmationComponent.Confirmations');
     }
 
     public function status()
@@ -25,8 +24,11 @@ class ConfirmationsController extends AbstractApiController
 
     public function acceptTerms($applicationId) 
     {   
+        $this->loadModel('ConfirmationComponent.Confirmations');
+        $this->loadModel('ConfirmationComponent.Applications');
+    
         try {
-            $this->requestFailWhenNot('POST');
+            $this->requestFailWhenNot('PUT');
         }
         catch (MethodNotAllowedException $ex) {
             $this->respondException($ex, $this->messageHandler->retrieve("Error", "UnsuccessfulEdit"));
@@ -35,10 +37,10 @@ class ConfirmationsController extends AbstractApiController
         
         if (!$applicationId || !TypeChecker::isNumeric($applicationId)) {
             try {
-                throw new BadRequestException();
+                throw new BadRequestException('A valid application ID must be provided');
             }
             catch (BadRequestException $ex) {
-                $this->respondException($ex, $this->messageHandler->retrieve("Error", "InvalidType"));
+                $this->respondException($ex, $this->messageHandler->retrieve("Error", "InvalidArgument"));
                 return;
             }
         }
@@ -54,14 +56,26 @@ class ConfirmationsController extends AbstractApiController
                 return;
             }
         }
-        
+
         if ($applicationId) {
-            $results = $this->Confirmations->find('byApplicationId', ['application_id' => $applicationId]);
+            $results = $this->Confirmations->find('byApplicationId', ['application_id' => $applicationId])->toArray();
 
             if (!empty($results)) {
                 return $this->universalEdit($this->Confirmations, $results[0]['id'], false);
             }
             else {
+                $applicationExists = $this->Applications->find('byId', ['id' => $applicationId])->toArray();
+
+                if (!$applicationExists) {
+                    try {
+                        throw new BadRequestException($this->messageHandler->retrieve("Error", "RecordNotFound"));
+                    }
+                    catch (BadRequestException $ex) {
+                        $this->respondException($ex, $this->messageHandler->retrieve("Error", "UnsuccessfulAdd"));
+                        return;
+                    }
+                }
+                
                 return $this->universalAdd($this->Confirmations, false);
             }
         }
