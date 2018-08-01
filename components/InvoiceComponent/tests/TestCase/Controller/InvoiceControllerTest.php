@@ -94,14 +94,40 @@ class InvoiceControllerTest extends IntegrationTestCase
         $this->assertArrayHasKey('data', $responseArray);
     }
 
-    /**
-     * Test getApplicationCustomer method
-     *
-     * @return void
-     */
-    public function testGetApplicationCustomer()
+    public function testGetApplicationCustomerWithValidApplicationIdReturnsSuccessfulResponseAndMatchingRecord()
     {
         $applicationId = 1;
+        $expectedMessage = "The data was successfully located";
+
+        $this->get("/invoices/applications/{$applicationId}/customer");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseSuccess();
+        $this->assertTrue($responseArray['success']);
+        $this->assertContains($expectedMessage, $responseArray['message']);
+    }
+
+    public function testGetApplicationCustomerWithInvalidNonNumericApplicationIdReturnsUnsuccessfulResponse()
+    {
+        $applicationId = "A";
+        $expectedError = 'A valid application ID must be provided';
+        $expectedMessage = 'The given URI argument was invalid';
+
+        $this->get("/invoices/applications/{$applicationId}/customer");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(400);
+        $this->assertFalse($responseArray['success']);
+        $this->assertEquals($expectedError, $responseArray['error']);
+        $this->assertEquals($expectedMessage, $responseArray['message']);
+    }
+
+    public function testGetApplicationCustomerWithNonExistentApplicationIdReturnsUnsuccessfulResponse()
+    {
+        $applicationId = 999;
+        $expectedError = "Requested customer has no application";
+        $expectedMessage = "The requested data could not be located";
+
         $query = TableRegistry::get('InvoiceComponent.Applications')->find('all')
             ->contain('Customers.Addresses')->where(['Applications.id' => $applicationId])
             ->andWhere(['cancelled' => 0]);
@@ -110,11 +136,12 @@ class InvoiceControllerTest extends IntegrationTestCase
         $this->get("/invoices/applications/{$applicationId}/customer");
         $responseArray = json_decode($this->_response->getBody(), true);
 
-        $this->assertResponseSuccess();
+        $this->assertResponseCode(404);
+        $this->assertFalse($responseArray['success']);
+        $this->assertEquals($expectedError, $responseArray['error']);
+        $this->assertEquals($expectedMessage, $responseArray['message']);
         $this->assertEquals($expected, $responseArray['data']);
     }
-
-
 
 
 
