@@ -16,11 +16,11 @@ class PdfCreator
     
     public function __construct($outputLocation, array $additionalConfig = [])
     {
-        if (!$outputLocation) {
+        if (!$outputLocation || !is_string($outputLocation)) {
             throw new \InvalidArgumentException('A valid output location path and filename must be provided');
         }
 
-        if (!empty($configuration)) {
+        if (!empty($additionalConfig)) {
             $this->configure($additionalConfig);
         }
 
@@ -36,7 +36,7 @@ class PdfCreator
      */
     public function configure(array $additionalConfig): void
     {
-        if (!$additionalConfig) {
+        if (!$additionalConfig || !is_array($additionalConfig)) {
             throw new \InvalidArgumentException('A valid configuration array must be provided');
         }
         
@@ -54,7 +54,7 @@ class PdfCreator
      */
     public function setTemplates($templateFile, $layoutFile): void
     {   
-        if (!$templateFile || !$layoutFile) {
+        if (!$templateFile || !$layoutFile || !is_string($templateFile) || !is_string($layoutFile)) {
             throw new \InvalidArgumentException('Valid template and layout files must be provided');
         }
 
@@ -89,7 +89,7 @@ class PdfCreator
      */
     public function setOutputLocation($location): void
     {
-        if (!$location) {
+        if (!$location || !is_string($location)) {
             throw new \InvalidArgumentException('A valid output location path and filename must be provided');
         }
 
