@@ -55,6 +55,26 @@ class CustomersControllerTest extends IntegrationTestCase
         ];
     }
 
+    public function invalidCustomerTelephoneProvider() 
+    {
+        return 
+        [
+            "title" => "Mr", 
+            "dob" => "1970/01/01",
+            "firstname" => "Dave", 
+            "surname" => "Smith", 
+            "email" => "example-email@domain.com", 
+            "telephone" => "0198ABC4563", 
+            "addresses" => [
+                "line_one" => "9 Southend", 
+                "line_two" => "", 
+                "town" => "Cambridge", 
+                "county" => "Cambridgeshire", 
+                "postcode" => "CB5-9CX"
+            ]
+        ];
+    }
+
     public function testGetCustomersComponentStatusRouteWhereResponseIsSuccessful()
     {
         $this->get('/customers');
@@ -129,6 +149,21 @@ class CustomersControllerTest extends IntegrationTestCase
         $customer = $this->invalidCustomerDobProvider();
         $expectedMessage = "An error occurred when storing the data";
         $expectedError = ["dob" => ["date" => "The provided value is invalid"]];
+
+        $this->post('/customers/add', $customer);
+        $responseArray = json_decode($this->_response->getBody(), true);
+        
+        $this->assertResponseCode(400);        
+        $this->assertFalse($responseArray["success"]);
+        $this->assertContains($expectedMessage, $responseArray["message"]);
+        $this->assertEquals($expectedError, $responseArray["error"]);
+    }
+
+    public function testPostToAddCustomerWithInvalidCustomerTelephoneDataFormatReturnsUnsuccessfulResponse()
+    {
+        $customer = $this->invalidCustomerTelephoneProvider();
+        $expectedMessage = "An error occurred when storing the data";
+        $expectedError = ["telephone" => ["numeric" => "The provided value is invalid"]];
 
         $this->post('/customers/add', $customer);
         $responseArray = json_decode($this->_response->getBody(), true);
