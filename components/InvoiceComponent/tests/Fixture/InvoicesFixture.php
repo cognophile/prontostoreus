@@ -59,7 +59,7 @@ class InvoicesFixture extends TestFixture
                 'paid' => 'Lorem ipsum dolor sit amet',
                 'total' => 'Lorem ipsum dolor sit amet',
                 'created' => '2018-07-04 20:55:03',
-                'complete' => 1
+                'complete' => 0
             ],
         ];
         parent::init();

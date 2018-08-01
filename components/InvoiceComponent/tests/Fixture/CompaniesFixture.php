@@ -49,7 +49,7 @@ class CompaniesFixture extends TestFixture
                 'email' => 'Lorem ipsum dolor sit amet',
                 'telephone' => 'Lorem ipsu',
                 'created' => '2018-08-01 19:57:01',
-                'deleted' => 1
+                'deleted' => 0
             ],
         ];
         parent::init();

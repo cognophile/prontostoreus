@@ -59,7 +59,7 @@ class ApplicationsFixture extends TestFixture
                 'end_date' => '2018-07-04',
                 'total_cost' => 'Lorem ipsum dolor sit amet',
                 'created' => '2018-07-04 21:13:50',
-                'cancelled' => 1
+                'cancelled' => 0
             ],
         ];
         parent::init();

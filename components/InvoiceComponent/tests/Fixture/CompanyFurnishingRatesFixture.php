@@ -51,7 +51,7 @@ class CompanyFurnishingRatesFixture extends TestFixture
                 'company_id' => 1,
                 'furnishing_id' => 1,
                 'cost' => 'Lorem ipsum dolor sit amet',
-                'deleted' => 1
+                'deleted' => 0
             ],
         ];
         parent::init();
