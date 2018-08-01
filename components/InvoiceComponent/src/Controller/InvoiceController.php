@@ -3,9 +3,11 @@
 namespace InvoiceComponent\Controller;
 
 use Cake\Core\Configure;
+use Cake\Http\Exception\BadRequestException;
 
 use Prontostoreus\Api\Controller\AbstractApiController;
 use InvoiceComponent\Utility\Pdf\PdfCreator;
+use InvoiceComponent\Utility\TypeChecker\TypeChecker;
 
 class InvoiceController extends AbstractApiController
 {
@@ -33,11 +35,11 @@ class InvoiceController extends AbstractApiController
             return;
         }
         
-        if (!$applicationId) {
+        if (!$applicationId || !TypeChecker::isNumeric($applicationId)) {
             try {
-                throw new InvalidArgumentException('An application ID must be provided.');
+                throw new BadRequestException('A valid application ID must be provided');
             }
-            catch (InvalidArgumentException $ex) {
+            catch (BadRequestException $ex) {
                 $this->respondException($ex, $this->messageHandler->retrieve("Error", "InvalidArgument"));
                 return;
             }
@@ -45,6 +47,12 @@ class InvoiceController extends AbstractApiController
 
         $results = $this->Applications->find('customerByApplicationId', ['applicationId' => $applicationId])
             ->toArray();
+
+        if (!$results) {
+            $this->respondError('Requested customer has no application', 404, 
+                $this->messageHandler->retrieve("Data", "NotFound"));
+            return;
+        }
         
         $this->respondSuccess($results, 200, $this->messageHandler->retrieve("Data", "Found"));
     }
@@ -59,11 +67,11 @@ class InvoiceController extends AbstractApiController
             return;
         }
 
-        if (!$applicationId) {
+        if (!$applicationId || !TypeChecker::isNumeric($applicationId)) {
             try {
-                throw new InvalidArgumentException('An application ID must be provided.');
+                throw new BadRequestException('A valid application ID must be provided');
             }
-            catch (InvalidArgumentException $ex) {
+            catch (BadRequestException $ex) {
                 $this->respondException($ex, $this->messageHandler->retrieve("Error", "InvalidArgument"));
                 return;
             }
@@ -71,6 +79,12 @@ class InvoiceController extends AbstractApiController
 
         $results = $this->Applications->find('companyByApplicationId', ['applicationId' => $applicationId])
             ->toArray();
+
+        if (!$results) {
+            $this->respondError('Requested application has no company', 404, 
+                $this->messageHandler->retrieve("Data", "NotFound"));
+            return;
+        }
         
         $this->respondSuccess($results, 200, $this->messageHandler->retrieve("Data", "Found")); 
     }
@@ -85,17 +99,24 @@ class InvoiceController extends AbstractApiController
             return;
         }
         
-        if (!$applicationId) {
+        if (!$applicationId || !TypeChecker::isNumeric($applicationId)) {
             try {
-                throw new InvalidArgumentException('An application ID must be provided.');
+                throw new BadRequestException('A valid application ID must be provided');
             }
-            catch (InvalidArgumentException $ex) {
+            catch (BadRequestException $ex) {
                 $this->respondException($ex, $this->messageHandler->retrieve("Error", "InvalidArgument"));
                 return;
             }
         }
 
-        $results = $this->Invoices->find('byApplicationId', ['applicationId' => $applicationId])->toArray();
+        $results = $this->Invoices->find('byApplicationId', ['applicationId' => $applicationId])
+            ->toArray();
+
+        if (!$results) {
+            $this->respondError('Requested customer has no application', 404, 
+                $this->messageHandler->retrieve("Data", "NotFound"));
+            return;
+        }
 
         $this->respondSuccess($results, 200, $this->messageHandler->retrieve("Data", "Found"));
     }
@@ -110,17 +131,24 @@ class InvoiceController extends AbstractApiController
             return;
         }
 
-        if (!$applicationId) {
+        if (!$applicationId || !TypeChecker::isNumeric($applicationId)) {
             try {
-                throw new InvalidArgumentException('An application ID must be provided.');
+                throw new BadRequestException('A valid application ID must be provided');
             }
-            catch (InvalidArgumentException $ex) {
+            catch (BadRequestException $ex) {
                 $this->respondException($ex, $this->messageHandler->retrieve("Error", "InvalidArgument"));
                 return;
             }
         }
 
-        $results = $this->Applications->find('linesByApplicationId', ['applicationId' => $applicationId])->toArray();
+        $results = $this->Applications->find('linesByApplicationId', ['applicationId' => $applicationId])
+            ->toArray();
+
+        if (!$results) {
+            $this->respondError('Requested customer has no application', 404, 
+                $this->messageHandler->retrieve("Data", "NotFound"));
+            return;
+        }
 
         $this->respondSuccess($results, 200, $this->messageHandler->retrieve("Data", "Found"));       
     }
@@ -135,11 +163,11 @@ class InvoiceController extends AbstractApiController
             return;
         }
 
-        if (!$applicationId) {
+        if (!$applicationId || !TypeChecker::isNumeric($applicationId)) {
             try {
-                throw new InvalidArgumentException('An application ID must be provided.');
+                throw new BadRequestException('A valid application ID must be provided');
             }
-            catch (InvalidArgumentException $ex) {
+            catch (BadRequestException $ex) {
                 $this->respondException($ex, $this->messageHandler->retrieve("Error", "InvalidArgument"));
                 return;
             }
