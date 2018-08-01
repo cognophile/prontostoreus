@@ -4,6 +4,8 @@ namespace InvoiceComponent\Test\TestCase\Controller;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\IntegrationTestCase;
+use Cake\ORM\TableRegistry;
+
 use InvoiceComponent\Controller\InvoiceController;
 
 /**
@@ -11,14 +13,22 @@ use InvoiceComponent\Controller\InvoiceController;
  */
 class InvoiceControllerTest extends IntegrationTestCase
 {
-
     /**
      * Fixtures
      *
      * @var array
      */
     public $fixtures = [
-        'plugin.invoice_component.invoices'
+        'plugin.invoice_component.invoices',
+        'plugin.invoice_component.applications',
+        'plugin.invoice_component.application_lines',
+        'plugin.invoice_component.addresses',
+        'plugin.invoice_component.customers',
+        'plugin.invoice_component.companies',
+        'plugin.invoice_component.confirmations',
+        'plugin.invoice_component.rooms',
+        'plugin.invoice_component.furnishings',
+        'plugin.invoice_component.company_furnishing_rates',
     ];
 
     /**
@@ -91,8 +101,23 @@ class InvoiceControllerTest extends IntegrationTestCase
      */
     public function testGetApplicationCustomer()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $applicationId = 1;
+        $query = TableRegistry::get('InvoiceComponent.Applications')->find('all')
+            ->contain('Customers.Addresses')->where(['Applications.id' => $applicationId])
+            ->andWhere(['cancelled' => 0]);
+        $expected = $query->enableHydration(false)->toArray();
+
+        $this->get("/invoices/applications/{$applicationId}/customer");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseSuccess();
+        $this->assertEquals($expected, $responseArray['data']);
     }
+
+
+
+
+
 
     /**
      * Test getApplicationCompany method
@@ -104,6 +129,11 @@ class InvoiceControllerTest extends IntegrationTestCase
         $this->markTestIncomplete('Not implemented yet.');
     }
 
+
+
+
+
+
     /**
      * Test getApplicationMetadata method
      *
@@ -113,6 +143,11 @@ class InvoiceControllerTest extends IntegrationTestCase
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
+
+
+
+
+
 
     /**
      * Test getApplicaitonLines method
@@ -124,6 +159,11 @@ class InvoiceControllerTest extends IntegrationTestCase
         $this->markTestIncomplete('Not implemented yet.');
     }
 
+
+
+
+
+
     /**
      * Test produceInvoice method
      *
@@ -133,6 +173,4 @@ class InvoiceControllerTest extends IntegrationTestCase
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
-
-
 }

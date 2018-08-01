@@ -3,20 +3,20 @@ namespace InvoiceComponent\Test\TestCase\Model\Table;
 
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use InvoiceComponent\Model\Table\ApplicationsTable;
+use InvoiceComponent\Model\Table\ApplicationLinesTable;
 
 /**
- * InvoiceComponent\Model\Table\ApplicationsTable Test Case
+ * InvoiceComponent\Model\Table\ApplicationLinesTable Test Case
  */
-class ApplicationsTableTest extends TestCase
+class ApplicationLinesTableTest extends TestCase
 {
 
     /**
      * Test subject
      *
-     * @var \InvoiceComponent\Model\Table\ApplicationsTable
+     * @var \InvoiceComponent\Model\Table\ApplicationLinesTable
      */
-    public $Applications;
+    public $ApplicationLines;
 
     /**
      * Fixtures
@@ -24,12 +24,9 @@ class ApplicationsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.invoice_component.applications',
-        'plugin.invoice_component.customers',
-        'plugin.invoice_component.companies',
         'plugin.invoice_component.application_lines',
-        'plugin.invoice_component.confirmations',
-        'plugin.invoice_component.invoices'
+        'plugin.invoice_component.applications',
+        'plugin.invoice_component.furnishings'
     ];
 
     /**
@@ -40,8 +37,8 @@ class ApplicationsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('Applications') ? [] : ['className' => ApplicationsTable::class];
-        $this->Applications = TableRegistry::getTableLocator()->get('Applications', $config);
+        $config = TableRegistry::getTableLocator()->exists('ApplicationLines') ? [] : ['className' => ApplicationLinesTable::class];
+        $this->ApplicationLines = TableRegistry::getTableLocator()->get('ApplicationLines', $config);
     }
 
     /**
@@ -51,7 +48,7 @@ class ApplicationsTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->Applications);
+        unset($this->ApplicationLines);
 
         parent::tearDown();
     }

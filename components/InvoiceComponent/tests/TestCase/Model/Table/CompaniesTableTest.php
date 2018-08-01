@@ -3,20 +3,20 @@ namespace InvoiceComponent\Test\TestCase\Model\Table;
 
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use InvoiceComponent\Model\Table\ApplicationsTable;
+use InvoiceComponent\Model\Table\CompaniesTable;
 
 /**
- * InvoiceComponent\Model\Table\ApplicationsTable Test Case
+ * InvoiceComponent\Model\Table\CompaniesTable Test Case
  */
-class ApplicationsTableTest extends TestCase
+class CompaniesTableTest extends TestCase
 {
 
     /**
      * Test subject
      *
-     * @var \InvoiceComponent\Model\Table\ApplicationsTable
+     * @var \InvoiceComponent\Model\Table\CompaniesTable
      */
-    public $Applications;
+    public $Companies;
 
     /**
      * Fixtures
@@ -24,12 +24,10 @@ class ApplicationsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.invoice_component.applications',
-        'plugin.invoice_component.customers',
         'plugin.invoice_component.companies',
-        'plugin.invoice_component.application_lines',
-        'plugin.invoice_component.confirmations',
-        'plugin.invoice_component.invoices'
+        'plugin.invoice_component.addresses',
+        'plugin.invoice_component.applications',
+        'plugin.invoice_component.company_furnishing_rates'
     ];
 
     /**
@@ -40,8 +38,8 @@ class ApplicationsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('Applications') ? [] : ['className' => ApplicationsTable::class];
-        $this->Applications = TableRegistry::getTableLocator()->get('Applications', $config);
+        $config = TableRegistry::getTableLocator()->exists('Companies') ? [] : ['className' => CompaniesTable::class];
+        $this->Companies = TableRegistry::getTableLocator()->get('Companies', $config);
     }
 
     /**
@@ -51,7 +49,7 @@ class ApplicationsTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->Applications);
+        unset($this->Companies);
 
         parent::tearDown();
     }

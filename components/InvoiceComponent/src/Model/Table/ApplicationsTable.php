@@ -49,19 +49,19 @@ class ApplicationsTable extends AbstractComponentRepository
 
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',
-            'className' => 'CustomerComponent.Customers'
+            'className' => 'InvoiceComponent.Customers'
         ]);
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
-            'className' => 'LocationComponent.Companies'
+            'className' => 'InvoiceComponent.Companies'
         ]);
         $this->hasMany('ApplicationLines', [
             'foreignKey' => 'application_id',
-            'className' => 'ApplicationComponent.ApplicationLines'
+            'className' => 'InvoiceComponent.ApplicationLines'
         ]);
         $this->hasMany('Confirmations', [
             'foreignKey' => 'application_id',
-            'className' => 'ConfirmationComponent.Confirmations'
+            'className' => 'InvoiceComponent.Confirmations'
         ]);
         $this->hasMany('Invoices', [
             'foreignKey' => 'application_id',

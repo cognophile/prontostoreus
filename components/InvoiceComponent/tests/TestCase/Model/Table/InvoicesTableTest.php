@@ -25,7 +25,7 @@ class InvoicesTableTest extends TestCase
      */
     public $fixtures = [
         'plugin.invoice_component.invoices',
-        'plugin.application_component.applications'
+        'plugin.invoice_component.applications'
     ];
 
     /**

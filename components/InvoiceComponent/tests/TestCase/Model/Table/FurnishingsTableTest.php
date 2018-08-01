@@ -3,20 +3,20 @@ namespace InvoiceComponent\Test\TestCase\Model\Table;
 
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use InvoiceComponent\Model\Table\ApplicationsTable;
+use InvoiceComponent\Model\Table\FurnishingsTable;
 
 /**
- * InvoiceComponent\Model\Table\ApplicationsTable Test Case
+ * InvoiceComponent\Model\Table\FurnishingsTable Test Case
  */
-class ApplicationsTableTest extends TestCase
+class FurnishingsTableTest extends TestCase
 {
 
     /**
      * Test subject
      *
-     * @var \InvoiceComponent\Model\Table\ApplicationsTable
+     * @var \InvoiceComponent\Model\Table\FurnishingsTable
      */
-    public $Applications;
+    public $Furnishings;
 
     /**
      * Fixtures
@@ -24,12 +24,10 @@ class ApplicationsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.invoice_component.applications',
-        'plugin.invoice_component.customers',
-        'plugin.invoice_component.companies',
+        'plugin.invoice_component.furnishings',
+        'plugin.invoice_component.rooms',
         'plugin.invoice_component.application_lines',
-        'plugin.invoice_component.confirmations',
-        'plugin.invoice_component.invoices'
+        'plugin.invoice_component.company_furnishing_rates'
     ];
 
     /**
@@ -40,8 +38,8 @@ class ApplicationsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('Applications') ? [] : ['className' => ApplicationsTable::class];
-        $this->Applications = TableRegistry::getTableLocator()->get('Applications', $config);
+        $config = TableRegistry::getTableLocator()->exists('Furnishings') ? [] : ['className' => FurnishingsTable::class];
+        $this->Furnishings = TableRegistry::getTableLocator()->get('Furnishings', $config);
     }
 
     /**
@@ -51,7 +49,7 @@ class ApplicationsTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->Applications);
+        unset($this->Furnishings);
 
         parent::tearDown();
     }
