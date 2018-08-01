@@ -78,15 +78,14 @@ class CompaniesTable extends AbstractComponentRepository
             ->notEmpty('email');
 
         $validator
-            ->scalar('telephone')
+            ->numeric('telephone')
             ->maxLength('telephone', 12)
             ->requirePresence('telephone', 'create')
             ->notEmpty('telephone');
 
         $validator
             ->boolean('deleted')
-            ->requirePresence('deleted', 'create')
-            ->notEmpty('deleted');
+            ->allowEmpty('deleted');
 
         return $validator;
     }
