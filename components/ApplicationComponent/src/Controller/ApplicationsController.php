@@ -5,6 +5,7 @@ use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Exception\MethodNotAllowedException;
 
 use Prontostoreus\Api\Controller\AbstractApiController;
 use ApplicationComponent\Utility\TypeChecker\TypeChecker;
