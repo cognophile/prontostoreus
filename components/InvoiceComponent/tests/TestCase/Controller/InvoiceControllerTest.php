@@ -137,7 +137,7 @@ class InvoiceControllerTest extends IntegrationTestCase
         $this->assertEquals($expectedMessage, $responseArray['message']);
         $this->assertEquals($expected, $responseArray['data']);
     }
-
+    
     public function testGetApplicationCompanyWithValidApplicationIdReturnsSuccessfulResponseAndMatchingRecord()
     {
         $applicationId = 1;
