@@ -4,6 +4,7 @@ namespace InvoiceComponent\Controller;
 
 use Cake\Core\Configure;
 use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Exception\MethodNotAllowedException;
 
 use Prontostoreus\Api\Controller\AbstractApiController;
 use InvoiceComponent\Utility\Pdf\PdfCreator;
@@ -113,7 +114,7 @@ class InvoiceController extends AbstractApiController
             ->toArray();
 
         if (!$results) {
-            $this->respondError('Requested customer has no application', 404, 
+            $this->respondError('Requested application has no invoice', 404, 
                 $this->messageHandler->retrieve("Data", "NotFound"));
             return;
         }
@@ -145,7 +146,7 @@ class InvoiceController extends AbstractApiController
             ->toArray();
 
         if (!$results) {
-            $this->respondError('Requested customer has no application', 404, 
+            $this->respondError('Requested application has no lines', 404, 
                 $this->messageHandler->retrieve("Data", "NotFound"));
             return;
         }
@@ -173,10 +174,18 @@ class InvoiceController extends AbstractApiController
             }
         }
 
-        $data = $this->Invoices->find('fullApplicationInvoiceData', ['applicationId' => $applicationId])->toArray();
-        $this->set(['data' => $data[0]]);
+        $results = $this->Invoices->find('fullApplicationInvoiceData', ['applicationId' => $applicationId])
+            ->toArray();
+
+        if (!$results) {
+            $this->respondError('Requested application has no data', 404, 
+                $this->messageHandler->retrieve("File", "NotRetrieved"));
+            return;
+        }
+
+        $this->set(['data' => $results[0]]);
         
-        $filename = 'prontostoreus_invoice_' . $data[0]['reference'] . '.pdf';
+        $filename = 'prontostoreus_invoice_' . $results[0]['reference'] . '.pdf';
         $outputLocation = COMPS . DS . 'InvoiceComponent' . DS . 'tmp' . DS . $filename;
         
         $pdfCreator = new PdfCreator($outputLocation);
@@ -185,7 +194,7 @@ class InvoiceController extends AbstractApiController
         $isCreated = $pdfCreator->render();
 
         if (!$isCreated) {
-            $this->respondError('Could not retrieve Invoice PDF: ' . $outputLocation, 500, 
+            $this->respondError('Could not retrieve Invoice PDF for application', 500, 
                 $this->messageHandler->retrieve("File", "NotRetrieved"));
             return;
         } 
