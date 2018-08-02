@@ -31,26 +31,6 @@ class InvoiceControllerTest extends IntegrationTestCase
         'plugin.invoice_component.company_furnishing_rates',
     ];
 
-    /**
-     * Test initialize method
-     *
-     * @return void
-     */
-    public function testInitialize()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test status method
-     *
-     * @return void
-     */
-    public function testStatus()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
     public function testGetInvoicesComponentStatusRouteWhereResponseIsSuccessful()
     {
         $this->get('/invoices');
@@ -122,6 +102,21 @@ class InvoiceControllerTest extends IntegrationTestCase
         $this->assertEquals($expectedMessage, $responseArray['message']);
     }
 
+    public function testGetApplicationCustomerWithInvalidSymbolicApplicationIdReturnsUnsuccessfulResponse()
+    {
+        $applicationId = "@";
+        $expectedError = 'A valid application ID must be provided';
+        $expectedMessage = 'The given URI argument was invalid';
+
+        $this->get("/invoices/applications/{$applicationId}/customer");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(400);
+        $this->assertFalse($responseArray['success']);
+        $this->assertEquals($expectedError, $responseArray['error']);
+        $this->assertEquals($expectedMessage, $responseArray['message']);
+    }
+
     public function testGetApplicationCustomerWithNonExistentApplicationIdReturnsUnsuccessfulResponse()
     {
         $applicationId = 999;
@@ -143,61 +138,269 @@ class InvoiceControllerTest extends IntegrationTestCase
         $this->assertEquals($expected, $responseArray['data']);
     }
 
-
-
-
-    /**
-     * Test getApplicationCompany method
-     *
-     * @return void
-     */
-    public function testGetApplicationCompany()
+    public function testGetApplicationCompanyWithValidApplicationIdReturnsSuccessfulResponseAndMatchingRecord()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $applicationId = 1;
+        $expectedMessage = "The data was successfully located";
+
+        $this->get("/invoices/applications/{$applicationId}/company");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseSuccess();
+        $this->assertTrue($responseArray['success']);
+        $this->assertContains($expectedMessage, $responseArray['message']);
     }
 
-
-
-
-
-
-    /**
-     * Test getApplicationMetadata method
-     *
-     * @return void
-     */
-    public function testGetApplicationMetadata()
+    public function testGetApplicationCompanyWithInvalidNonNumericApplicationIdReturnsUnsuccessfulResponse()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $applicationId = "A";
+        $expectedError = 'A valid application ID must be provided';
+        $expectedMessage = 'The given URI argument was invalid';
+
+        $this->get("/invoices/applications/{$applicationId}/company");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(400);
+        $this->assertFalse($responseArray['success']);
+        $this->assertEquals($expectedError, $responseArray['error']);
+        $this->assertEquals($expectedMessage, $responseArray['message']);
     }
 
-
-
-
-
-
-    /**
-     * Test getApplicaitonLines method
-     *
-     * @return void
-     */
-    public function testGetApplicaitonLines()
+    public function testGetApplicationCompanyWithInvalidSymbolicApplicationIdReturnsUnsuccessfulResponse()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $applicationId = "@";
+        $expectedError = 'A valid application ID must be provided';
+        $expectedMessage = 'The given URI argument was invalid';
+
+        $this->get("/invoices/applications/{$applicationId}/company");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(400);
+        $this->assertFalse($responseArray['success']);
+        $this->assertEquals($expectedError, $responseArray['error']);
+        $this->assertEquals($expectedMessage, $responseArray['message']);
     }
 
-
-
-
-
-
-    /**
-     * Test produceInvoice method
-     *
-     * @return void
-     */
-    public function testProduceInvoice()
+    public function testGetApplicationCompanyWithNonExistentApplicationIdReturnsUnsuccessfulResponse()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $applicationId = 999;
+        $expectedError = "Requested application has no company";
+        $expectedMessage = "The requested data could not be located";
+
+        $query = TableRegistry::get('InvoiceComponent.Applications')->find('all')
+            ->contain('Companies.Addresses')->where(['Applications.id' => $applicationId])
+            ->andWhere(['cancelled' => 0]);
+
+        $expected = $query->enableHydration(false)->toArray();
+
+        $this->get("/invoices/applications/{$applicationId}/company");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(404);
+        $this->assertFalse($responseArray['success']);
+        $this->assertEquals($expectedError, $responseArray['error']);
+        $this->assertEquals($expectedMessage, $responseArray['message']);
+        $this->assertEquals($expected, $responseArray['data']);
+    }
+
+    public function testGetApplicationMetadataWithValidApplicationIdReturnsSuccessfulResponseAndMatchingRecord()
+    {
+        $applicationId = 1;
+        $expectedMessage = "The data was successfully located";
+
+        $this->get("/invoices/applications/{$applicationId}/data");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseSuccess();
+        $this->assertTrue($responseArray['success']);
+        $this->assertContains($expectedMessage, $responseArray['message']);
+    }
+
+    public function testGetApplicationMetadataWithInvalidNonNumericApplicationIdReturnsUnsuccessfulResponse()
+    {
+        $applicationId = "A";
+        $expectedError = 'A valid application ID must be provided';
+        $expectedMessage = 'The given URI argument was invalid';
+
+        $this->get("/invoices/applications/{$applicationId}/data");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(400);
+        $this->assertFalse($responseArray['success']);
+        $this->assertEquals($expectedError, $responseArray['error']);
+        $this->assertEquals($expectedMessage, $responseArray['message']);
+    }
+
+    public function testGetApplicationMetadataWithInvalidSymbolicApplicationIdReturnsUnsuccessfulResponse()
+    {
+        $applicationId = "@";
+        $expectedError = 'A valid application ID must be provided';
+        $expectedMessage = 'The given URI argument was invalid';
+
+        $this->get("/invoices/applications/{$applicationId}/data");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(400);
+        $this->assertFalse($responseArray['success']);
+        $this->assertEquals($expectedError, $responseArray['error']);
+        $this->assertEquals($expectedMessage, $responseArray['message']);
+    }
+
+    public function testGetApplicationMetadataWithNonExistentApplicationIdReturnsUnsuccessfulResponse()
+    {
+        $applicationId = 999;
+        $expectedError = "Requested application has no invoice";
+        $expectedMessage = "The requested data could not be located";
+
+        $query = TableRegistry::get('InvoiceComponent.Invoices')->find('all')
+            ->contain('Applications.Confirmations')->where(['application_id' => $applicationId])
+            ->andWhere(['cancelled' => 0]);
+
+        $expected = $query->enableHydration(false)->toArray();
+
+        $this->get("/invoices/applications/{$applicationId}/data");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(404);
+        $this->assertFalse($responseArray['success']);
+        $this->assertEquals($expectedError, $responseArray['error']);
+        $this->assertEquals($expectedMessage, $responseArray['message']);
+        $this->assertEquals($expected, $responseArray['data']);
+    }
+
+    public function testGetApplicationLinesWithValidApplicationIdReturnsSuccessfulResponseAndMatchingRecord()
+    {
+        $applicationId = 1;
+        $expectedMessage = "The data was successfully located";
+
+        $this->get("/invoices/applications/{$applicationId}/lines");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseSuccess();
+        $this->assertTrue($responseArray['success']);
+        $this->assertContains($expectedMessage, $responseArray['message']);
+    }
+
+    public function testGetApplicationLinesWithInvalidNonNumericApplicationIdReturnsUnsuccessfulResponse()
+    {
+        $applicationId = "A";
+        $expectedError = 'A valid application ID must be provided';
+        $expectedMessage = 'The given URI argument was invalid';
+
+        $this->get("/invoices/applications/{$applicationId}/lines");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(400);
+        $this->assertFalse($responseArray['success']);
+        $this->assertEquals($expectedError, $responseArray['error']);
+        $this->assertEquals($expectedMessage, $responseArray['message']);
+    }
+
+    public function testGetApplicationLinesWithInvalidSymbolicApplicationIdReturnsUnsuccessfulResponse()
+    {
+        $applicationId = "@";
+        $expectedError = 'A valid application ID must be provided';
+        $expectedMessage = 'The given URI argument was invalid';
+
+        $this->get("/invoices/applications/{$applicationId}/lines");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(400);
+        $this->assertFalse($responseArray['success']);
+        $this->assertEquals($expectedError, $responseArray['error']);
+        $this->assertEquals($expectedMessage, $responseArray['message']);
+    }
+
+    public function testGetApplicationLinesWithNonExistentApplicationIdReturnsUnsuccessfulResponse()
+    {
+        $applicationId = 999;
+        $expectedError = "Requested application has no lines";
+        $expectedMessage = "The requested data could not be located";
+
+        $query = TableRegistry::get('InvoiceComponent.Invoices')->find('all')
+            ->contain(['Applications' => ['Confirmations', 'ApplicationLines.Furnishings.Rooms', 'Companies.Addresses', 'Customers.Addresses']])
+            ->where(['application_id' => $applicationId])
+            ->andWhere(['cancelled' => 0]);
+
+        $expected = $query->enableHydration(false)->toArray();
+
+        $this->get("/invoices/applications/{$applicationId}/lines");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(404);
+        $this->assertFalse($responseArray['success']);
+        $this->assertEquals($expectedError, $responseArray['error']);
+        $this->assertEquals($expectedMessage, $responseArray['message']);
+        $this->assertEquals($expected, $responseArray['data']);
+    }
+
+    public function testProduceInvoiceWithValidApplicationIdReturnsSuccessfulResponse()
+    {
+        $applicationId = 1;
+
+        $this->get("/invoices/applications/{$applicationId}/");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(201);
+    }
+
+    public function testProduceInvoiceWithInvalidRequestMethodReturnsUnsuccessfulResponse()
+    {
+        $applicationId = 1;
+        $expectedMessage = "The request was denied due to invalid method";
+        $expectedError = "HTTP Method disabled for endpoint: Use GET";
+
+        $this->put("/invoices/applications/{$applicationId}/", []);
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(405);        
+        $this->assertFalse($responseArray["success"]);
+        $this->assertContains($expectedMessage, $responseArray["message"]);
+        $this->assertContains($expectedError, $responseArray["error"]);
+    }
+
+    public function testProduceInvoiceWithWithInvalidNonNumericApplicationIdReturnsUnsuccessfulResponse()
+    {
+        $applicationId = "A";
+        $expectedError = 'A valid application ID must be provided';
+        $expectedMessage = 'The given URI argument was invalid';
+
+        $this->get("/invoices/applications/{$applicationId}/");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(400);
+        $this->assertFalse($responseArray['success']);
+        $this->assertEquals($expectedError, $responseArray['error']);
+        $this->assertEquals($expectedMessage, $responseArray['message']);
+    }
+
+    public function testProduceInvoiceWithWithInvalidNonExistentApplicationIdReturnsUnsuccessfulResponse()
+    {
+        $applicationId = 999;
+        $expectedError = "Requested application has no data";
+        $expectedMessage = "The file could not be retrieved";
+
+        $this->get("/invoices/applications/{$applicationId}/");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(404);
+        $this->assertFalse($responseArray['success']);
+        $this->assertEquals($expectedError, $responseArray['error']);
+        $this->assertEquals($expectedMessage, $responseArray['message']);
+    }
+
+    public function testProduceInvoiceWithWithInvalidSymbolicApplicationIdReturnsUnsuccessfulResponse()
+    {
+        $applicationId = "@";
+        $expectedError = 'A valid application ID must be provided';
+        $expectedMessage = 'The given URI argument was invalid';
+
+        $this->get("/invoices/applications/{$applicationId}/");
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(400);
+        $this->assertFalse($responseArray['success']);
+        $this->assertEquals($expectedError, $responseArray['error']);
+        $this->assertEquals($expectedMessage, $responseArray['message']);
     }
 }
