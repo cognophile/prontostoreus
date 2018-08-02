@@ -18,7 +18,7 @@ class ApplicationsController extends AbstractApiController
     public function initialize() 
     {
         parent::initialize();        
-        $this->InvoiceApplications = TableRegistry::get('InvoiceComponent.Applications');
+        $this->loadModel('InvoiceComponent.Applications');
         $this->loadModel('InvoiceComponent.Invoices');
     }
 
@@ -71,7 +71,7 @@ class ApplicationsController extends AbstractApiController
             throw new InvalidArgumentException("The provided data must be a valid array");
         }
 
-        $application = $this->InvoiceApplications->find('customerByApplicationId', ['applicationId' => $applicationData['id']])->toArray();
+        $application = $this->Applications->find('customerByApplicationId', ['applicationId' => $applicationData['id']])->toArray();
         
         if (!$application) {
             throw new RecordNotFoundException("An Application matching the given ID was not found");
