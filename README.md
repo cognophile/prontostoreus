@@ -10,8 +10,8 @@ This project was produced as an accompanying artefact to a dissertation project.
 
  The components are included in the repository (but are capable of being held within their own repositories).
 
-**Note:**
- This application was designed and constructed purely for academic and proof-of-concept purposes. It is not intended for commercial or real-world usage. 
+**Important:**
+ This application was designed and constructed purely for academic and proof-of-concept purposes. It is not intended for commercial or real-world usage. Security is low, if not non-existent at this point as this was not the focus of the study. For example, there is no authentication methods (eg. tokens, users and passwords), no CSRF protection, and no CORs protection. 
 
 ## Requirements
 - All CakePHP dependencies, listed later in this file. See to it that these are installed first.
