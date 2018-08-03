@@ -194,6 +194,11 @@ abstract class AbstractApiController extends CakeController
                 if (!empty($associated)) {
                     $patchedEntity = $entityModel->patchEntity($recordModel, $data, ['associated' => [$associated]]);
                 }
+
+                if ($patchedEntity->getErrors()) {
+                    $this->respondError($patchedEntity->getErrors(), 400, $this->messageHandler->retrieve("Data", "NotEdited"));
+                    return;
+                }
                     
                 $updatedEntity = $entityModel->saveEntity($entityModel, $patchedEntity);
 
