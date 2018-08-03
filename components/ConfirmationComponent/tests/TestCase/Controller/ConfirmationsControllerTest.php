@@ -40,7 +40,7 @@ class ConfirmationsControllerTest extends IntegrationTestCase
         [
             'application_id' => $applicationId,
             'accepted' => true,
-            'date_accepted' =>  "01/01/1970 13:00:00"
+            'date_accepted' =>  "01/01/1970"
         ];
     }
 
@@ -149,6 +149,22 @@ class ConfirmationsControllerTest extends IntegrationTestCase
         $this->assertContains($expectedMessage, $responseArray["message"]);
     }
 
+    public function testPostConfirmationsComponentUpdateWithInvalidUriArgumentAsSymbolicCharacterTypeReturnsInvalidTypeError()
+    {   
+        $applicationId = "@";
+        $data = $this->validConfirmationProvider($applicationId);
+        $expectedError = "A valid application ID must be provided";
+        $expectedMessage = "The given URI argument was invalid";
+
+        $this->post("/confirmations/applications/{$applicationId}/update", $data);
+        $responseArray = json_decode($this->_response->getBody(), true);
+        
+        $this->assertResponseCode(400);        
+        $this->assertFalse($responseArray["success"]);
+        $this->assertContains($expectedError, $responseArray["error"]);
+        $this->assertContains($expectedMessage, $responseArray["message"]);
+    }
+
     public function testPostConfirmationsComponentUpdateWithInvalidUriArgumentAsStringNumericTypeReturnsInvalidTypeError()
     {   
         $applicationId = "1";
@@ -174,6 +190,38 @@ class ConfirmationsControllerTest extends IntegrationTestCase
         
         $this->assertResponseSuccess();        
         $this->assertTrue($responseArray["success"]);
+        $this->assertContains($expectedMessage, $responseArray["message"]);
+    }
+
+    public function testPostConfirmationComponentUpdateWithValidApplicationIdAndInvalidDateOfBirthFormatReturnsValidationError()
+    {
+        $applicationId = 1;
+        $data = $this->invalidDateConfirmationProvider($applicationId);
+        $expectedError = ['date_accepted' => ['dateTime' => 'The provided value is invalid']];
+        $expectedMessage = "The data could not be edited";
+
+        $this->post("/confirmations/applications/{$applicationId}/update", $data);
+        $responseArray = json_decode($this->_response->getBody(), true);
+
+        $this->assertResponseCode(400);        
+        $this->assertFalse($responseArray["success"]);
+        $this->assertEquals($expectedError, $responseArray["error"]);
+        $this->assertContains($expectedMessage, $responseArray["message"]);
+    }
+
+    public function testPostConfirmationComponentUpdateWithValidApplicationIdAndInvalidAcceptedTypeValueReturnsValidationError()
+    {
+        $applicationId = 1;
+        $data = $this->invalidAcceptedConfirmationProvider($applicationId);
+        $expectedError = ['accepted' => ['boolean' => 'The provided value is invalid']];
+        $expectedMessage = "The data could not be edited";
+
+        $this->post("/confirmations/applications/{$applicationId}/update", $data);
+        $responseArray = json_decode($this->_response->getBody(), true);
+        
+        $this->assertResponseCode(400);        
+        $this->assertFalse($responseArray["success"]);
+        $this->assertEquals($expectedError, $responseArray["error"]);
         $this->assertContains($expectedMessage, $responseArray["message"]);
     }
 }
