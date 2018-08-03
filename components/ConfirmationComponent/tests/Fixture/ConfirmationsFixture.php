@@ -46,7 +46,7 @@ class ConfirmationsFixture extends TestFixture
             [
                 'id' => 1,
                 'application_id' => 1,
-                'accepted' => 1,
+                'accepted' => 0,
                 'date_accepted' => '2018-06-20 21:25:20'
             ],
         ];

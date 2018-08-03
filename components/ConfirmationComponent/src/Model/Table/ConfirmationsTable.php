@@ -78,7 +78,7 @@ class ConfirmationsTable extends AbstractComponentRepository
      */
     public function buildRules(RulesChecker $rules)
     {
-        // $rules->add($rules->existsIn(['application_id'], 'ApplicationsComponent.Applications'));
+        // $rules->add($rules->existsIn(['application_id'], 'ConfirmationComponent.Applications'));
         return $rules;
     }
 
