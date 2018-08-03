@@ -122,7 +122,7 @@ abstract class AbstractComponentRepository extends CakeTable
     public function getOne(int $recordId)
     {
         if (empty($recordId)) {
-            throw new InvalidArgumentException('Unable to retrieve record: A valid ID must be provided.');
+            throw new \InvalidArgumentException('Unable to retrieve record: A valid ID must be provided.');
         }
 
         try {
