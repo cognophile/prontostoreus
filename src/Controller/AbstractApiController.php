@@ -67,51 +67,57 @@ abstract class AbstractApiController extends CakeController
 
         $data = $this->request->getData();
 
-        if (!empty($data)) {
-            $associated = $entityModel->getAssociations(0);
+        try {
+            if (!empty($data)) {
+                $associated = $entityModel->getAssociations(0);
 
-            if (!empty($associated)) {
-                $newEntity = $entityModel->newEntity($data, ['associated' => $associated]);
-            }
-            else {
-                $newEntity = $entityModel->newEntity($data);
-            }
+                if (!empty($associated)) {
+                    $newEntity = $entityModel->newEntity($data, ['associated' => $associated]);
+                }
+                else {
+                    $newEntity = $entityModel->newEntity($data);
+                }
 
-            $entity = $entityModel->saveEntity($entityModel, $newEntity);
+                $entity = $entityModel->saveEntity($entityModel, $newEntity);
 
-            if ($entity->getErrors()) {
-                $this->respondError($entity->getErrors(), 400, $this->messageHandler->retrieve("Error", "UnsuccessfulAdd"));
-                return;
-            }
-
-            if (!empty($entity) && $hasAssociations) {
-                $associatedEntity = $entityModel->saveAssociatedEntity($entityModel, $entity, $data);
-
-                if ($associatedEntity->getErrors()) {
-                    $this->respondError($associatedEntity->getErrors(), 400, $this->messageHandler->retrieve("Error", "UnsuccessfulAdd"));
+                if ($entity->getErrors()) {
+                    $this->respondError($entity->getErrors(), 400, $this->messageHandler->retrieve("Error", "UnsuccessfulAdd"));
                     return;
                 }
-            } 
 
-            $contained = $entityModel->getContained(0);
+                if (!empty($entity) && $hasAssociations) {
+                    $associatedEntity = $entityModel->saveAssociatedEntity($entityModel, $entity, $data);
 
-            if (!empty($contained)) {
-                $created = $entityModel->get($newEntity->id, ['contain' => $contained]);
+                    if ($associatedEntity->getErrors()) {
+                        $this->respondError($associatedEntity->getErrors(), 400, $this->messageHandler->retrieve("Error", "UnsuccessfulAdd"));
+                        return;
+                    }
+                } 
+
+                $contained = $entityModel->getContained(0);
+
+                if (!empty($contained)) {
+                    $created = $entityModel->get($newEntity->id, ['contain' => $contained]);
+                }
+                else {
+                    $created = $entityModel->get($newEntity->id);
+                }
+                
+                $this->respondSuccess($created, 201, $this->messageHandler->retrieve("Data", "Added"));
             }
             else {
-                $created = $entityModel->get($newEntity->id);
+                try {
+                    throw new BadRequestException();
+                }
+                catch (BadRequestException $ex) {
+                    $this->respondException($ex, $this->messageHandler->retrieve("Error", "MissingPayload"));
+                    return;
+                }
             }
-            
-            $this->respondSuccess($created, 201, $this->messageHandler->retrieve("Data", "Added"));
         }
-        else {
-            try {
-                throw new BadRequestException();
-            }
-            catch (BadRequestException $ex) {
-                $this->respondException($ex, $this->messageHandler->retrieve("Error", "MissingPayload"));
-                return;
-            }
+        catch (\Exception $ex) {
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "Unknown"), 500);
+            return;
         }
     }
 
@@ -133,27 +139,33 @@ abstract class AbstractApiController extends CakeController
             return;
         }
 
-        if (empty($recordId)) {
-            $results = $entityModel->getAll();
+        try {
+            if (empty($recordId)) {
+                $results = $entityModel->getAll();
 
-            if ($results instanceof RecordNotFoundException) {
-                $ex = $results;
-                $this->respondException($ex, $this->messageHandler->retrieve("Data", "NotFound"));
-                return;
+                if ($results instanceof RecordNotFoundException) {
+                    $ex = $results;
+                    $this->respondException($ex, $this->messageHandler->retrieve("Data", "NotFound"));
+                    return;
+                }
+
+                $this->respondSuccess($results->toArray(), 200, $this->messageHandler->retrieve("Data", "Found"));
             }
+            else {
+                $result = $entityModel->getOne($recordId);
 
-            $this->respondSuccess($results->toArray(), 200, $this->messageHandler->retrieve("Data", "Found"));
+                if ($result instanceof RecordNotFoundException) {
+                    $ex = $result;
+                    $this->respondException($ex, $this->messageHandler->retrieve("Data", "NotFound"));
+                    return;
+                }
+
+                $this->respondSuccess($result->toArray(), 200, $this->messageHandler->retrieve("Data", "Found"));
+            }
         }
-        else {
-            $result = $entityModel->getOne($recordId);
-
-            if ($result instanceof RecordNotFoundException) {
-                $ex = $result;
-                $this->respondException($ex, $this->messageHandler->retrieve("Data", "NotFound"));
-                return;
-            }
-
-            $this->respondSuccess($result->toArray(), 200, $this->messageHandler->retrieve("Data", "Found"));
+        catch (\Exception $ex) {
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "Unknown"), 500);
+            return;
         }
     }
 
@@ -179,54 +191,60 @@ abstract class AbstractApiController extends CakeController
 
         $data = $this->request->getData();
 
-        if (!empty($data) && !empty($recordId)) {
-            try {
-                $contained = $entityModel->getContained(0);
-                $recordModel = $entityModel->get($recordId);
+        try {
+            if (!empty($data) && !empty($recordId)) {
+                try {
+                    $contained = $entityModel->getContained(0);
+                    $recordModel = $entityModel->get($recordId);
 
-                if (!empty($contained)) {
-                    $recordModel = $entityModel->get($recordId, ['contain' => [$contained]]);
-                }
-
-                $associated = $entityModel->getAssociations(0);
-                $patchedEntity = $entityModel->patchEntity($recordModel, $data);
-
-                if (!empty($associated)) {
-                    $patchedEntity = $entityModel->patchEntity($recordModel, $data, ['associated' => [$associated]]);
-                }
-
-                if ($patchedEntity->getErrors()) {
-                    $this->respondError($patchedEntity->getErrors(), 400, $this->messageHandler->retrieve("Data", "NotEdited"));
-                    return;
-                }
-                    
-                $updatedEntity = $entityModel->saveEntity($entityModel, $patchedEntity);
-
-                if ($updatedEntity) {
-                    $updatedRecord = $entityModel->get($recordId);
-
-                    if ($contained) {
-                        $updatedRecord = $entityModel->get($recordId, ['contain' => $contained]);
+                    if (!empty($contained)) {
+                        $recordModel = $entityModel->get($recordId, ['contain' => [$contained]]);
                     }
 
-                    $this->respondSuccess($updatedRecord, 200, $this->messageHandler->retrieve("Data", "Edited"));
-                } else {
-                    $this->respondError($updatedEntity->getErrors(), 400, $this->messageHandler->retrieve("Data", "NotEdited"));
+                    $associated = $entityModel->getAssociations(0);
+                    $patchedEntity = $entityModel->patchEntity($recordModel, $data);
+
+                    if (!empty($associated)) {
+                        $patchedEntity = $entityModel->patchEntity($recordModel, $data, ['associated' => [$associated]]);
+                    }
+
+                    if ($patchedEntity->getErrors()) {
+                        $this->respondError($patchedEntity->getErrors(), 400, $this->messageHandler->retrieve("Data", "NotEdited"));
+                        return;
+                    }
+                        
+                    $updatedEntity = $entityModel->saveEntity($entityModel, $patchedEntity);
+
+                    if ($updatedEntity) {
+                        $updatedRecord = $entityModel->get($recordId);
+
+                        if ($contained) {
+                            $updatedRecord = $entityModel->get($recordId, ['contain' => $contained]);
+                        }
+
+                        $this->respondSuccess($updatedRecord, 200, $this->messageHandler->retrieve("Data", "Edited"));
+                    } else {
+                        $this->respondError($updatedEntity->getErrors(), 400, $this->messageHandler->retrieve("Data", "NotEdited"));
+                        return;
+                    }
+                } catch (RecordNotFoundException $ex) {
+                    $this->respondException($ex, $this->messageHandler->retrieve("Data", "NotFound"));
                     return;
                 }
-            } catch (RecordNotFoundException $ex) {
-                $this->respondException($ex, $this->messageHandler->retrieve("Data", "NotFound"));
-                return;
+            }
+            else {
+                try {
+                    throw new BadRequestException();
+                }
+                catch (BadRequestException $ex) {
+                    $this->respondException($ex, $this->messageHandler->retrieve("Error", "MissingPayload"));
+                    return;
+                }
             }
         }
-        else {
-            try {
-                throw new BadRequestException();
-            }
-            catch (BadRequestException $ex) {
-                $this->respondException($ex, $this->messageHandler->retrieve("Error", "MissingPayload"));
-                return;
-            }
+        catch (\Exception $ex) {
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "Unknown"), 500);
+            return;
         }
     }
 
@@ -248,15 +266,21 @@ abstract class AbstractApiController extends CakeController
             return;
         }
 
-        $recordEntity = $entityModel->getOne($recordId);
-        $result = $entityModel->delete($recordEntity);
+        try {
+            $recordEntity = $entityModel->getOne($recordId);
+            $result = $entityModel->delete($recordEntity);
 
-        if ($result instanceof RecordNotFoundException) {
-            $ex = $result;
-            $this->respondException($ex, $this->messageHandler->retrieve("Data", "NotRemoved"));
+            if ($result instanceof RecordNotFoundException) {
+                $ex = $result;
+                $this->respondException($ex, $this->messageHandler->retrieve("Data", "NotRemoved"));
+                return;
+            }
+
+            $this->respondSuccess($result, 200, $this->messageHandler->retrieve("Data", "Removed"));
+        }
+        catch (\Exception $ex) {
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "Unknown"), 500);
             return;
         }
-
-        $this->respondSuccess($result, 200, $this->messageHandler->retrieve("Data", "Removed"));
     }
 }

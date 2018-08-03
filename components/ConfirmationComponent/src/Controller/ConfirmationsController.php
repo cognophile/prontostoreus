@@ -59,27 +59,33 @@ class ConfirmationsController extends AbstractApiController
 
         // * If there is a confirmation record for this application, update it. 
         // * If not, check the application record by that Id exists, and if so, create the confirmation for it. 
-        if ($applicationId) {
-            $results = $this->Confirmations->find('byApplicationId', ['application_id' => $applicationId])->toArray();
+        try {
+            if ($applicationId) {
+                $results = $this->Confirmations->find('byApplicationId', ['application_id' => $applicationId])->toArray();
 
-            if (!empty($results) && $results[0]['id'] == $applicationId) {
-                return $this->universalEdit($this->Confirmations, $results[0]['id'], false);
-            }
-            else {
-                $applicationExists = $this->Applications->find('byId', ['id' => $applicationId])->toArray();
-
-                if (!$applicationExists) {
-                    try {
-                        throw new BadRequestException($this->messageHandler->retrieve("Error", "RecordNotFound"));
-                    }
-                    catch (BadRequestException $ex) {
-                        $this->respondException($ex, $this->messageHandler->retrieve("Error", "UnsuccessfulAdd"));
-                        return;
-                    }
+                if (!empty($results) && $results[0]['id'] == $applicationId) {
+                    return $this->universalEdit($this->Confirmations, $results[0]['id'], false);
                 }
-                
-                return $this->universalAdd($this->Confirmations, false);
+                else {
+                    $applicationExists = $this->Applications->find('byId', ['id' => $applicationId])->toArray();
+
+                    if (!$applicationExists) {
+                        try {
+                            throw new BadRequestException($this->messageHandler->retrieve("Error", "RecordNotFound"));
+                        }
+                        catch (BadRequestException $ex) {
+                            $this->respondException($ex, $this->messageHandler->retrieve("Error", "UnsuccessfulAdd"));
+                            return;
+                        }
+                    }
+                    
+                    return $this->universalAdd($this->Confirmations, false);
+                }
             }
+        }
+        catch (\Exception $ex) {
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "Unknown"), 500);
+            return;
         }
     }
 }

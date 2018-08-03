@@ -87,7 +87,7 @@ trait ApiHydrationTrait
      * @param array $data
      * @return void
      */
-    protected function respondException(\Exception $ex, string $message = "", array $links = [], array $data = []): void
+    protected function respondException(\Exception $ex, string $message = "", int $code = null, array $links = [], array $data = []): void
     {
         Log::write('error', $ex);
 
@@ -100,7 +100,13 @@ trait ApiHydrationTrait
             'data' => $data
         ];
 
-        $this->response = $this->response->withStatus($ex->getCode());
+        if ($ex->getCode() < 600) {
+            $this->response = $this->response->withStatus($ex->getCode());
+        }
+        else {
+            $this->response = $this->response->withStatus($code);
+        }
+
         $this->set($response);
     }
 

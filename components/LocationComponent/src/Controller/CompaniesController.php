@@ -23,6 +23,8 @@ class CompaniesController extends AbstractApiController
 
     public function locate(string $postcode)
     {
+        $results = [];
+        
         try {
             $this->requestFailWhenNot('GET');
         }
@@ -38,7 +40,13 @@ class CompaniesController extends AbstractApiController
             return;
         }
         
-        $results = $this->Companies->find('byPostcode', ['postcode' => $postcode]);
+        try {
+            $results = $this->Companies->find('byPostcode', ['postcode' => $postcode]);
+        }
+        catch (\Exception $ex) {
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "Unknown"), 500);
+            return;
+        }
         
         if (!empty($results)) {
             $message = $this->messageHandler->retrieve("Data", "Found");

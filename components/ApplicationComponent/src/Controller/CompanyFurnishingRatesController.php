@@ -20,6 +20,8 @@ class CompanyFurnishingRatesController extends AbstractApiController
 
     public function fetchPriceByItem($companyId, $furnishingId) 
     {
+        $results = [];
+
         try {
             $this->requestFailWhenNot('GET');
         }
@@ -38,9 +40,15 @@ class CompanyFurnishingRatesController extends AbstractApiController
             }
         }
         
-        $results = $this->CompanyFurnishingRates->find('companyItemPrice', 
-            ['companyId' => $companyId, 'furnishingId' => $furnishingId])->toArray();
-        
+        try {
+            $results = $this->CompanyFurnishingRates->find('companyItemPrice', 
+                ['companyId' => $companyId, 'furnishingId' => $furnishingId])->toArray();
+        }
+        catch (\Exception $ex) {
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "Unknown"), 500);
+            return;
+        }
+
         if (!$results) {
             $this->respondError('Requested company or furnishing ID does not exist', 404, 
                 $this->messageHandler->retrieve("Data", "NotFound"));

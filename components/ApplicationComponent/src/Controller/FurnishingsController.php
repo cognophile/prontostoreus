@@ -20,6 +20,8 @@ class FurnishingsController extends AbstractApiController
 
     public function fetchFurnishingListByRoom($roomId)
     {
+        $results = [];
+
         try {
             $this->requestFailWhenNot('GET');
         }
@@ -38,8 +40,14 @@ class FurnishingsController extends AbstractApiController
             }
         }
 
-        $this->loadModel('ApplicationComponent.Furnishings');
-        $results = $this->Furnishings->find('byRoomId', ['roomId' => $roomId])->toArray();
+        try {
+            $this->loadModel('ApplicationComponent.Furnishings');
+            $results = $this->Furnishings->find('byRoomId', ['roomId' => $roomId])->toArray();
+        }
+        catch (\Exception $ex) {
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "Unknown"), 500);
+            return;
+        }
 
         if (!$results) {
             $this->respondError('Requested room does not exist', 404, 
@@ -52,6 +60,8 @@ class FurnishingsController extends AbstractApiController
 
     public function fetchFurnishingSize($roomId, $furnishingId)
     {
+        $results = [];
+        
         try {
             $this->requestFailWhenNot('GET');
         }
@@ -70,8 +80,14 @@ class FurnishingsController extends AbstractApiController
             }
         }
 
-        $this->loadModel('ApplicationComponent.Furnishings');
-        $results = $this->Furnishings->find('byRoomId', ['roomId' => $roomId])->enableHydration(false)->toArray();
+        try {
+            $this->loadModel('ApplicationComponent.Furnishings');
+            $results = $this->Furnishings->find('byRoomId', ['roomId' => $roomId])->enableHydration(false)->toArray();
+        }
+        catch (\Exception $ex) {
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "Unknown"), 500);
+            return;
+        }
 
         $furnishing = array_search($furnishingId, array_column($results, 'id'));
 

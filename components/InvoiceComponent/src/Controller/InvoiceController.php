@@ -28,6 +28,8 @@ class InvoiceController extends AbstractApiController
 
     public function getApplicationCustomer($applicationId)
     {
+        $results = [];
+
         try {
             $this->requestFailWhenNot('GET');
         }
@@ -46,8 +48,14 @@ class InvoiceController extends AbstractApiController
             }
         }
 
-        $results = $this->Applications->find('customerByApplicationId', ['applicationId' => $applicationId])
-            ->toArray();
+        try {
+            $results = $this->Applications->find('customerByApplicationId', ['applicationId' => $applicationId])
+                ->toArray();
+        }
+        catch (\Exception $ex) {
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "Unknown"), 500);
+            return;
+        }
 
         if (!$results) {
             $this->respondError('Requested customer has no application', 404, 
@@ -60,6 +68,8 @@ class InvoiceController extends AbstractApiController
 
     public function getApplicationCompany($applicationId)
     {
+        $results = [];
+
         try {
             $this->requestFailWhenNot('GET');
         }
@@ -78,8 +88,14 @@ class InvoiceController extends AbstractApiController
             }
         }
 
-        $results = $this->Applications->find('companyByApplicationId', ['applicationId' => $applicationId])
-            ->toArray();
+        try {
+            $results = $this->Applications->find('companyByApplicationId', ['applicationId' => $applicationId])
+                ->toArray();
+        }
+        catch (\Exception $ex) {
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "Unknown"), 500);
+            return;
+        }
 
         if (!$results) {
             $this->respondError('Requested application has no company', 404, 
@@ -92,6 +108,8 @@ class InvoiceController extends AbstractApiController
 
     public function getInvoiceDataByApplication($applicationId)
     {
+        $results = [];
+
         try {
             $this->requestFailWhenNot('GET');
         }
@@ -110,8 +128,14 @@ class InvoiceController extends AbstractApiController
             }
         }
 
-        $results = $this->Invoices->find('byApplicationId', ['applicationId' => $applicationId])
-            ->toArray();
+        try {
+            $results = $this->Invoices->find('byApplicationId', ['applicationId' => $applicationId])
+                ->toArray();
+        }
+        catch (\Exception $ex) {
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "Unknown"), 500);
+            return;
+        }
 
         if (!$results) {
             $this->respondError('Requested application has no invoice', 404, 
@@ -124,6 +148,8 @@ class InvoiceController extends AbstractApiController
 
     public function getApplicationLines($applicationId)
     {
+        $results = [];
+
         try {
             $this->requestFailWhenNot('GET');
         }
@@ -142,8 +168,14 @@ class InvoiceController extends AbstractApiController
             }
         }
 
-        $results = $this->Applications->find('linesByApplicationId', ['applicationId' => $applicationId])
-            ->toArray();
+        try {
+            $results = $this->Applications->find('linesByApplicationId', ['applicationId' => $applicationId])
+                ->toArray();
+        }
+        catch (\Exception $ex) {
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "Unknown"), 500);
+            return;
+        }
 
         if (!$results) {
             $this->respondError('Requested application has no lines', 404, 
@@ -156,6 +188,8 @@ class InvoiceController extends AbstractApiController
 
     public function produceInvoice($applicationId)
     {
+        $results = [];
+        
         try {
             $this->requestFailWhenNot('GET');
         }
@@ -174,8 +208,14 @@ class InvoiceController extends AbstractApiController
             }
         }
 
-        $results = $this->Invoices->find('fullApplicationInvoiceData', ['applicationId' => $applicationId])
-            ->toArray();
+        try {
+            $results = $this->Invoices->find('fullApplicationInvoiceData', ['applicationId' => $applicationId])
+                ->toArray();
+        }
+        catch (\Exception $ex) {
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "Unknown"), 500);
+            return;
+        }
 
         if (!$results) {
             $this->respondError('Requested application has no data', 404, 

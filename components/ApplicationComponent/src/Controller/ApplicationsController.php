@@ -57,7 +57,7 @@ class ApplicationsController extends AbstractApiController
             $isSuccessful = $this->createInvoice($this->request->getData());
         }
         catch (Exception $ex) {
-            $this->respondException($ex, $this->messageHandler->retrieve("Error", "Unknown"));
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "Unknown"), 500);
             return;
         }
         
