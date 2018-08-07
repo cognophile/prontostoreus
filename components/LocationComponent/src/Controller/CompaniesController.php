@@ -41,7 +41,7 @@ class CompaniesController extends AbstractApiController
         }
         
         try {
-            $results = $this->Companies->find('byPostcode', ['postcode' => $postcode]);
+            $results = $this->Companies->find('byPostcode', ['postcode' => $postcode])->toArray();
         }
         catch (\Exception $ex) {
             $this->respondException($ex, $this->messageHandler->retrieve("Error", "Unknown"), 500);

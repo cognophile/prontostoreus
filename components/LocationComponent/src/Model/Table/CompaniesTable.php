@@ -120,10 +120,10 @@ class CompaniesTable extends AbstractComponentRepository
         $query->select(['Companies.id', 'Companies.name', 'Companies.description', 'Companies.telephone'])
             ->matching('Addresses', function ($q) use ($postcodeParts) {
                 return $q->select(['Addresses.postcode'])                      
-                    ->where(['Addresses.postcode LIKE' => $postcodeParts[0] . '%', 'Addresses.deleted' => 0])
+                    ->where(['Addresses.postcode LIKE' => $postcodeParts[0] . '-' . '%', 'Addresses.deleted' => 0])
                     ->order(['Addresses.postcode' => 'ASC']);
         });
 
-        return $query->toArray();
+        return $query;
     }
 }
