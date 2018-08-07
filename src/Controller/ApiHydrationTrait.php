@@ -3,6 +3,7 @@
 namespace Prontostoreus\Api\Controller;
 
 use Cake\Event\Event;
+use Cake\Core\Configure;
 use Cake\Filesystem\Folder;
 use Cake\Routing\Router;
 use Cake\Log\Log;
@@ -32,12 +33,15 @@ trait ApiHydrationTrait
      * 
      * @param string|array $data
      * @param string $message
-     * @param array $links
      * @param string $error
      * @return void
      */
     protected function respondSuccess($data, int $code, string $message = "", array $links = [], string $error = ""): void
     {
+        $componentName = $this->replaceString("Component", "s", $this->plugin);
+        $hyperlinkedComponent = Configure::read("Api.Hyperlinks.ComponentRelationships.{$componentName}");
+        $links = ($links) ? $links : Configure::read("Api.Routes.{$hyperlinkedComponent}");
+
         $response = [
             'message' => $message,
             'success' => true,
@@ -56,21 +60,22 @@ trait ApiHydrationTrait
      * 
      * @param string|array $error
      * @param string $message
-     * @param array $links
      * @param string $data
      * @return void
      */
-    protected function respondError($error, int $code, string $message = "", array $links = [], array $data = []): void
+    protected function respondError($error, int $code, string $message = "", array $data = []): void
     {
         Log::write('error', $code . ": " . $message . " (" . Router::url($this->here, true) . ")");
         Log::write('error', $error);
+
+        $componentName = $this->replaceString("Component", "s", $this->plugin);
 
         $response = [
             'message' => $message,
             'success' => false,
             'url' => Router::url($this->here, true),
             'error' => $error,
-            'links' => $links,
+            'links' => Configure::read("Api.Routes.{$componentName}"),
             'data' => $data
         ];
 
@@ -83,20 +88,21 @@ trait ApiHydrationTrait
      *
      * @param Exception $ex
      * @param string $message
-     * @param array $links
      * @param array $data
      * @return void
      */
-    protected function respondException(\Exception $ex, string $message = "", int $code = null, array $links = [], array $data = []): void
+    protected function respondException(Exception $ex, string $message = "", int $code = null, array $data = []): void
     {
         Log::write('error', $ex);
+
+        $componentName = $this->replaceString("Component", "s", $this->plugin);
 
         $response = [
             'message' => $message,
             'success' => false,
             'url' => Router::url($this->here, true),
             'error' => $ex->getMessage(),
-            'links' => $links,
+            'links' => Configure::read("Api.Routes.{$componentName}"),
             'data' => $data
         ];
 
@@ -143,6 +149,19 @@ trait ApiHydrationTrait
             $availableMethods = implode(" OR ", $methods);
             throw new MethodNotAllowedException("HTTP Method disabled for endpoint: Use {$availableMethods}");
         }
+    }
+
+    /**
+     * Replace a character (or sequence thereof) in a string
+     *
+     * @param string $target
+     * @param string $patch
+     * @param string $string
+     * @return string
+     */
+    protected function replaceString($target, $patch, $string): string
+    {
+        return str_replace($target, $patch, $string);
     }
 
     private function setCorsHeaders(): void
