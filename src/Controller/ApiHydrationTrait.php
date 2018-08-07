@@ -91,7 +91,7 @@ trait ApiHydrationTrait
      * @param array $data
      * @return void
      */
-    protected function respondException(Exception $ex, string $message = "", int $code = null, array $data = []): void
+    protected function respondException(\Exception $ex, string $message = "", int $code = null, array $data = []): void
     {
         Log::write('error', $ex);
 
