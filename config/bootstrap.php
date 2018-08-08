@@ -242,6 +242,7 @@ Configure::write('Api.Routes.Customers', [
 Configure::write('Api.Routes.Applications', [
     Configure::read('Api.Base') . 'applications/' => "GET",
     Configure::read('Api.Base') . 'applications/room/?id' => "GET",
+    Configure::read('Api.Base') . 'applications/room/?id/furnishing/' => "GET",
     Configure::read('Api.Base') . 'applications/room/?id/furnishing/?id' => "GET",
     Configure::read('Api.Base') . 'applications/company/?id/furnishing/?id/' => "GET",
     Configure::read('Api.Base') . 'applications/add/' => "POST",
@@ -250,7 +251,7 @@ Configure::write('Api.Routes.Applications', [
 
 Configure::write('Api.Routes.Confirmations', [
     Configure::read('Api.Base') . 'confirmations/' => "GET",
-    Configure::read('Api.Base') . 'confirmations/' => "POST",
+    Configure::read('Api.Base') . 'confirmations/update' => "POST",
 ]);
 
 Configure::write('Api.Routes.Invoices', [
