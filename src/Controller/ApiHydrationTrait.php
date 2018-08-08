@@ -106,7 +106,7 @@ trait ApiHydrationTrait
             'data' => $data
         ];
 
-        if ($ex->getCode() < 600) {
+        if ($ex->getCode() && $ex->getCode() < 600) {
             $this->response = $this->response->withStatus($ex->getCode());
         }
         else {
