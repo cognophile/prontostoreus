@@ -86,11 +86,16 @@ abstract class AbstractComponentRepository extends CakeTable
      */
     public function saveEntity(\Cake\ORM\Table $model, \Cake\Datasource\EntityInterface $newEntity)
     {
-        if ($model->save($newEntity)) {
-            $created = $model->get($newEntity->id);
-            return $created;
-        } else {
-            return $newEntity;
+        try {
+            if ($model->save($newEntity)) {
+                $created = $model->get($newEntity->id);
+                return $created;
+            } else {
+                return $newEntity;
+            }
+        }
+        catch (\Exception $ex) {
+            throw $ex;
         }
     }
 
@@ -106,11 +111,16 @@ abstract class AbstractComponentRepository extends CakeTable
         $association = Inflector::tableize($this->getAssociations(0));
         $associatedEntity = TableRegistry::get($this->getAssociations(0));
 
-        $data[$association][$this->getForeignKeyName($parentModel->getAlias())] = $parentEntity->id;
-        $newAssociatedEntity = $associatedEntity->newEntity($data[$association]);
-        
-        $associated = $this->saveEntity($associatedEntity, $newAssociatedEntity);
-        return $associated;
+        try {
+            $data[$association][$this->getForeignKeyName($parentModel->getAlias())] = $parentEntity->id;
+            $newAssociatedEntity = $associatedEntity->newEntity($data[$association]);
+            
+            $associated = $this->saveEntity($associatedEntity, $newAssociatedEntity);
+            return $associated;
+        }
+        catch (\Exception $ex) {
+            throw $ex;
+        }
     }
 
     /**
@@ -130,7 +140,7 @@ abstract class AbstractComponentRepository extends CakeTable
             return $result;
         }
         catch (RecordNotFoundException $ex) {
-            return $ex;
+            throw $ex;
         }
     }
 
@@ -145,7 +155,7 @@ abstract class AbstractComponentRepository extends CakeTable
             return $results;
         }
         catch (RecordNotFoundException $ex) {
-            return $ex;
+            throw $ex;
         }
     }
 
