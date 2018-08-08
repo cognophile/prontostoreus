@@ -1,7 +1,7 @@
 {
     "General": {
         "Welcome": "Prontostoreus API - Welcome!",
-        "Version": "0.8.2",
+        "Version": "0.9.0",
         "RouteAlive": "This is a live Route"
     },
     "Data": {
