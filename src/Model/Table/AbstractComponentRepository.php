@@ -59,7 +59,7 @@ abstract class AbstractComponentRepository extends CakeTable
      * @param array $associated The array of entity names to merge into the current associations
      * @return void
      */
-    public function setAssociations(array $associated)
+    public function setAssociations(array $associated): void
     {
         if (is_array($associated)) {
             $this->associated = array_merge($this->associated, $associated);
@@ -71,7 +71,7 @@ abstract class AbstractComponentRepository extends CakeTable
      * @param array $associated The array of entity names to merge into the current associations
      * @return void
      */
-    public function setContained(array $contained)
+    public function setContained(array $contained): void
     {
         if (is_array($contained)) {
             $this->contained = array_merge($this->contained, $contained);
@@ -84,7 +84,7 @@ abstract class AbstractComponentRepository extends CakeTable
      * @param \Cake\Datasource\EntityInterface $newEntity The new entity (record) to save
      * @return \Cake\Datasource\EntityInterface The persisted entity object, or the unpersisted $newEntity with errors
      */
-    public function saveEntity(\Cake\ORM\Table $model, \Cake\Datasource\EntityInterface $newEntity)
+    public function saveEntity(\Cake\ORM\Table $model, \Cake\Datasource\EntityInterface $newEntity): \Cake\Datasource\EntityInterface
     {
         try {
             if ($model->save($newEntity)) {
@@ -129,7 +129,7 @@ abstract class AbstractComponentRepository extends CakeTable
      * @throws InvalidArgumentException When the given record ID is classified as empty
      * @return array|RecordNotFoundException The record corresponding to the given ID
      */
-    public function getOne(int $recordId)
+    public function getOne(int $recordId): \Cake\Datasource\EntityInterface
     {
         if (empty($recordId)) {
             throw new \InvalidArgumentException('Unable to retrieve record: A valid ID must be provided.');
@@ -164,7 +164,7 @@ abstract class AbstractComponentRepository extends CakeTable
      * @param string $tableName Name of the table to generate a CakePHP convention foreign key column name
      * @return string Foreign key column name
      */
-    protected function getForeignKeyName(string $tableName) : string
+    protected function getForeignKeyName(string $tableName): string
     {
         return Inflector::singularize(Inflector::tableize($tableName)) . '_id';
     }
