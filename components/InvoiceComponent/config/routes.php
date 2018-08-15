@@ -9,6 +9,9 @@ Router::plugin(
     function (RouteBuilder $routes) {
         $routes->connect('/', ['controller' => 'Invoice', 'action' => 'status']);
 
+        $routes->connect('/applications/:application_id/add', ['controller' => 'Invoice', 'action' => 'add'])
+            ->setPass(['application_id']);
+
         $routes->connect('/applications/:application_id/customer/', ['controller' => 'Invoice', 'action' => 'getApplicationCustomer'])
             ->setPass(['application_id']);
 

@@ -5,6 +5,7 @@ namespace InvoiceComponent\Controller;
 use Cake\Core\Configure;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\MethodNotAllowedException;
+use Cake\Datasource\Exception\RecordNotFoundException;
 
 use Prontostoreus\Api\Controller\AbstractApiController;
 use InvoiceComponent\Utility\Pdf\PdfCreator;
@@ -24,6 +25,79 @@ class InvoiceController extends AbstractApiController
     {
         $message = $this->messageHandler->retrieve("General", "RouteAlive");
         $this->respondSuccess([], 200, "Invoice base: {$message}", Configure::read('Api.Routes.Invoices'));
+    }
+
+    public function add($applicationId)
+    {
+        try {
+            $this->requestFailWhenNot('POST');
+        }
+        catch (MethodNotAllowedException $ex) {
+            $this->respondException($ex, $this->messageHandler->retrieve("Error", "MethodNotAllowed"));
+            return;
+        }
+        
+        if (!$applicationId || !TypeChecker::isNumeric($applicationId)) {
+            try {
+                throw new BadRequestException('A valid application ID must be provided');
+            }
+            catch (BadRequestException $ex) {
+                $this->respondException($ex, $this->messageHandler->retrieve("Error", "InvalidArgument"));
+                return;
+            }
+        }
+
+        $application = $this->Applications->find('customerByApplicationId', ['applicationId' => $applicationId])->toArray();
+        
+        if (!$application) {
+            try {
+                throw new RecordNotFoundException("An Application matching the given ID was not found");
+            }
+            catch (RecordNotFoundException $ex) {
+                $this->respondException($ex, $this->messageHandler->retrieve("Data", "NotFound"));
+                return;
+            }
+        }
+
+        $customerFirstname = $application[0]['customer']['firstname']; 
+        $customerSurname = $application[0]['customer']['surname'];
+        
+        $invoiceData = $this->Invoices->buildInvoiceData($application[0], $customerFirstname, $customerSurname);
+        $invoiceExists = $this->Invoices->find('byApplicationId', ['applicationId' => $invoiceData['application_id']])->toArray();
+
+        if (!$invoiceExists) {
+            $invoice = $this->Invoices->newEntity($invoiceData);
+            $newInvoice = $this->Invoices->saveEntity($this->Invoices, $invoice);
+
+            if ($newInvoice->getErrors()) {
+                $this->respondError($newInvoice->getErrors(), 400, $this->messageHandler->retrieve("Error", "UnsuccessfulAdd"));
+                return;
+            }
+    
+            return $this->respondSuccess($newInvoice, 201, $this->messageHandler->retrieve("Data", "Added"));
+        }
+        else {
+            $invoiceId = $invoiceExists[0]['id'];
+            $invoiceRecord = $this->Invoices->get($invoiceId);
+            $patchedInvoice = $this->Invoices->patchEntity($invoiceRecord, $invoiceData);
+
+            if ($patchedInvoice->getErrors()) {
+                $this->respondError($patchedInvoice->getErrors(), 400, $this->messageHandler->retrieve("Error", "UnsuccessfulEdit"));
+                return;
+            }
+
+            $updatedInvoice = $this->Invoices->saveEntity($this->Invoices, $patchedInvoice);
+
+            if ($updatedInvoice->getErrors()) {
+                $this->respondError($updatedInvoice->getErrors(), 400, $this->messageHandler->retrieve("Data", "NotEdited"));
+                return;
+            }    
+
+            $updatedInvoice = $this->Invoices->get($invoiceId);
+
+            $this->respondSuccess($updatedInvoice, 200, $this->messageHandler->retrieve("Data", "Edited"));
+            return;
+        }
     }
 
     public function getApplicationCustomer($applicationId)

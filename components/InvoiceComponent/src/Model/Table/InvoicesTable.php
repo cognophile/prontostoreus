@@ -4,6 +4,7 @@ namespace InvoiceComponent\Model\Table;
 use \DateTime;
 use \DateInterval;
 
+use Cake\I18n\Time;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -117,7 +118,7 @@ class InvoicesTable extends AbstractComponentRepository
         return $rules;
     }
 
-    public function buildInvoiceData(array $applicationData, string $firstname, string $surname): array
+    public function buildInvoiceData($applicationData, string $firstname, string $surname): array
     {
         $invoiceData = [];
         
@@ -126,12 +127,15 @@ class InvoicesTable extends AbstractComponentRepository
         $oneMonth = new DateInterval('P1M');
         $dueDate->add($oneMonth);
 
+        $applicationData['created'] = $applicationData['created']->format('Y-m-d H:i:s');
+
         $invoiceData['application_id'] = $applicationData['id'];
         $invoiceData['reference'] = $this->generateReferenceCode(['firstname' => $firstname, 'surname' => $surname], $applicationData['created']);
         $invoiceData['subject'] = $invoiceData['reference'] . ': ' . 'Self-storage Application';
-        $invoiceData['due'] = $dueDate->format('Y-m-d H:i:s');
         $invoiceData['issued'] = $endDate->format('Y-m-d H:i:s');
+        $invoiceData['due'] = $dueDate->format('Y-m-d H:i:s');
         $invoiceData['total'] = $applicationData['total_cost'];
+        $invoiceData['created'] = Time::now();
 
         return $invoiceData;
     }
@@ -157,7 +161,7 @@ class InvoicesTable extends AbstractComponentRepository
     private function generateReferenceCode(array $fullname, string $created)
     {
         $prefix = strtoupper(substr($fullname['firstname'], 0, 2) . substr($fullname['surname'], 0, 2));
-        $suffix = str_replace("-", "", explode('T', $created)[0]);
+        $suffix = str_replace("-", "", explode(' ', $created)[0]);
 
         return "{$prefix}{$suffix}";
     }
