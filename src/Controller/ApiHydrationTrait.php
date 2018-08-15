@@ -126,7 +126,7 @@ trait ApiHydrationTrait
      */
     protected function respondFile($location, $filename, $download = true): void
     {
-        $this->response->withHeader('Access-Control-Allow-Origin','*');
+        $this->response = $this->response->withHeader('Access-Control-Allow-Origin','*');
         $this->response = $this->response->withStatus(201);
         $this->response = $this->response->withFile($location, ['name' => $filename, 'download' => $download]);
     }
@@ -170,8 +170,9 @@ trait ApiHydrationTrait
         $this->response
             ->cors($this->request)
             ->allowOrigin(['*'])
-            ->allowOrigin(['http://localhost:8080/'])
+            ->allowOrigin(['*'])
             ->allowMethods(['*'])
+            ->allowHeaders(['x-xsrf-token', 'Origin', 'Content-Type', 'X-Auth-Token'])
             ->build();
 
         $this->response = $this->response->withHeader('Access-Control-Allow-Origin','*');
