@@ -109,7 +109,7 @@ class CompaniesTable extends AbstractComponentRepository
      * 
      * @param \Cake\ORM\Query $query Query instance
      * @param Array $options An array of request argument options
-     * @return Array Resultant data set
+     * @return \Cake\ORM\Query Resultant data object
      */
     public function findByPostcode(Query $query, array $options)
     {   
