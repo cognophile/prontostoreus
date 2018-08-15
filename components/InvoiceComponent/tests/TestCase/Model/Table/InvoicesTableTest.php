@@ -3,6 +3,8 @@ namespace InvoiceComponent\Test\TestCase\Model\Table;
 
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Cake\I18n\FrozenTime;
+
 use InvoiceComponent\Model\Table\InvoicesTable;
 
 /**
@@ -82,7 +84,7 @@ class InvoicesTableTest extends TestCase
         $this->markTestIncomplete('Not implemented yet.');
     }
 
-    public function testBuildInvoiceData()
+    public function testBuildInvoiceDataWithValidInvoiceDataReturnsExpectedArrayStructureAndValues()
     {
         $expected = [
             'application_id' => 1,
@@ -94,18 +96,23 @@ class InvoicesTableTest extends TestCase
         ];
 
         $customerData = ['firstname' => 'John', 'surname' => 'Smith'];
-        $applicationData = ['id' => 1, 'end_date' => '2018-07-06T16:45:44+00:00', 'created' => '2018-01-07T16:45:44+00:00', 'total_cost' => '34.67'];
+        $applicationData = ['id' => 1, 'end_date' => '2018-07-06T16:45:44+00:00', 'created' => new FrozenTime('2018-01-07 16:45:44'), 'total_cost' => '34.67'];
         $invoiceData = $this->Invoices->buildInvoiceData($applicationData, $customerData['firstname'], $customerData['surname']);
-
-        $this->assertEquals($expected, $invoiceData);
+ 
+        $this->assertEquals($expected['application_id'], $invoiceData['application_id']);
+        $this->assertEquals($expected['reference'], $invoiceData['reference']);
+        $this->assertEquals($expected['subject'], $invoiceData['subject']);
+        $this->assertEquals($expected['due'], $invoiceData['due']);
+        $this->assertEquals($expected['issued'], $invoiceData['issued']);
+        $this->assertEquals($expected['total'], $invoiceData['total']);
     }
 
-    public function testReferenceCodeGeneration()
+    public function testReferenceCodeGenerationWithValidComponentPartsReturnsExpectedReferenceString()
     {
         $expected = 'JOSM20180107';
         
         $customerData = ['firstname' => 'John', 'surname' => 'Smith'];
-        $applicationData = ['id' => 1, 'end_date' => '2018-07-06T16:45:44+00:00', 'created' => '2018-01-07T16:45:44+00:00', 'total_cost' => '34.67'];
+        $applicationData = ['id' => 1, 'end_date' => '2018-07-06T16:45:44+00:00', 'created' => new FrozenTime('2018-01-07 16:45:44'), 'total_cost' => '34.67'];
         $invoiceData = $this->Invoices->buildInvoiceData($applicationData, $customerData['firstname'], $customerData['surname']);
 
         $this->assertTextEquals($expected, $invoiceData['reference']);
