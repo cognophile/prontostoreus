@@ -18,8 +18,6 @@ class ApplicationsController extends AbstractApiController
     public function initialize() 
     {
         parent::initialize();        
-        $this->loadModel('InvoiceComponent.Applications');
-        $this->loadModel('InvoiceComponent.Invoices');
     }
 
     public function status()
@@ -52,44 +50,7 @@ class ApplicationsController extends AbstractApiController
                 return;
             }
         }
-
-        try {
-            $isSuccessful = $this->createInvoice($this->request->getData());
-        }
-        catch (Exception $ex) {
-            $this->respondException($ex, $this->messageHandler->retrieve("Error", "Unknown"), 500);
-            return;
-        }
         
         return $this->universalEdit($this->Applications, $applicationId);
-    }
-
-    private function createInvoice(array $applicationData)
-    {
-        // TODO: Add test for this (document only happens on re-post of full application to edit [fix])
-        if (!is_array($applicationData) || empty($applicationData)) {
-            throw new InvalidArgumentException("The provided data must be a valid array");
-        }
-
-        $application = $this->Applications->find('customerByApplicationId', ['applicationId' => $applicationData['id']])->toArray();
-        
-        if (!$application) {
-            throw new RecordNotFoundException("An Application matching the given ID was not found");
-        }
-
-        $customerFirstname = $application[0]['customer']['firstname']; 
-        $customerSurname = $application[0]['customer']['surname'];
-        $invoiceData = $this->Invoices->buildInvoiceData($applicationData, $customerFirstname, $customerSurname);
-
-        $invoice = $this->Invoices->newEntity($invoiceData);
-        $newInvoice = $this->Invoices->saveEntity($this->Invoices, $invoice);
-
-        if ($newInvoice->getErrors()) {
-            // * Don't respond with an error as this is a hidden process
-            Log::write('error', $newInvoice->getErrors());
-            return false;
-        }
-
-        return true;
     }
 }

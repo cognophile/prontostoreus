@@ -123,8 +123,6 @@ To add new components, follow these steps:
 - Reload the autoload configuration again: `{php} composer{.phar} dump-autoload`.
 - Run the built-in dev server (`bin/cake server`). If this throws an exception, it's because it can't locate the new component. Check all the above steps again. 
 
-The `ApplicaitonComponent` and `InvoiceComponent` are somewhat coupled (as expected) currently, but will be unpicked as time progresses. 
-
 ## Server Configuration
 As this software is not suitable for real-world use due to many factors (eg. security, error handling, security), the simplest development environment has been selected to run this application - the built in CakePHP development environment server. To use this server, issue the following command in the project directory.
 

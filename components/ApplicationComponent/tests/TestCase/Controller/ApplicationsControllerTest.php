@@ -215,7 +215,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
     {
         $roomId = 999;
         $expectedError = "Record not found in table \"rooms\"";
-        $expectedMessage = "The requested data could not be located";
+        $expectedMessage = "An unknown error occurred during the request (see error for details)";
 
         $this->get("/applications/room/{$roomId}");
         $responseArray = json_decode($this->_response->getBody(), true);
