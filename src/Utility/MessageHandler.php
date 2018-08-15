@@ -31,7 +31,7 @@ class MessageHandler
      * @param string key The reference key of the message
      * @return string Message associated with the key
      */
-    public function retrieve($heading, $key, $args = null)
+    public function retrieve($heading, $key, $args = null): string
     {
         $this->fetchMessages();
 
