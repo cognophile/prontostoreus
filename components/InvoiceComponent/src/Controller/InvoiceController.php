@@ -16,7 +16,6 @@ class InvoiceController extends AbstractApiController
     public function initialize() 
     {
         parent::initialize();  
-        // TODO: Test removal of these      
         $this->loadModel('InvoiceComponent.Invoices');
         $this->loadModel('InvoiceComponent.Applications');
     }
