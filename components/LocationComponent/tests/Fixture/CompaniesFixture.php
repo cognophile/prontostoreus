@@ -44,10 +44,10 @@ class CompaniesFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
-                'name' => 'Lorem ipsum dolor sit amet',
-                'description' => 'Lorem ipsum dolor sit amet',
-                'email' => 'Lorem ipsum dolor sit amet',
-                'telephone' => 'Lorem ipsu',
+                'name' => 'Lorem ipsum',
+                'description' => 'dolor sit amet',
+                'email' => 'Lorem@ipsum.com',
+                'telephone' => '01234567789',
                 'created' => '2018-06-05 18:01:23',
                 'deleted' => 1
             ],

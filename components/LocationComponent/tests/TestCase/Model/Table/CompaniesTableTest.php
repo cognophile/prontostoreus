@@ -89,6 +89,15 @@ class CompaniesTableTest extends TestCase
      */
     public function testFindByPostcode()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $postcode = 'AB12-1DE';
+        $expected = [
+            ['id' => 1, 'name' => "Lorem ipsum", 'description' => "dolor sit amet", 'telephone' => "01234567789", "_matchingData" => ["Addresses" => ["postcode" => "AB12-1DE"]]]
+        ]; 
+
+        $query = $this->Companies->find('byPostcode', ['postcode' => $postcode]);
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+
+        $actual = $query->enableHydration(false)->toArray();
+        $this->assertEquals($expected, $actual);
     }
 }
