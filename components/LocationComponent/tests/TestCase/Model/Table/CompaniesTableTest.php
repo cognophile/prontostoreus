@@ -91,7 +91,18 @@ class CompaniesTableTest extends TestCase
     {
         $postcode = 'AB12-1DE';
         $expected = [
-            ['id' => 1, 'name' => "Lorem ipsum", 'description' => "dolor sit amet", 'telephone' => "01234567789", "_matchingData" => ["Addresses" => ["postcode" => "AB12-1DE"]]]
+            [
+                'id' => 1, 
+                'name' => "Lorem ipsum", 
+                'description' => "dolor sit amet", 
+                'telephone' => "01234567789", 
+                "_matchingData" => 
+                    [
+                        "Addresses" => [
+                            "postcode" => "AB12-1DE"
+                            ]
+                        ]
+                    ]
         ]; 
 
         $query = $this->Companies->find('byPostcode', ['postcode' => $postcode]);
