@@ -3,6 +3,7 @@
 namespace CustomerComponent\Test\TestCase\Controller;
 
 use Cake\Http\Response;
+use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\IntegrationTestCase;
@@ -77,7 +78,7 @@ class CustomersControllerTest extends IntegrationTestCase
 
     public function testGetCustomersComponentStatusRouteWhereResponseIsSuccessful()
     {
-        $this->get('/customers');
+        $this->get(Configure::read('Api.Scope') . 'customers');
         
         $this->assertResponseOk();
         $this->assertResponseCode(200);
@@ -85,28 +86,28 @@ class CustomersControllerTest extends IntegrationTestCase
 
     public function testMultipleGetCustomersComponentStatusRouteInSuccessionIsStable()
     {
-        $this->get('/customers');
+        $this->get(Configure::read('Api.Scope') . 'customers');
         $this->assertResponseOk();
 
-        $this->get('/customers');
+        $this->get(Configure::read('Api.Scope') . 'customers');
         $this->assertResponseOk();
     }
 
     public function testGetCustomersComponentStatusRouteResponseIsJsonFormat()
     {
-        $this->get('/customers');
+        $this->get(Configure::read('Api.Scope') . 'customers');
         $this->assertContentType('application/json');
     }
 
     public function testGetCustomersComponentStatusRouteResponseIsNotEmpty()
     {
-        $this->get('/customers');
+        $this->get(Configure::read('Api.Scope') . 'customers');
         $this->assertResponseNotEmpty();
     }
 
     public function testGetCustomersComponentStatusRouteResponseStructure()
     {
-        $this->get('/customers');
+        $this->get(Configure::read('Api.Scope') . 'customers');
 
         $responseArray = json_decode($this->_response->getBody(), true);
 
@@ -124,7 +125,7 @@ class CustomersControllerTest extends IntegrationTestCase
         $customer = $this->validCustomerProvider();
         $expectedMessage = "The data was successfully added";
 
-        $this->post('/customers/add', $customer);
+        $this->post(Configure::read('Api.Scope') . 'customers/add', $customer);
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertResponseSuccess();        
@@ -137,7 +138,7 @@ class CustomersControllerTest extends IntegrationTestCase
         $customer = [];
         $expectedMessage = "An error occurred when parsing the payload which appeared empty";
 
-        $this->post('/customers/add', $customer);
+        $this->post(Configure::read('Api.Scope') . 'customers/add', $customer);
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertResponseCode(400);      
@@ -150,7 +151,7 @@ class CustomersControllerTest extends IntegrationTestCase
         $expectedMessage = "An error occurred when storing the data";
         $expectedError = ["dob" => ["date" => "The provided value is invalid"]];
 
-        $this->post('/customers/add', $customer);
+        $this->post(Configure::read('Api.Scope') . 'customers/add', $customer);
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertResponseCode(400);        
@@ -165,7 +166,7 @@ class CustomersControllerTest extends IntegrationTestCase
         $expectedMessage = "An error occurred when storing the data";
         $expectedError = ["telephone" => ["numeric" => "The provided value is invalid"]];
 
-        $this->post('/customers/add', $customer);
+        $this->post(Configure::read('Api.Scope') . 'customers/add', $customer);
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertResponseCode(400);        
@@ -180,7 +181,7 @@ class CustomersControllerTest extends IntegrationTestCase
         $expectedMessage = "An error occurred when storing the data";
         $expectedError = "HTTP Method disabled for endpoint: Use POST";
 
-        $this->put('/customers/add', $customer);
+        $this->put(Configure::read('Api.Scope') . 'customers/add', $customer);
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertResponseCode(405);        
@@ -195,10 +196,10 @@ class CustomersControllerTest extends IntegrationTestCase
         $duplicateCustomer = $this->validCustomerProvider();
         $expectedMessage = "The data was successfully added";
 
-        $this->post('/customers/add', $customer);
+        $this->post(Configure::read('Api.Scope') . 'customers/add', $customer);
         $responseArray = json_decode($this->_response->getBody(), true);
         
-        $this->post('/customers/add', $duplicateCustomer);
+        $this->post(Configure::read('Api.Scope') . 'customers/add', $duplicateCustomer);
         $duplicateResponseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseSuccess();        

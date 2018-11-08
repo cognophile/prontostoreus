@@ -2,6 +2,7 @@
 namespace InvoiceComponent\Test\TestCase\Controller;
 
 use Cake\Http\Response;
+use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\IntegrationTestCase;
 use Cake\ORM\TableRegistry;
@@ -33,7 +34,7 @@ class InvoiceControllerTest extends IntegrationTestCase
 
     public function testGetInvoicesComponentStatusRouteWhereResponseIsSuccessful()
     {
-        $this->get('/invoices');
+        $this->get(Configure::read('Api.Scope') . 'invoices');
         
         $this->assertResponseOk();
         $this->assertResponseCode(200);
@@ -41,28 +42,28 @@ class InvoiceControllerTest extends IntegrationTestCase
 
     public function testMultipleGetInvoicesComponentStatusRouteInSuccessionIsStable()
     {
-        $this->get('/invoices');
+        $this->get(Configure::read('Api.Scope') . 'invoices');
         $this->assertResponseOk();
 
-        $this->get('/invoices');
+        $this->get(Configure::read('Api.Scope') . 'invoices');
         $this->assertResponseOk();
     }
 
     public function testGetInvoicesComponentStatusRouteResponseIsJsonFormat()
     {
-        $this->get('/invoices');
+        $this->get(Configure::read('Api.Scope') . 'invoices');
         $this->assertContentType('application/json');
     }
 
     public function testGetInvoicesComponentStatusRouteResponseIsNotEmpty()
     {
-        $this->get('/invoices');
+        $this->get(Configure::read('Api.Scope') . 'invoices');
         $this->assertResponseNotEmpty();
     }
 
     public function testGetInvoicesComponentStatusRouteResponseStructure()
     {
-        $this->get('/invoices');
+        $this->get(Configure::read('Api.Scope') . 'invoices');
 
         $responseArray = json_decode($this->_response->getBody(), true);
 
@@ -79,7 +80,7 @@ class InvoiceControllerTest extends IntegrationTestCase
         $applicationId = 1;
         $expectedMessage = "The data was successfully located";
 
-        $this->get("/invoices/applications/{$applicationId}/customer");
+        $this->get(Configure::read('Api.Scope') . "invoices/applications/{$applicationId}/customer");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseSuccess();
@@ -93,7 +94,7 @@ class InvoiceControllerTest extends IntegrationTestCase
         $expectedError = 'A valid application ID must be provided';
         $expectedMessage = 'The given URI argument was invalid';
 
-        $this->get("/invoices/applications/{$applicationId}/customer");
+        $this->get(Configure::read('Api.Scope') . "invoices/applications/{$applicationId}/customer");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(400);
@@ -108,7 +109,7 @@ class InvoiceControllerTest extends IntegrationTestCase
         $expectedError = 'A valid application ID must be provided';
         $expectedMessage = 'The given URI argument was invalid';
 
-        $this->get("/invoices/applications/{$applicationId}/customer");
+        $this->get(Configure::read('Api.Scope') . "invoices/applications/{$applicationId}/customer");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(400);
@@ -128,7 +129,7 @@ class InvoiceControllerTest extends IntegrationTestCase
             ->andWhere(['cancelled' => 0]);
         $expected = $query->enableHydration(false)->toArray();
 
-        $this->get("/invoices/applications/{$applicationId}/customer");
+        $this->get(Configure::read('Api.Scope') . "invoices/applications/{$applicationId}/customer");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(404);
@@ -143,7 +144,7 @@ class InvoiceControllerTest extends IntegrationTestCase
         $applicationId = 1;
         $expectedMessage = "The data was successfully located";
 
-        $this->get("/invoices/applications/{$applicationId}/company");
+        $this->get(Configure::read('Api.Scope') . "invoices/applications/{$applicationId}/company");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseSuccess();
@@ -157,7 +158,7 @@ class InvoiceControllerTest extends IntegrationTestCase
         $expectedError = 'A valid application ID must be provided';
         $expectedMessage = 'The given URI argument was invalid';
 
-        $this->get("/invoices/applications/{$applicationId}/company");
+        $this->get(Configure::read('Api.Scope') . "invoices/applications/{$applicationId}/company");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(400);
@@ -172,7 +173,7 @@ class InvoiceControllerTest extends IntegrationTestCase
         $expectedError = 'A valid application ID must be provided';
         $expectedMessage = 'The given URI argument was invalid';
 
-        $this->get("/invoices/applications/{$applicationId}/company");
+        $this->get(Configure::read('Api.Scope') . "invoices/applications/{$applicationId}/company");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(400);
@@ -193,7 +194,7 @@ class InvoiceControllerTest extends IntegrationTestCase
 
         $expected = $query->enableHydration(false)->toArray();
 
-        $this->get("/invoices/applications/{$applicationId}/company");
+        $this->get(Configure::read('Api.Scope') . "invoices/applications/{$applicationId}/company");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(404);
@@ -208,7 +209,7 @@ class InvoiceControllerTest extends IntegrationTestCase
         $applicationId = 1;
         $expectedMessage = "The data was successfully located";
 
-        $this->get("/invoices/applications/{$applicationId}/data");
+        $this->get(Configure::read('Api.Scope') . "invoices/applications/{$applicationId}/data");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseSuccess();
@@ -222,7 +223,7 @@ class InvoiceControllerTest extends IntegrationTestCase
         $expectedError = 'A valid application ID must be provided';
         $expectedMessage = 'The given URI argument was invalid';
 
-        $this->get("/invoices/applications/{$applicationId}/data");
+        $this->get(Configure::read('Api.Scope') . "invoices/applications/{$applicationId}/data");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(400);
@@ -237,7 +238,7 @@ class InvoiceControllerTest extends IntegrationTestCase
         $expectedError = 'A valid application ID must be provided';
         $expectedMessage = 'The given URI argument was invalid';
 
-        $this->get("/invoices/applications/{$applicationId}/data");
+        $this->get(Configure::read('Api.Scope') . "invoices/applications/{$applicationId}/data");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(400);
@@ -258,7 +259,7 @@ class InvoiceControllerTest extends IntegrationTestCase
 
         $expected = $query->enableHydration(false)->toArray();
 
-        $this->get("/invoices/applications/{$applicationId}/data");
+        $this->get(Configure::read('Api.Scope') . "invoices/applications/{$applicationId}/data");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(404);
@@ -273,7 +274,7 @@ class InvoiceControllerTest extends IntegrationTestCase
         $applicationId = 1;
         $expectedMessage = "The data was successfully located";
 
-        $this->get("/invoices/applications/{$applicationId}/lines");
+        $this->get(Configure::read('Api.Scope') . "invoices/applications/{$applicationId}/lines");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseSuccess();
@@ -287,7 +288,7 @@ class InvoiceControllerTest extends IntegrationTestCase
         $expectedError = 'A valid application ID must be provided';
         $expectedMessage = 'The given URI argument was invalid';
 
-        $this->get("/invoices/applications/{$applicationId}/lines");
+        $this->get(Configure::read('Api.Scope') . "invoices/applications/{$applicationId}/lines");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(400);
@@ -302,7 +303,7 @@ class InvoiceControllerTest extends IntegrationTestCase
         $expectedError = 'A valid application ID must be provided';
         $expectedMessage = 'The given URI argument was invalid';
 
-        $this->get("/invoices/applications/{$applicationId}/lines");
+        $this->get(Configure::read('Api.Scope') . "invoices/applications/{$applicationId}/lines");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(400);
@@ -324,7 +325,7 @@ class InvoiceControllerTest extends IntegrationTestCase
 
         $expected = $query->enableHydration(false)->toArray();
 
-        $this->get("/invoices/applications/{$applicationId}/lines");
+        $this->get(Configure::read('Api.Scope') . "invoices/applications/{$applicationId}/lines");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(404);
@@ -338,7 +339,7 @@ class InvoiceControllerTest extends IntegrationTestCase
     {
         $applicationId = 1;
 
-        $this->get("/invoices/applications/{$applicationId}/");
+        $this->get(Configure::read('Api.Scope') . "invoices/applications/{$applicationId}/");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(201);
@@ -350,7 +351,7 @@ class InvoiceControllerTest extends IntegrationTestCase
         $expectedMessage = "The request was denied due to invalid method";
         $expectedError = "HTTP Method disabled for endpoint: Use GET";
 
-        $this->put("/invoices/applications/{$applicationId}/", []);
+        $this->put(Configure::read('Api.Scope') . "invoices/applications/{$applicationId}/", []);
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(405);        
@@ -365,7 +366,7 @@ class InvoiceControllerTest extends IntegrationTestCase
         $expectedError = 'A valid application ID must be provided';
         $expectedMessage = 'The given URI argument was invalid';
 
-        $this->get("/invoices/applications/{$applicationId}/");
+        $this->get(Configure::read('Api.Scope') . "invoices/applications/{$applicationId}/");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(400);
@@ -380,7 +381,7 @@ class InvoiceControllerTest extends IntegrationTestCase
         $expectedError = "Requested application has no data";
         $expectedMessage = "The file could not be retrieved";
 
-        $this->get("/invoices/applications/{$applicationId}/");
+        $this->get(Configure::read('Api.Scope') . "invoices/applications/{$applicationId}/");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(404);
@@ -395,7 +396,7 @@ class InvoiceControllerTest extends IntegrationTestCase
         $expectedError = 'A valid application ID must be provided';
         $expectedMessage = 'The given URI argument was invalid';
 
-        $this->get("/invoices/applications/{$applicationId}/");
+        $this->get(Configure::read('Api.Scope') . "invoices/applications/{$applicationId}/");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(400);

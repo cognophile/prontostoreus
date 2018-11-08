@@ -216,18 +216,20 @@ if (Configure::read('debug')) {
     Plugin::load('DebugKit', ['bootstrap' => true]);
 }
 
-
-/*
- * Prontostoreus: Custom Bootstrapping
- * Options and rules for the API, and any available Components.
- */
+/**
+ * ! Prontostoreus: Custom Bootstrapping
+ * * Options and rules for the API, and any available Components.
+ **/
 Configure::write('Folder.Resources', '/resources/');
 Configure::write('File.ResponseMessages', 'responseMessages.json');
 
 /**
  * API Available URI Declarations
  */
-Configure::write('Api.Base', 'http://localhost:8765/');
+Configure::write('Api.Host', 'http://localhost:8765');
+Configure::write('Api.Version', 'v1/');
+Configure::write('Api.Scope', '/api/' . Configure::read('Api.Version'));
+Configure::write('Api.Base', Configure::read('Api.Host') . Configure::read('Api.Scope'));
 
 Configure::write('Api.Routes.Locations', [
     Configure::read('Api.Base') . 'locations/' => "GET",

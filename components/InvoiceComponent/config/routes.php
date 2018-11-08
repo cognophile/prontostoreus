@@ -1,11 +1,12 @@
 <?php
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
+use Cake\Core\Configure;
 use Cake\Routing\Route\DashedRoute;
 
 Router::plugin(
     'InvoiceComponent',
-    ['path' => '/invoices'],
+    ['path' => Configure::read('Api.Scope') . 'invoices'],
     function (RouteBuilder $routes) {
         $routes->connect('/', ['controller' => 'Invoice', 'action' => 'status']);
 

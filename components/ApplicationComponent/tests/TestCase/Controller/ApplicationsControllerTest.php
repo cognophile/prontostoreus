@@ -3,6 +3,7 @@
 namespace ApplicationComponent\Test\TestCase\Controller;
 
 use Cake\Http\Response;
+use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
@@ -69,7 +70,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
 
     public function testGetApplicationsComponentStatusRouteWhereResponseIsSuccessful()
     {
-        $this->get('/applications');
+        $this->get(Configure::read('Api.Scope') . 'applications');
         
         $this->assertResponseOk();
         $this->assertResponseCode(200);
@@ -77,28 +78,28 @@ class ApplicationsControllerTest extends IntegrationTestCase
 
     public function testMultipleGetApplicationsComponentStatusRouteInSuccessionIsStable()
     {
-        $this->get('/applications');
+        $this->get(Configure::read('Api.Scope') . 'applications');
         $this->assertResponseOk();
 
-        $this->get('/applications');
+        $this->get(Configure::read('Api.Scope') . 'applications');
         $this->assertResponseOk();
     }
 
     public function testGetApplicationsComponentStatusRouteResponseIsJsonFormat()
     {
-        $this->get('/applications');
+        $this->get(Configure::read('Api.Scope') . 'applications');
         $this->assertContentType('application/json');
     }
 
     public function testGetApplicationsComponentStatusRouteResponseIsNotEmpty()
     {
-        $this->get('/applications');
+        $this->get(Configure::read('Api.Scope') . 'applications');
         $this->assertResponseNotEmpty();
     }
 
     public function testGetApplicationsComponentStatusRouteResponseStructure()
     {
-        $this->get('/applications');
+        $this->get(Configure::read('Api.Scope') . 'applications');
 
         $responseArray = json_decode($this->_response->getBody(), true);
 
@@ -115,7 +116,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $query = TableRegistry::get('ApplicationComponent.Rooms')->find('all');
         $expected = $query->enableHydration(false)->toArray();
 
-        $this->get('/applications/room');
+        $this->get(Configure::read('Api.Scope') . 'applications/room');
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseSuccess();
@@ -127,7 +128,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $query = TableRegistry::get('ApplicationComponent.Rooms')->get(1);
         $expected = $query->toArray();
 
-        $this->get('/applications/room/1');
+        $this->get(Configure::read('Api.Scope') . 'applications/room/1');
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseSuccess();
@@ -140,7 +141,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $query = TableRegistry::get('ApplicationComponent.Rooms')->find('all');
         $expected = $query->enableHydration(false)->toArray();
 
-        $this->get("/applications/room/{$roomId}");
+        $this->get(Configure::read('Api.Scope') . "applications/room/{$roomId}");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseSuccess();
@@ -153,7 +154,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $query = TableRegistry::get('ApplicationComponent.Furnishings')->find('all')->where(['room_id' => $roomId]);
         $expected = $query->enableHydration(false)->toArray();
 
-        $this->get("/applications/room/{$roomId}/furnishing");
+        $this->get(Configure::read('Api.Scope') . "applications/room/{$roomId}/furnishing");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseSuccess();
@@ -169,7 +170,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $query = TableRegistry::get('ApplicationComponent.Furnishings')->find('all')->where(['room_id' => $roomId]);
         $expected = $query->enableHydration(false)->toArray();
 
-        $this->get("/applications/room/{$roomId}/furnishing");
+        $this->get(Configure::read('Api.Scope') . "applications/room/{$roomId}/furnishing");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(404);
@@ -185,7 +186,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $expectedError = 'A valid room ID must be provided';
         $expectedMessage = 'The given URI argument was invalid';
 
-        $this->get("/applications/room/{$roomId}/furnishing");
+        $this->get(Configure::read('Api.Scope') . "applications/room/{$roomId}/furnishing");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(400);
@@ -202,7 +203,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $query = TableRegistry::get('ApplicationComponent.Furnishings')->find('all')->where(['room_id' => $roomId]);
         $expected = $query->enableHydration(false)->toArray();
 
-        $this->get("/applications/room/{$roomId}/furnishing");
+        $this->get(Configure::read('Api.Scope') . "applications/room/{$roomId}/furnishing");
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertResponseSuccess();        
@@ -217,7 +218,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $expectedError = "Record not found in table \"rooms\"";
         $expectedMessage = "An unknown error occurred during the request (see error for details)";
 
-        $this->get("/applications/room/{$roomId}");
+        $this->get(Configure::read('Api.Scope') . "applications/room/{$roomId}");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(404);
@@ -232,7 +233,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $expectedError = 'A valid room ID must be provided';
         $expectedMessage = 'The given URI argument was invalid';
 
-        $this->get("/applications/room/{$roomId}");
+        $this->get(Configure::read('Api.Scope') . "applications/room/{$roomId}");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(400);
@@ -249,7 +250,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $query = TableRegistry::get('ApplicationComponent.Rooms')->find()->where(['id' => $roomId]);
         $expected = $query->enableHydration(false)->toArray();
 
-        $this->get("/applications/room/{$roomId}");
+        $this->get(Configure::read('Api.Scope') . "applications/room/{$roomId}");
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertResponseSuccess();        
@@ -264,7 +265,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $expectedError = "Requested furnishing not associated with requested room";
         $expectedMessage = "The requested data could not be located";
 
-        $this->get("/applications/room/{$roomId}/furnishing/{$furnishingId}");
+        $this->get(Configure::read('Api.Scope') . "applications/room/{$roomId}/furnishing/{$furnishingId}");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(404);
@@ -279,7 +280,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $query = TableRegistry::get('ApplicationComponent.Furnishings')->get($furnishingId);
         $expected = $query->toArray();
 
-        $this->get("/applications/room/{$roomId}/furnishing/{$furnishingId}");
+        $this->get(Configure::read('Api.Scope') . "applications/room/{$roomId}/furnishing/{$furnishingId}");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseSuccess();
@@ -292,7 +293,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $expectedError = 'Both valid room and furnishing IDs must be provided';
         $expectedMessage = 'The given URI argument was invalid';
 
-        $this->get("/applications/room/{$roomId}/furnishing/{$furnishingId}");
+        $this->get(Configure::read('Api.Scope') . "applications/room/{$roomId}/furnishing/{$furnishingId}");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(400);
@@ -307,7 +308,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $expectedError = 'Both valid room and furnishing IDs must be provided';
         $expectedMessage = 'The given URI argument was invalid';
 
-        $this->get("/applications/room/{$roomId}/furnishing/{$furnishingId}");
+        $this->get(Configure::read('Api.Scope') . "applications/room/{$roomId}/furnishing/{$furnishingId}");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(400);
@@ -324,7 +325,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $query = TableRegistry::get('ApplicationComponent.Furnishings')->find()->where(['room_id' => $roomId]);
         $expected = $query->enableHydration(false)->toArray();
 
-        $this->get("/applications/room/{$roomId}/furnishing/{$furnishingId}");
+        $this->get(Configure::read('Api.Scope') . "applications/room/{$roomId}/furnishing/{$furnishingId}");
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertResponseSuccess();        
@@ -341,7 +342,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $query = TableRegistry::get('ApplicationComponent.Furnishings')->find()->where(['room_id' => $roomId]);
         $expected = $query->enableHydration(false)->toArray();
 
-        $this->get("/applications/room/{$roomId}/furnishing/{$furnishingId}");
+        $this->get(Configure::read('Api.Scope') . "applications/room/{$roomId}/furnishing/{$furnishingId}");
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertResponseSuccess();        
@@ -362,7 +363,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         
         $expected = $query->enableHydration(false)->toArray();
 
-        $this->get("/applications/company/{$companyId}/furnishing/{$furnishingId}");
+        $this->get(Configure::read('Api.Scope') . "applications/company/{$companyId}/furnishing/{$furnishingId}");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseSuccess();
@@ -374,7 +375,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $companyId = 1; $furnishingId = 999;
         $expectedError = "Requested company or furnishing ID does not exist";
 
-        $this->get("/applications/company/{$companyId}/furnishing/{$furnishingId}");
+        $this->get(Configure::read('Api.Scope') . "applications/company/{$companyId}/furnishing/{$furnishingId}");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(404);
@@ -388,7 +389,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $expectedError = 'Both valid company and furnishing IDs must be provided';
         $expectedMessage = 'The given URI argument was invalid';
 
-        $this->get("/applications/company/{$companyId}/furnishing/{$furnishingId}");
+        $this->get(Configure::read('Api.Scope') . "applications/company/{$companyId}/furnishing/{$furnishingId}");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(400);
@@ -403,7 +404,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $expectedError = 'Both valid company and furnishing IDs must be provided';
         $expectedMessage = 'The given URI argument was invalid';
 
-        $this->get("/applications/company/{$companyId}/furnishing/{$furnishingId}");
+        $this->get(Configure::read('Api.Scope') . "applications/company/{$companyId}/furnishing/{$furnishingId}");
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(400);
@@ -425,7 +426,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         
         $expected = $query->enableHydration(false)->toArray();
 
-        $this->get("/applications/company/{$companyId}/furnishing/{$furnishingId}");
+        $this->get(Configure::read('Api.Scope') . "applications/company/{$companyId}/furnishing/{$furnishingId}");
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertResponseSuccess();        
@@ -447,7 +448,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         
         $expected = $query->enableHydration(false)->toArray();
 
-        $this->get("/applications/company/{$companyId}/furnishing/{$furnishingId}");
+        $this->get(Configure::read('Api.Scope') . "applications/company/{$companyId}/furnishing/{$furnishingId}");
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertResponseSuccess();        
@@ -462,7 +463,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $expectedMessage = "An error occurred when storing the data";
         $expectedError = "Cannot create an application without furniture lines data";
 
-        $this->post('/applications/add', $data);
+        $this->post(Configure::read('Api.Scope') . 'applications/add', $data);
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(422);
@@ -476,7 +477,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $data = $this->validAddApplicationProvider($this->validLinesProvider());
         $expectedMessage = "The data was successfully added";
 
-        $this->post('/applications/add', $data);
+        $this->post(Configure::read('Api.Scope') . 'applications/add', $data);
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseSuccess();        
@@ -490,7 +491,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $expectedMessage = "An error occurred when storing the data";
         $expectedError = "HTTP Method disabled for endpoint: Use POST";
 
-        $this->put('/applications/add', $data);
+        $this->put(Configure::read('Api.Scope') . 'applications/add', $data);
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertResponseCode(405);        
@@ -506,7 +507,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $expectedError = 'A valid application ID must be provided';
         $expectedMessage = 'The given URI argument was invalid';
 
-        $this->post("/applications/{$applicationId}/edit", $data);
+        $this->post(Configure::read('Api.Scope') . "applications/{$applicationId}/edit", $data);
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertResponseCode(400);        

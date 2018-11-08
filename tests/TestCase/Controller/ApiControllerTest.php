@@ -14,7 +14,7 @@ class ApiControllerTest extends IntegrationTestCase
 {
     public function testGetApiStatusRouteResponseIsSuccessful()
     {
-        $this->get('/');
+        $this->get(Configure::read('Api.Scope'));
         
         $this->assertResponseOk();
         $this->assertResponseCode(200);
@@ -22,28 +22,28 @@ class ApiControllerTest extends IntegrationTestCase
     
     public function testMultipleGetApiStatusRouteInSuccessionIsStable()
     {
-        $this->get('/');
+        $this->get(Configure::read('Api.Scope'));
         $this->assertResponseOk();
 
-        $this->get('/');
+        $this->get(Configure::read('Api.Scope'));
         $this->assertResponseOk();
     }
 
     public function testGetApiStatusRouteResponseIsJsonFormat()
     {
-        $this->get('/');
+        $this->get(Configure::read('Api.Scope'));
         $this->assertContentType('application/json');
     }
 
     public function testGetApiStatusRouteResponseIsNotEmpty()
     {
-        $this->get('/');
+        $this->get(Configure::read('Api.Scope'));
         $this->assertResponseNotEmpty();
     }
 
     public function testGetApiStatusRouteResponseStructure()
     {
-        $this->get('/');
+        $this->get(Configure::read('Api.Scope'));
 
         $responseArray = json_decode($this->_response->getBody(), true);
 
@@ -54,7 +54,7 @@ class ApiControllerTest extends IntegrationTestCase
     
     public function testGetNonExistantSubRouteRaises4xxError()
     {
-        $this->get('/fake');
+        $this->get('/api/v1//fake');
 
         $this->assertResponseError();
         $this->assertResponseCode(404);

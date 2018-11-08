@@ -1,11 +1,12 @@
 <?php
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
+use Cake\Core\Configure;
 use Cake\Routing\Route\DashedRoute;
 
 Router::plugin(
     'ApplicationComponent',
-    ['path' => '/applications'],
+    ['path' => Configure::read('Api.Scope') . 'applications'],
     function (RouteBuilder $routes) {
         // TODO: Update all component routes to restful resources with OPTIONS pre-flight check and p-style before methods
         $routes->connect('/', ['controller' => 'Applications', 'action' => 'status']);

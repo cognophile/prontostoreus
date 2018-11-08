@@ -3,6 +3,7 @@
 namespace ConfirmationComponent\Test\TestCase\Controller;
 
 use Cake\Http\Response;
+use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\IntegrationTestCase;
 use ConfirmationComponent\Controller\ConfirmationController;
@@ -46,7 +47,7 @@ class ConfirmationsControllerTest extends IntegrationTestCase
 
     public function testGetConfirmationComponentStatusRouteWhereResponseIsSuccessful()
     {
-        $this->get('/confirmations');
+        $this->get(Configure::read('Api.Scope') . 'confirmations');
         
         $this->assertResponseOk();
         $this->assertResponseCode(200);
@@ -54,28 +55,28 @@ class ConfirmationsControllerTest extends IntegrationTestCase
 
     public function testMultipleGetConfirmationComponentStatusRouteInSuccessionIsStable()
     {
-        $this->get('/confirmations');
+        $this->get(Configure::read('Api.Scope') . 'confirmations');
         $this->assertResponseOk();
 
-        $this->get('/confirmations');
+        $this->get(Configure::read('Api.Scope') . 'confirmations');
         $this->assertResponseOk();
     }
 
     public function testGetConfirmationComponentStatusRouteResponseIsJsonFormat()
     {
-        $this->get('/confirmations');
+        $this->get(Configure::read('Api.Scope') . 'confirmations');
         $this->assertContentType('application/json');
     }
 
     public function testGetConfirmationComponentStatusRouteResponseIsNotEmpty()
     {
-        $this->get('/confirmations');
+        $this->get(Configure::read('Api.Scope') . 'confirmations');
         $this->assertResponseNotEmpty();
     }
 
     public function testGetConfirmationComponentStatusRouteResponseStructure()
     {
-        $this->get('/confirmations');
+        $this->get(Configure::read('Api.Scope') . 'confirmations');
 
         $responseArray = json_decode($this->_response->getBody(), true);
 
@@ -94,7 +95,7 @@ class ConfirmationsControllerTest extends IntegrationTestCase
         $expectedMessage = "An error occurred when editing the data";
         $expectedError = "HTTP Method disabled for endpoint: Use POST";
 
-        $this->put("/confirmations/applications/{$applicationId}/update", $data);
+        $this->put(Configure::read('Api.Scope') . "confirmations/applications/{$applicationId}/update", $data);
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertResponseCode(405);        
@@ -109,7 +110,7 @@ class ConfirmationsControllerTest extends IntegrationTestCase
         $data = $this->validConfirmationProvider($applicationId);
         $expectedMessage = "The data was successfully edited";
 
-        $this->post("/confirmations/applications/{$applicationId}/update", $data);
+        $this->post(Configure::read('Api.Scope') . "confirmations/applications/{$applicationId}/update", $data);
         $responseArray = json_decode($this->_response->getBody(), true);
                 
         $this->assertResponseSuccess();        
@@ -124,7 +125,7 @@ class ConfirmationsControllerTest extends IntegrationTestCase
         $expectedMessage = "An error occurred when storing the data";
         $expectedError = "The requested record does not exist";
 
-        $this->post("/confirmations/applications/{$applicationId}/update", $data);
+        $this->post(Configure::read('Api.Scope') . "confirmations/applications/{$applicationId}/update", $data);
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertResponseCode(400);        
@@ -140,7 +141,7 @@ class ConfirmationsControllerTest extends IntegrationTestCase
         $expectedError = "A valid application ID must be provided";
         $expectedMessage = "The given URI argument was invalid";
 
-        $this->post("/confirmations/applications/{$applicationId}/update", $data);
+        $this->post(Configure::read('Api.Scope') . "confirmations/applications/{$applicationId}/update", $data);
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertResponseCode(400);        
@@ -156,7 +157,7 @@ class ConfirmationsControllerTest extends IntegrationTestCase
         $expectedError = "A valid application ID must be provided";
         $expectedMessage = "The given URI argument was invalid";
 
-        $this->post("/confirmations/applications/{$applicationId}/update", $data);
+        $this->post(Configure::read('Api.Scope') . "confirmations/applications/{$applicationId}/update", $data);
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertResponseCode(400);        
@@ -171,7 +172,7 @@ class ConfirmationsControllerTest extends IntegrationTestCase
         $data = $this->validConfirmationProvider($applicationId);
         $expectedMessage = "The data was successfully edited";
 
-        $this->post("/confirmations/applications/{$applicationId}/update", $data);
+        $this->post(Configure::read('Api.Scope') . "confirmations/applications/{$applicationId}/update", $data);
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertResponseSuccess();        
@@ -185,7 +186,7 @@ class ConfirmationsControllerTest extends IntegrationTestCase
         $data = $this->validConfirmationProvider($applicationId);
         $expectedMessage = "The data was successfully added";
 
-        $this->post("/confirmations/applications/{$applicationId}/update", $data);
+        $this->post(Configure::read('Api.Scope') . "confirmations/applications/{$applicationId}/update", $data);
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertResponseSuccess();        
@@ -200,7 +201,7 @@ class ConfirmationsControllerTest extends IntegrationTestCase
         $expectedError = ['date_accepted' => ['dateTime' => 'The provided value is invalid']];
         $expectedMessage = "The data could not be edited";
 
-        $this->post("/confirmations/applications/{$applicationId}/update", $data);
+        $this->post(Configure::read('Api.Scope') . "confirmations/applications/{$applicationId}/update", $data);
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertResponseCode(400);        
@@ -216,7 +217,7 @@ class ConfirmationsControllerTest extends IntegrationTestCase
         $expectedError = ['accepted' => ['boolean' => 'The provided value is invalid']];
         $expectedMessage = "The data could not be edited";
 
-        $this->post("/confirmations/applications/{$applicationId}/update", $data);
+        $this->post(Configure::read('Api.Scope') . "confirmations/applications/{$applicationId}/update", $data);
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertResponseCode(400);        

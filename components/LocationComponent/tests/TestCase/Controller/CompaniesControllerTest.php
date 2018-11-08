@@ -3,6 +3,7 @@
 namespace LocationComponent\Test\TestCase\Controller;
 
 use Cake\Http\Response;
+use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\IntegrationTestCase;
 use LocationComponent\Controller\ComponentController;
@@ -16,7 +17,7 @@ class CompaniesControllerTest extends IntegrationTestCase
 
     public function testGetLocationComponentStatusRouteWhereResponseIsSuccessful()
     {
-        $this->get('/locations');
+        $this->get(Configure::read('Api.Scope') . 'locations');
         
         $this->assertResponseOk();
         $this->assertResponseCode(200);
@@ -24,28 +25,28 @@ class CompaniesControllerTest extends IntegrationTestCase
 
     public function testMultipleGetLocationComponentStatusRouteInSuccessionIsStable()
     {
-        $this->get('/locations');
+        $this->get(Configure::read('Api.Scope') . 'locations');
         $this->assertResponseOk();
 
-        $this->get('/locations');
+        $this->get(Configure::read('Api.Scope') . 'locations');
         $this->assertResponseOk();
     }
 
     public function testGetLocationComponentStatusRouteResponseIsJsonFormat()
     {
-        $this->get('/locations');
+        $this->get(Configure::read('Api.Scope') . 'locations');
         $this->assertContentType('application/json');
     }
 
     public function testGetLocationComponentStatusRouteResponseIsNotEmpty()
     {
-        $this->get('/locations');
+        $this->get(Configure::read('Api.Scope') . 'locations');
         $this->assertResponseNotEmpty();
     }
 
     public function testGetLocationComponentStatusRouteResponseStructure()
     {
-        $this->get('/locations');
+        $this->get(Configure::read('Api.Scope') . 'locations');
 
         $responseArray = json_decode($this->_response->getBody(), true);
 
@@ -62,7 +63,7 @@ class CompaniesControllerTest extends IntegrationTestCase
         $expectedMessage = 'The postcode must conform to the following format: AreaDistrict-SectorUnit';
         $expectedError = 'The given URI argument was invalid';
 
-        $this->get('/locations/AB121DE');
+        $this->get(Configure::read('Api.Scope') . 'locations/AB121DE');
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertContains($expectedError, $responseArray["error"]);
@@ -74,7 +75,7 @@ class CompaniesControllerTest extends IntegrationTestCase
         $expectedMessage = 'The postcode must conform to the following format: AreaDistrict-SectorUnit';
         $expectedError = 'The given URI argument was invalid';
 
-        $this->get('/locations/AB21DE');
+        $this->get(Configure::read('Api.Scope') . 'locations/AB21DE');
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertContains($expectedError, $responseArray["error"]);
@@ -85,7 +86,7 @@ class CompaniesControllerTest extends IntegrationTestCase
     {
         $expectedMessage = 'The data was successfully located';
 
-        $this->get('/locations/AB12-1DE');        
+        $this->get(Configure::read('Api.Scope') . 'locations/AB12-1DE');        
         $responseArray = json_decode($this->_response->getBody(), true);
 
         $this->assertContains($expectedMessage, $responseArray["message"]);
@@ -96,7 +97,7 @@ class CompaniesControllerTest extends IntegrationTestCase
         $expectedMessage = 'The postcode must conform to the following format: AreaDistrict-SectorUnit';
         $expectedError = 'The given URI argument was invalid';
 
-        $this->get('/locations/12AB-D12');        
+        $this->get(Configure::read('Api.Scope') . 'locations/12AB-D12');        
         $responseArray = json_decode($this->_response->getBody(), true);
         
         $this->assertContains($expectedError, $responseArray["error"]);
