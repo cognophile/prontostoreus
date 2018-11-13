@@ -6,7 +6,7 @@ This project was produced as an accompanying artefact to a dissertation project.
 
  For the components (component-based software), these are included using the plugin architecture model. CakePHP was chosen as the framework tool as it provides easy component creation and inclusion tooling, configuration, and resolution. These components are self-contained - defining their own routes for the API to serve, including all database migrations for any tables it depends on which are designed to be idempotent. 
  
- his means, that components are entirely optional - though all are included in this repository, the maintainers will have the ability to add, extend, maintain, and remove components from the platform at will, with no affect on other compoents as all are treated and designed as independantly developable and deployable entities. The inner architecture of the components uses the MVC layering pattern. 
+ This means, that components are entirely optional - though all are included in this repository, the maintainers will have the ability to add, extend, maintain, and remove components from the platform at will, with no effect on other components as all are treated and designed as independently developable and deployable entities. The inner architecture of the components uses the MVC layering pattern. 
 
  The components are included in the repository (but are capable of being held within their own repositories).
 
@@ -28,7 +28,7 @@ For those on a Linux environment, all version of PHP and its extension modules a
 
 ## Installation and Configuration 
 - Download and use composer as detailed by the CakePHP section of this file.
-- Restore (or update) the dependancies required by this project: `php composer.phar update`
+- Restore (or update) the dependencies required by this project: `php composer.phar update`
 - You may need to set permissions as such over the `tmp/` and `logs/` directories if using a dedicated web server. 
 
 ```
@@ -118,7 +118,7 @@ To add new components, follow these steps:
 - `bin/cake bake plugin ExampleComponent`
     - Ignore the incorrect path when prompted, and select 'yes'.
     - When asked to overwrite `composer.json`, select 'yes'.
-- Components are created under the CakePHP default `plugin` directory. THerefore, simply move the created `ExampleComponent` directory into the `component` directory, and delete the auto-created `plugin` directory. 
+- Components are created under the CakePHP default `plugin` directory. Therefore, simply move the created `ExampleComponent` directory into the `component` directory, and delete the auto-created `plugin` directory. 
 - Edit `composer.json` for the `autoload` and `autoload-dev` sections to ensure all component paths are specified as `./components/ExampleComponent`.
 - Reload the autoload configuration again: `{php} composer{.phar} dump-autoload`.
 - Run the built-in dev server (`bin/cake server`). If this throws an exception, it's because it can't locate the new component. Check all the above steps again. 
