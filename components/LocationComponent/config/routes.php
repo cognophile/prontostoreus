@@ -13,7 +13,5 @@ Router::plugin(
         $routes->connect('/', ['controller' => 'Companies', 'action' => 'status']);
         $routes->connect('/:postcode', ['controller' => 'Companies', 'action' => 'locate'])
             ->setPass(['postcode']);
-        
-            // $routes->fallbacks(DashedRoute::class);
     }
 );

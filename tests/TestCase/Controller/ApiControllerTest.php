@@ -54,7 +54,7 @@ class ApiControllerTest extends IntegrationTestCase
     
     public function testGetNonExistantSubRouteRaises4xxError()
     {
-        $this->get('/api/v1//fake');
+        $this->get('/api/v1/fake');
 
         $this->assertResponseError();
         $this->assertResponseCode(404);
